@@ -1,7 +1,10 @@
 val ktorVersion = "1.6.0"
 val konfigVersion = "1.6.10.0"
 val kotlinLoggerVersion = "1.8.3"
-val mainClass = "no.nav.medlemskap.inst.lytter.ApplicationKt"
+val jacksonVersion = "2.10.5"
+val logbackVersion = "1.2.3"
+val logstashVersion = "6.4"
+val mainClass = "no.nav.medlemskap.saga.ApplicationKt"
 
 plugins {
     kotlin("jvm") version "1.5.10"
@@ -23,17 +26,21 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation("org.slf4j:slf4j-log4j12:1.7.30")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
     implementation("io.ktor:ktor-client-jackson:$ktorVersion")
     implementation("io.ktor:ktor-client-auth:$ktorVersion")
-    implementation("io.ktor:ktor-jackson:$ktorVersion")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
+    implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
     implementation("io.ktor:ktor-metrics-micrometer:$ktorVersion")
     implementation("io.micrometer:micrometer-registry-prometheus:1.7.0")
     implementation("com.natpryce:konfig:$konfigVersion")
     implementation("io.github.microutils:kotlin-logging:$kotlinLoggerVersion")
+    implementation("net.logstash.logback:logstash-logback-encoder:$logstashVersion")
+    implementation("ch.qos.logback:logback-classic:$logbackVersion")
     // 2.8.0 er tilgjengelig, burde kanskje oppdatere
     implementation("org.apache.kafka:kafka-clients:2.5.0")
     implementation("org.apache.avro:avro:1.10.2")
