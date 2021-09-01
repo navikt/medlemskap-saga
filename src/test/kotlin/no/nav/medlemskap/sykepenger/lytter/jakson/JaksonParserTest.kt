@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 
 class JaksonParserTest {
 
-    @Test()
+    //@Test()
     fun `parse Json String`() {
         val fileContent = this::class.java.classLoader.getResource("sampleVurdering.json").readText(Charsets.UTF_8)
         val JsonNode = JaksonParser().parse(fileContent)
