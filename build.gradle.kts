@@ -1,9 +1,10 @@
 val ktorVersion = "1.6.0"
+val jacksonVersion = "2.10.5"
 val konfigVersion = "1.6.10.0"
 val kotlinLoggerVersion = "1.8.3"
-val jacksonVersion = "2.10.5"
-val logbackVersion = "1.2.3"
+val resilience4jVersion = "1.5.0"
 val logstashVersion = "6.4"
+val logbackVersion = "1.2.3"
 val mainClass = "no.nav.medlemskap.saga.ApplicationKt"
 
 plugins {
@@ -26,6 +27,9 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
+    implementation("io.ktor:ktor-client-apache:$ktorVersion")
+    implementation("io.github.resilience4j:resilience4j-retry:$resilience4jVersion")
+    implementation("io.github.resilience4j:resilience4j-kotlin:$resilience4jVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
     implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
     implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
@@ -49,6 +53,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("io.mockk:mockk:1.11.0")
     testImplementation("io.ktor:ktor-client-mock:$ktorVersion")
+    testImplementation("org.testcontainers:kafka:1.16.0")
 }
 
 tasks {
