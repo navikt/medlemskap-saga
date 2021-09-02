@@ -21,11 +21,11 @@ class RepositoryTests : AbstractContainerDatabaseTest() {
     companion object {
         // will be shared between test methods
         @Container
-        private val postgresqlContainer = MyPostgreSQLContainer("postgres:11.1")
+        private val postgresqlContainer     = MyPostgreSQLContainer("postgres:12")
             .withDatabaseName("medlemskap")
             .withUsername("postgres")
             .withPassword("test")
-            .withInitScript("database/INIT.sql")
+            //.withInitScript("database/INIT.sql")
     }
 
     @Test
@@ -34,7 +34,14 @@ class RepositoryTests : AbstractContainerDatabaseTest() {
         //var env:Map<String,String> = mapOf()
         //val ds = DataSourceBuilder(env).getDataSource()
         val ds = getDataSource(postgresqlContainer)
-        val repo:MedlemskapVurdertRepository = PostgressMedlemskapVurdertRepository(ds)
+        postgresqlContainer.withUrlParam("user", postgresqlContainer.username)
+        postgresqlContainer.withUrlParam("password", postgresqlContainer.password)
+        //postgresqlContainer.withUrlParam("user", postgresqlContainer.username)
+        //postgresqlContainer.withUrlParam("password", postgresqlContainer.password)
+        val dsb = DataSourceBuilder(mapOf("DB_JDBC_URL" to postgresqlContainer.jdbcUrl))
+        dsb.migrate();
+        val ds2 = dsb.getDataSource()
+        val repo:MedlemskapVurdertRepository = PostgressMedlemskapVurdertRepository(dsb.getDataSource())
         repo.lagreVurdering(UUID.randomUUID().toString(),Date(),fileContent)
         assertNotNull("complete")
 
