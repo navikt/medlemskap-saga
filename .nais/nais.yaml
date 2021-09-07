@@ -6,6 +6,11 @@ metadata:
   labels:
     team: medlemskap
 spec:
+  gcp:
+    sqlInstances:
+      - type: POSTGRES_12
+        databases:
+          - name: medlemskap
   azure:
     application:
       enabled: true
