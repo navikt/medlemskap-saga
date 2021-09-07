@@ -37,4 +37,16 @@ class RepositoryTests : AbstractContainerDatabaseTest() {
         assertNotNull("complete")
 
     }
+    @Test
+    fun `opprettDataSource fra enviroment`() {
+
+        postgresqlContainer.withUrlParam("user", postgresqlContainer.username)
+        postgresqlContainer.withUrlParam("password", postgresqlContainer.password)
+        val dsb = DataSourceBuilder(mapOf("DB_JDBC_URL" to postgresqlContainer.jdbcUrl))
+        dsb.migrate();
+        val repo:MedlemskapVurdertRepository = PostgressMedlemskapVurdertRepository(dsb.getDataSource())
+
+        assertNotNull("complete")
+
+    }
 }
