@@ -17,7 +17,7 @@ class SagaService(val medlemskapVurdertRepository: MedlemskapVurdertRepository) 
     fun handle(record: medlemskapVurdertRecord) {
         if (validateRecord(record)){
             try {
-                medlemskapVurdertRepository.lagreVurdering(record.json, Date(), record.json)
+                medlemskapVurdertRepository.lagreVurdering(record.key, Date(), record.json)
             }
             catch (e:Exception){
                 record.logLagringFeilet(e)
