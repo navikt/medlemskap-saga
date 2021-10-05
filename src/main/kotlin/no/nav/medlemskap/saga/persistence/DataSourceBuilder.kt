@@ -3,12 +3,11 @@ package no.nav.medlemskap.saga.persistence
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import org.flywaydb.core.Flyway
-import org.postgresql.Driver
 import javax.sql.DataSource
 
 class DataSourceBuilder(env: Map<String, String>) {
     private val hikariConfig = HikariConfig().apply {
-        jdbcUrl = env["DB_URL"] ?: String.format(
+        jdbcUrl = env["DB_JDBC_URL"] ?: String.format(
             "jdbc:postgresql://%s:%s/%s%s",
             requireNotNull(env["DB_HOST"]) { "database host must be set if jdbc url is not provided" },
             requireNotNull(env["DB_PORT"]) { "database port must be set if jdbc url is not provided" },
@@ -17,7 +16,8 @@ class DataSourceBuilder(env: Map<String, String>) {
 
         env["DB_USERNAME"]?.let { this.username = it }
         env["DB_PASSWORD"]?.let { this.password = it }
-        driverClassName= Driver::class.java.name
+        username=this.username
+        password=this.password
         maximumPoolSize = 3
         minimumIdle = 1
         idleTimeout = 10001
