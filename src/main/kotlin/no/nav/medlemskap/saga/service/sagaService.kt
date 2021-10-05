@@ -3,14 +3,10 @@ package no.nav.medlemskap.saga.service
 
 import mu.KotlinLogging
 import net.logstash.logback.argument.StructuredArguments.kv
-import no.nav.medlemskap.saga.config.Configuration
 import no.nav.medlemskap.saga.domain.medlemskapVurdertRecord
-import no.nav.medlemskap.saga.persistence.DataSourceBuilder
 import no.nav.medlemskap.saga.persistence.MedlemskapVurdertRepository
-import no.nav.medlemskap.saga.persistence.PostgressMedlemskapVurdertRepository
 import no.nav.medlemskap.sykepenger.lytter.jakson.JaksonParser
 import java.lang.Exception
-import java.time.LocalDate
 import java.util.*
 
 class SagaService(val medlemskapVurdertRepository: MedlemskapVurdertRepository) {
