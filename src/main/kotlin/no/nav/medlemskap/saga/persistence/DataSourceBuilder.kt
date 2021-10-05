@@ -3,6 +3,7 @@ package no.nav.medlemskap.saga.persistence
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import org.flywaydb.core.Flyway
+import org.postgresql.Driver
 import javax.sql.DataSource
 
 class DataSourceBuilder(env: Map<String, String>) {
@@ -16,7 +17,7 @@ class DataSourceBuilder(env: Map<String, String>) {
 
         env["DB_USERNAME"]?.let { this.username = it }
         env["DB_PASSWORD"]?.let { this.password = it }
-
+        driverClassName= Driver::class.java.name
         maximumPoolSize = 3
         minimumIdle = 1
         idleTimeout = 10001
