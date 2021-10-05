@@ -7,7 +7,7 @@ import javax.sql.DataSource
 
 class DataSourceBuilder(env: Map<String, String>) {
     private val hikariConfig = HikariConfig().apply {
-        jdbcUrl = env["DB_JDBC_URL"] ?: String.format(
+        jdbcUrl = env["DB_URL"] ?: String.format(
             "jdbc:postgresql://%s:%s/%s%s",
             requireNotNull(env["DB_HOST"]) { "database host must be set if jdbc url is not provided" },
             requireNotNull(env["DB_PORT"]) { "database port must be set if jdbc url is not provided" },
@@ -27,7 +27,7 @@ class DataSourceBuilder(env: Map<String, String>) {
     }
 
     init {
-        if (!env.containsKey("DB_JDBC_URL")) {
+        if (!env.containsKey("DB_URL")) {
             checkNotNull(env["DB_USERNAME"]) { "username must be set when vault is disabled" }
             checkNotNull(env["DB_PASSWORD"]) { "password must be set when vault is disabled" }
         }
