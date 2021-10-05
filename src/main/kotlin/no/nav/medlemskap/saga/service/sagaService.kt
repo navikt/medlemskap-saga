@@ -48,7 +48,7 @@ class SagaService(val medlemskapVurdertRepository: MedlemskapVurdertRepository) 
         )
     private fun medlemskapVurdertRecord.logLagringFeilet(cause:Throwable) =
         SagaService.log.error(
-            "Lagring av medlemskapsvurdering feilet : ${cause.message}",
+            "Lagring av medlemskapsvurdering feilet pga teknisk feil. Årsak  : ${cause.message}",
             kv("callId", key),
         )
 
