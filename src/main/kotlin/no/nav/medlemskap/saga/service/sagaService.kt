@@ -1,23 +1,32 @@
 package no.nav.medlemskap.saga.service
 
 
-import com.fasterxml.jackson.databind.JsonNode
 import mu.KotlinLogging
 import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.medlemskap.saga.config.Configuration
 import no.nav.medlemskap.saga.domain.medlemskapVurdertRecord
+import no.nav.medlemskap.saga.persistence.DataSourceBuilder
+import no.nav.medlemskap.saga.persistence.MedlemskapVurdertRepository
+import no.nav.medlemskap.saga.persistence.PostgressMedlemskapVurdertRepository
 import no.nav.medlemskap.sykepenger.lytter.jakson.JaksonParser
 import java.lang.Exception
+import java.time.LocalDate
+import java.util.*
 
-class SagaService(configuration: Configuration) {
+class SagaService(val medlemskapVurdertRepository: MedlemskapVurdertRepository) {
 
     companion object {
         private val log = KotlinLogging.logger { }
-
     }
     fun handle(record: medlemskapVurdertRecord) {
         if (validateRecord(record)){
-            //TODO: lagre til database
+            try {
+                medlemskapVurdertRepository.lagreVurdering(record.json, Date(), record.json)
+            }
+            catch (e:Exception){
+                record.logLagringFeilet(e)
+
+            }
             record.logSLagret()
         }
         else{
@@ -37,8 +46,13 @@ class SagaService(configuration: Configuration) {
     }
 
     private fun medlemskapVurdertRecord.logIkkeLagret() =
-        SagaService.log.info(
+        SagaService.log.warn(
             "Søknad ikke  lagret til lovme basert på validering ${key}, offsett: $offset, partiotion: $partition, topic: $topic",
+            kv("callId", key),
+        )
+    private fun medlemskapVurdertRecord.logLagringFeilet(cause:Throwable) =
+        SagaService.log.error(
+            "Lagring av medlemskapsvurdering feilet : ${cause.message}",
             kv("callId", key),
         )
 
