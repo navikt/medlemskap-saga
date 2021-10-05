@@ -30,7 +30,7 @@ class RepositoryTests : AbstractContainerDatabaseTest() {
         val fileContent = this::class.java.classLoader.getResource("sampleVurdering.json").readText(Charsets.UTF_8)
         postgresqlContainer.withUrlParam("user", postgresqlContainer.username)
         postgresqlContainer.withUrlParam("password", postgresqlContainer.password)
-        val dsb = DataSourceBuilder(mapOf("DB_URL" to postgresqlContainer.jdbcUrl))
+        val dsb = DataSourceBuilder(mapOf("DB_JDBC_URL" to postgresqlContainer.jdbcUrl))
         dsb.migrate();
         val repo:MedlemskapVurdertRepository = PostgressMedlemskapVurdertRepository(dsb.getDataSource())
         repo.lagreVurdering(UUID.randomUUID().toString(),Date(),fileContent)
@@ -42,7 +42,7 @@ class RepositoryTests : AbstractContainerDatabaseTest() {
 
         postgresqlContainer.withUrlParam("user", postgresqlContainer.username)
         postgresqlContainer.withUrlParam("password", postgresqlContainer.password)
-        val dsb = DataSourceBuilder(mapOf("DB_URL" to postgresqlContainer.jdbcUrl))
+        val dsb = DataSourceBuilder(mapOf("DB_JDBC_URL" to postgresqlContainer.jdbcUrl))
         dsb.migrate();
         val repo:MedlemskapVurdertRepository = PostgressMedlemskapVurdertRepository(dsb.getDataSource())
 

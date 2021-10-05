@@ -23,12 +23,10 @@ class DataSourceBuilder(env: Map<String, String>) {
         idleTimeout = 10001
         connectionTimeout = 1000
         maxLifetime = 30001
-        println("username: "+this.username)
-        println("password: "+this.password)
     }
 
     init {
-        if (!env.containsKey("DB_URL")) {
+        if (!env.containsKey("DB_JDBC_URL")) {
             checkNotNull(env["DB_USERNAME"]) { "username must be set when vault is disabled" }
             checkNotNull(env["DB_PASSWORD"]) { "password must be set when vault is disabled" }
         }
