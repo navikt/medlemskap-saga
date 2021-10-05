@@ -7,7 +7,7 @@ import javax.sql.DataSource
 
 class DataSourceBuilder(env: Map<String, String>) {
     private val hikariConfig = HikariConfig().apply {
-        jdbcUrl = env["DB_URL"] ?: String.format(
+        jdbcUrl = env["DB_JDBC_URL"] ?: String.format(
             "jdbc:postgresql://%s:%s/%s%s",
             requireNotNull(env["DB_HOST"]) { "database host must be set if jdbc url is not provided" },
             requireNotNull(env["DB_PORT"]) { "database port must be set if jdbc url is not provided" },
@@ -22,6 +22,8 @@ class DataSourceBuilder(env: Map<String, String>) {
         idleTimeout = 10001
         connectionTimeout = 1000
         maxLifetime = 30001
+        println("username: "+this.username)
+        println("password: "+this.password)
     }
 
     init {
