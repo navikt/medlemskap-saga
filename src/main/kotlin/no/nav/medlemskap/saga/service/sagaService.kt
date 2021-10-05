@@ -21,6 +21,9 @@ class SagaService(val medlemskapVurdertRepository: MedlemskapVurdertRepository) 
             }
             catch (e:Exception){
                 record.logLagringFeilet(e)
+                println("key : ${record.key}")
+                println("date : ${Date()}")
+                println("Json : ${record.json}")
 
             }
             record.logSLagret()
