@@ -71,15 +71,15 @@ class SimpleProducer(brokers: KafkaConfig) {
             logger.info("Producing $ratePerSecond records per second (1 every ${waitTimeBetweenIterationsMs}ms)")
             val fakeSoknadJson = fileContent
             //logger.log(Level.INFO, "JSON data: $fakeSoknadJson")
-
+            val id = UUID.randomUUID().toString()
             val futureResult = producer.send(
                 ProducerRecord(
                     Configuration.KafkaConfig().topic,
-                    UUID.randomUUID().toString(), fakeSoknadJson
+                    id, fakeSoknadJson
                 )
             )
 
-            logger.log(Level.INFO, "Sent a record")
+            logger.log(Level.INFO, "Sent a record with key $id ")
 
             Thread.sleep(waitTimeBetweenIterationsMs)
 

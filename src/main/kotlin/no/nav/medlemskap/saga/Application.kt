@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.launchIn
 import no.nav.medlemskap.saga.config.Environment
 import no.nav.medlemskap.saga.kafka.Consumer
 import no.nav.medlemskap.saga.nais.naisLiveness
+import no.nav.medlemskap.saga.persistence.DataSourceBuilder
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -22,7 +23,8 @@ class Application(private val env: Environment = System.getenv(), private val co
 
     fun start() {
         log.info("Start application")
-
+        val dataSourceBuilder = DataSourceBuilder(env)
+        dataSourceBuilder.migrate()
         @OptIn(DelicateCoroutinesApi::class)
         val consumeJob = consumer.flow().launchIn(GlobalScope)
 

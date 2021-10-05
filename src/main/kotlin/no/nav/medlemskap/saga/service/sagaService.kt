@@ -3,6 +3,7 @@ package no.nav.medlemskap.saga.service
 
 import com.fasterxml.jackson.databind.JsonNode
 import mu.KotlinLogging
+import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.medlemskap.saga.config.Configuration
 import no.nav.medlemskap.saga.domain.medlemskapVurdertRecord
 import no.nav.medlemskap.sykepenger.lytter.jakson.JaksonParser
@@ -38,13 +39,13 @@ class SagaService(configuration: Configuration) {
     private fun medlemskapVurdertRecord.logIkkeLagret() =
         SagaService.log.info(
             "Søknad ikke  lagret til lovme basert på validering ${key}, offsett: $offset, partiotion: $partition, topic: $topic",
-            //kv("callId", key),
+            kv("callId", key),
         )
 
     private fun medlemskapVurdertRecord.logSLagret() =
         SagaService.log.info(
-            "Søknad lagret til Lovme - sykmeldingId: ${key}, offsett: $offset, partiotion: $partition, topic: $topic",
-           //kv("callId", sykepengeSoknad.sykmeldingId),
+            "Søknad lagret til Lovme - sykmeldingId:Søknad lagret til Lovme - sykmeldingId: ${key}, offsett: $offset, partiotion: $partition, topic: $topic",
+           kv("callId", key),
         )
 
 
