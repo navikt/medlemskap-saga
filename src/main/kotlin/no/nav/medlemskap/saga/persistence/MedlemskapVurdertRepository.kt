@@ -19,10 +19,8 @@ class PostgresMedlemskapVurdertRepository(val dataSource: DataSource) : Medlemsk
 
     override fun finnVurdering(soknadId: String): List<VurderingDao> {
 
-        return using(sessionOf(dataSource)) { session ->
-            session.transaction {
+        return using(sessionOf(dataSource)) {
                 it.run(queryOf(FIND_BY_SOKNAD_ID, soknadId).map(toVurderingDao).asList)
-            }
         }
     }
 
