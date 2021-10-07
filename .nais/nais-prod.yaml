@@ -43,7 +43,7 @@ spec:
   secureLogs:
     enabled: true
   kafka:
-    pool: nav-dev
+    pool: nav-prod
   accessPolicy:
     outbound:
       external:
