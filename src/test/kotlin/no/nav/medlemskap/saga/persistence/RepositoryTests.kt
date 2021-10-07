@@ -1,6 +1,7 @@
 package no.nav.medlemskap.saga.persistence
 
 import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
@@ -32,9 +33,14 @@ class RepositoryTests : AbstractContainerDatabaseTest() {
         postgresqlContainer.withUrlParam("password", postgresqlContainer.password)
         val dsb = DataSourceBuilder(mapOf("DB_JDBC_URL" to postgresqlContainer.jdbcUrl))
         dsb.migrate();
-        val repo:MedlemskapVurdertRepository = PostgressMedlemskapVurdertRepository(dsb.getDataSource())
+        val repo = PostgresMedlemskapVurdertRepository(dsb.getDataSource())
+        repo.lagreVurdering(UUID.randomUUID().toString(),Date(),fileContent)
+        repo.lagreVurdering(UUID.randomUUID().toString(),Date(),fileContent)
+        repo.lagreVurdering(UUID.randomUUID().toString(),Date(),fileContent)
         repo.lagreVurdering(UUID.randomUUID().toString(),Date(),fileContent)
         assertNotNull("complete")
+        val result = repo.hentVurderinger()
+        assertTrue(result.size==4,"result set should contain 4 elements")
 
     }
     @Test
@@ -44,7 +50,7 @@ class RepositoryTests : AbstractContainerDatabaseTest() {
         postgresqlContainer.withUrlParam("password", postgresqlContainer.password)
         val dsb = DataSourceBuilder(mapOf("DB_JDBC_URL" to postgresqlContainer.jdbcUrl))
         dsb.migrate();
-        val repo:MedlemskapVurdertRepository = PostgressMedlemskapVurdertRepository(dsb.getDataSource())
+        val repo:MedlemskapVurdertRepository = PostgresMedlemskapVurdertRepository(dsb.getDataSource())
 
         assertNotNull("complete")
 

@@ -5,13 +5,12 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.time.delay
 import mu.KotlinLogging
-import no.nav.medlemskap.saga.config.Configuration
 import no.nav.medlemskap.saga.config.Environment
 import no.nav.medlemskap.saga.domain.medlemskapVurdertRecord
 import no.nav.medlemskap.saga.kafka.config.KafkaConfig
 import no.nav.medlemskap.saga.lytter.Metrics
 import no.nav.medlemskap.saga.persistence.DataSourceBuilder
-import no.nav.medlemskap.saga.persistence.PostgressMedlemskapVurdertRepository
+import no.nav.medlemskap.saga.persistence.PostgresMedlemskapVurdertRepository
 import no.nav.medlemskap.saga.service.SagaService
 import org.apache.kafka.clients.consumer.KafkaConsumer
 import java.time.Duration
@@ -19,7 +18,7 @@ import java.time.Duration
 class Consumer(
     environment: Environment,
     private val config: KafkaConfig = KafkaConfig(environment),
-    private val service: SagaService = SagaService(PostgressMedlemskapVurdertRepository(DataSourceBuilder(environment).getDataSource())),
+    private val service: SagaService = SagaService(PostgresMedlemskapVurdertRepository(DataSourceBuilder(environment).getDataSource())),
     private val consumer: KafkaConsumer<String, String> = config.createConsumer(),
 ) {
 
@@ -53,7 +52,7 @@ class Consumer(
                 delay(Duration.ofSeconds(5))
             }
         }.onEach {
-            logger.debug { "receiced :"+ it.size + "on topic "+config.topic }
+            logger.debug { "received  :"+ it.size + "on topic "+config.topic }
             it.forEach { record -> service.handle(record) }
         }.onEach {
             consumer.commitAsync()
