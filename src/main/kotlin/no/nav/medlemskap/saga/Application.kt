@@ -24,7 +24,12 @@ class Application(private val env: Environment = System.getenv(), private val co
     fun start() {
         log.info("Start application")
         val dataSourceBuilder = DataSourceBuilder(env)
-        dataSourceBuilder.migrate()
+        try {
+            dataSourceBuilder.migrate()
+        }
+        catch (t:Throwable){
+            log.warn("klarte ikke å kjøre migrerings skript. årsak : ${t.message}")
+        }
         @OptIn(DelicateCoroutinesApi::class)
         val consumeJob = consumer.flow().launchIn(GlobalScope)
 
