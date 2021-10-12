@@ -1,6 +1,7 @@
 CREATE TABLE vurdering
 (
-    id VARCHAR(255) PRIMARY KEY,
+    id serial PRIMARY KEY,
+    soknadId VARCHAR(255),
     date date,
     json jsonb
 );
