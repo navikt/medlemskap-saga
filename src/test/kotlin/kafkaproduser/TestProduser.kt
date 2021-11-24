@@ -4,6 +4,7 @@ package no.nav.kafkaproduser
 
 import no.nav.medlemskap.saga.config.Configuration
 import no.nav.medlemskap.saga.config.Environment
+import no.nav.medlemskap.saga.config.EnvironmentKey
 import no.nav.medlemskap.saga.kafka.config.KafkaConfig
 import org.apache.kafka.clients.CommonClientConfigs
 
@@ -45,6 +46,7 @@ class SimpleProducer(brokers: KafkaConfig) {
         ProducerConfig.CLIENT_ID_CONFIG to Configuration.KafkaConfig().groupID,
         //ConsumerConfig.GROUP_ID_CONFIG to Configuration.KafkaConfig().groupID,
         //ConsumerConfig.AUTO_OFFSET_RESET_CONFIG to "latest",
+
         CommonClientConfigs.SECURITY_PROTOCOL_CONFIG to SecurityProtocol.SASL_SSL.name,
         SaslConfigs.SASL_MECHANISM to "PLAIN",
         SslConfigs.SSL_KEYSTORE_LOCATION_CONFIG to Configuration.KafkaConfig().keystoreLocation,
@@ -56,10 +58,26 @@ class SimpleProducer(brokers: KafkaConfig) {
         SslConfigs.SSL_KEYSTORE_TYPE_CONFIG to Configuration.KafkaConfig().keystoreType
 
     )
+    fun inst2ConfigLocal() = mapOf(
+        CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG to "localhost:29092",
+        ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG to StringSerializer::class.java,
+        CommonClientConfigs.CLIENT_ID_CONFIG to "Produser",//Configuration.KafkaConfig().clientId,
+        ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG to StringSerializer::class.java,
+        ProducerConfig.CLIENT_ID_CONFIG to Configuration.KafkaConfig().groupID,
+
+
+    )
     private val producer = createProducer()
     private fun createProducer(): Producer<String, String> {
 
-        return KafkaProducer<String, String>(inst2Config())
+        if(EnvironmentKey.IS_LOCAL.equals("true")){
+            return KafkaProducer<String, String>(inst2ConfigLocal())
+        }
+        else{
+            return KafkaProducer<String, String>(inst2Config())
+        }
+
+
     }
 
     fun produce(ratePerSecond: Int) {
