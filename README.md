@@ -82,3 +82,5 @@ Filen kan ligge hvor som helst
 merk! kommandor sletter alt ! : docker system prune -a --volumes
 
 
+powered by
+[@github pages](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
