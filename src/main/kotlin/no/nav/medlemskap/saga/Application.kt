@@ -5,7 +5,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.launchIn
 import no.nav.medlemskap.saga.config.Environment
 import no.nav.medlemskap.saga.kafka.Consumer
-import no.nav.medlemskap.saga.nais.naisLiveness
+import no.nav.medlemskap.saga.nais.createHttpServer
 import no.nav.medlemskap.saga.persistence.DataSourceBuilder
 
 import org.slf4j.Logger
@@ -33,6 +33,6 @@ class Application(private val env: Environment = System.getenv(), private val co
         @OptIn(DelicateCoroutinesApi::class)
         val consumeJob = consumer.flow().launchIn(GlobalScope)
 
-        naisLiveness(consumeJob).start(wait = true)
+        createHttpServer(consumeJob).start(wait = true)
     }
 }
