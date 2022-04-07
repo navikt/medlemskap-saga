@@ -24,10 +24,18 @@ fun Routing.sagaRoutes() {
                 val azp = callerPrincipal.payload.getClaim("azp").asString()
                 secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
                 val callId = call.callId ?: UUID.randomUUID().toString()
-                val udiRequest = call.receive<Void>()
+                try{
+                    val udiRequest = call.receive<Void>()
+                    call.respond("soon to contain vurdering")
+                }
+                catch (t:Throwable){
+                    call.respond(t.stackTrace)
+
+                }
+
                 call.respond("soon to contain vurdering")
                 //om bruker ikke har korrekt rolle:
-                call.respond(HttpStatusCode.Forbidden,"soon to contain vurdering")
+                //call.respond(HttpStatusCode.Forbidden,"soon to contain vurdering")
             }
             get() {
                 logger.info("kall autentisert")
