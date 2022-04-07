@@ -17,7 +17,7 @@ private val logger = KotlinLogging.logger { }
 fun Routing.sagaRoutes() {
     route("/vurdering") {
         authenticate("azureAuth") {
-            post (""){
+            post (){
                 logger.info("kall autentisert")
 
                 val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
