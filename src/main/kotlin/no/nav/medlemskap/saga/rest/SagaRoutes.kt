@@ -37,7 +37,7 @@ fun Routing.sagaRoutes() {
                 //om bruker ikke har korrekt rolle:
                 //call.respond(HttpStatusCode.Forbidden,"soon to contain vurdering")
             }
-            get("{fnr}") {
+            get() {
                 logger.info("kall autentisert")
                 val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
                 val azp = callerPrincipal.payload.getClaim("azp").asString()
