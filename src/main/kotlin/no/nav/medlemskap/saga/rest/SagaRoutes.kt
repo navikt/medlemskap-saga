@@ -35,6 +35,9 @@ fun Routing.sagaRoutes() {
                 call.respond("soon to contain vurdering")
 
             }
+            get("{fnr}"){
+                call.respond("soon to contain vurdering by fnr")
+            }
         }
     }
 
