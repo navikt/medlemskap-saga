@@ -25,7 +25,7 @@ fun Routing.sagaRoutes() {
                 secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
                 val callId = call.callId ?: UUID.randomUUID().toString()
                 try{
-                    val udiRequest = call.receive<Void>()
+                    val request = call.receive<Request>()
                     call.respond("soon to contain vurdering")
                 }
                 catch (t:Throwable){
@@ -43,7 +43,7 @@ fun Routing.sagaRoutes() {
                 val azp = callerPrincipal.payload.getClaim("azp").asString()
                 secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
                 val callId = call.callId ?: UUID.randomUUID().toString()
-                val vurderingRequest = call.receive<Void>()
+                val vurderingRequest = call.receive<Request>()
                 val vurdering = null;
 
                 if(vurdering!=null){
