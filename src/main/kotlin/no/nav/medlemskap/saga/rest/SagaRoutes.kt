@@ -17,7 +17,7 @@ private val logger = KotlinLogging.logger { }
 fun Routing.sagaRoutes() {
     route("/vurdering") {
         authenticate("azureAuth") {
-            post {
+            post (){
                 logger.info("kall autentisert")
 
                 val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
@@ -27,6 +27,26 @@ fun Routing.sagaRoutes() {
                 try{
                     val request = call.receive<Request>()
                     call.respond("soon to contain vurdering")
+                }
+                catch (t:Throwable){
+                    call.respond(t.stackTrace)
+
+                }
+
+                call.respond("soon to contain vurdering")
+                //om bruker ikke har korrekt rolle:
+                //call.respond(HttpStatusCode.Forbidden,"soon to contain vurdering")
+            }
+            get ("{fnr}"){
+                logger.info("kall autentisert")
+
+                val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
+                val azp = callerPrincipal.payload.getClaim("azp").asString()
+                secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
+                val callId = call.callId ?: UUID.randomUUID().toString()
+                try{
+                    val fnr = call.parameters.get("fnr")
+                    call.respond("soon to contain vurdering for $fnr")
                 }
                 catch (t:Throwable){
                     call.respond(t.stackTrace)
