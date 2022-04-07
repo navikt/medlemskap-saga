@@ -17,7 +17,7 @@ private val logger = KotlinLogging.logger { }
 fun Routing.sagaRoutes() {
     route("/vurdering") {
         authenticate("azureAuth") {
-            post (){
+            post (""){
                 logger.info("kall autentisert")
 
                 val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
@@ -45,7 +45,7 @@ fun Routing.sagaRoutes() {
                 secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
                 val callId = call.callId ?: UUID.randomUUID().toString()
                 try{
-                    val fnr = call.parameters.get("fnr")
+                    val fnr = call.parameters["fnr"]
                     call.respond("soon to contain vurdering for $fnr")
                 }
                 catch (t:Throwable){
