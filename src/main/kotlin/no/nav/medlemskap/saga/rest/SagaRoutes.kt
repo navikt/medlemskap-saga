@@ -37,7 +37,7 @@ fun Routing.sagaRoutes() {
                 //om bruker ikke har korrekt rolle:
                 //call.respond(HttpStatusCode.Forbidden,"soon to contain vurdering")
             }
-            get ("{fnr}"){
+            get (){
                 logger.info("kall autentisert")
 
                 val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
@@ -45,7 +45,7 @@ fun Routing.sagaRoutes() {
                 secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
                 val callId = call.callId ?: UUID.randomUUID().toString()
                 try{
-                    val fnr = call.parameters["fnr"]
+                    val fnr = call.request.queryParameters["fnr"]
                     call.respond("soon to contain vurdering for $fnr")
                 }
                 catch (t:Throwable){
