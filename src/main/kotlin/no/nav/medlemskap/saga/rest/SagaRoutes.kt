@@ -17,7 +17,7 @@ private val logger = KotlinLogging.logger { }
 fun Routing.sagaRoutes() {
     route("/vurdering") {
         authenticate("azureAuth") {
-            post (){
+            post{
                 logger.info("kall autentisert")
 
                 val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
@@ -32,10 +32,8 @@ fun Routing.sagaRoutes() {
                     call.respond(t.stackTrace)
 
                 }
-
                 call.respond("soon to contain vurdering")
-                //om bruker ikke har korrekt rolle:
-                //call.respond(HttpStatusCode.Forbidden,"soon to contain vurdering")
+
             }
         }
     }
