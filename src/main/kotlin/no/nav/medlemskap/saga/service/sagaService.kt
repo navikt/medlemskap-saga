@@ -5,6 +5,7 @@ import mu.KotlinLogging
 import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.medlemskap.saga.domain.medlemskapVurdertRecord
 import no.nav.medlemskap.saga.persistence.MedlemskapVurdertRepository
+import no.nav.medlemskap.saga.persistence.VurderingDao
 import no.nav.medlemskap.sykepenger.lytter.jakson.JaksonParser
 import java.lang.Exception
 import java.util.*
@@ -31,6 +32,10 @@ class SagaService(val medlemskapVurdertRepository: MedlemskapVurdertRepository) 
         }
 
     }
+    fun finnAlleVurderingerForFnr(fnr:String) :List<VurderingDao>{
+        val vurderinger = medlemskapVurdertRepository.finnVurderingMedFnr(fnr)
+        return vurderinger
+    }
 
     private fun validateRecord(record: medlemskapVurdertRecord) :Boolean{
         try{
@@ -41,6 +46,7 @@ class SagaService(val medlemskapVurdertRepository: MedlemskapVurdertRepository) 
         }
         return true
     }
+
 
     private fun medlemskapVurdertRecord.logIkkeLagret() =
         SagaService.log.warn(

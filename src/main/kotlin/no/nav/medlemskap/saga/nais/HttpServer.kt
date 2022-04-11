@@ -22,14 +22,14 @@ import io.prometheus.client.exporter.common.TextFormat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.withContext
-import no.nav.medlemskap.saga.config.AzureAdOpenIdConfiguration
-import no.nav.medlemskap.saga.config.Configuration
-import no.nav.medlemskap.saga.config.JwtConfig
+import no.nav.medlemskap.saga.config.*
 import no.nav.medlemskap.saga.config.JwtConfig.Companion.REALM
-import no.nav.medlemskap.saga.config.getAadConfig
 import no.nav.medlemskap.saga.lytter.Metrics
+import no.nav.medlemskap.saga.persistence.DataSourceBuilder
+import no.nav.medlemskap.saga.persistence.PostgresMedlemskapVurdertRepository
 import no.nav.medlemskap.saga.rest.objectMapper
 import no.nav.medlemskap.saga.rest.sagaRoutes
+import no.nav.medlemskap.saga.service.SagaService
 import org.apache.http.impl.conn.SystemDefaultRoutePlanner
 import java.io.Writer
 import java.net.ProxySelector
@@ -38,6 +38,8 @@ fun createHttpServer(consumeJob: Job) = embeddedServer(Netty, applicationEngineE
     val useAuthentication: Boolean = true
     val configuration: Configuration = Configuration()
     val azureAdOpenIdConfiguration: AzureAdOpenIdConfiguration = getAadConfig(configuration.azureAd)
+    val service: SagaService = SagaService(PostgresMedlemskapVurdertRepository(DataSourceBuilder(System.getenv()).getDataSource()))
+
     connector { port = 8080 }
     module {
 
@@ -66,7 +68,7 @@ fun createHttpServer(consumeJob: Job) = embeddedServer(Netty, applicationEngineE
 
         routing {
             naisRoutes(consumeJob)
-            sagaRoutes()
+            sagaRoutes(service)
         }
     }
 })
