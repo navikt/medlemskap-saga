@@ -13,7 +13,6 @@ import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.medlemskap.saga.persistence.Periode
 import no.nav.medlemskap.saga.service.SagaService
 import java.util.*
-import kotlin.text.get
 
 private val secureLogger = KotlinLogging.logger("tjenestekall")
 private val logger = KotlinLogging.logger { }
@@ -27,8 +26,6 @@ fun Routing.sagaRoutes(service: SagaService) {
                 val azp = callerPrincipal.payload.getClaim("azp").asString()
                 secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
                 val callId = call.callId ?: UUID.randomUUID().toString()
-
-                /*
                 try {
                     val request = call.receive<Request>()
                     val vurderinger = service.finnAlleVurderingerForFnr(request.fnr)
@@ -62,37 +59,7 @@ fun Routing.sagaRoutes(service: SagaService) {
                 } catch (t: Throwable) {
                     call.respond(t.stackTrace)
                 }
-                */
-                 call.respond(HttpStatusCode.OK,"test test test ")
             }
         }
     }
-    /*
-    route("/findVureringerByFnr") {
-        authenticate("azureAuth") {
-            post{
-                logger.info("kall autentisert")
-
-                val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
-                val azp = callerPrincipal.payload.getClaim("azp").asString()
-                secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
-                val callId = call.callId ?: UUID.randomUUID().toString()
-                try{
-                    val request = call.receive<FnrRequest>()
-                    val vurderinger = service.finnAlleVurderingerForFnr(request.fnr)
-
-
-                    call.respond("soon to contain vurdering for ${request.fnr}")
-
-                }
-                catch (t:Throwable){
-                    call.respond(t.stackTrace)
-
-                }
-            }
-        }
-    }
-    */
-
-
 }

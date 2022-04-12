@@ -3,7 +3,7 @@ name: build
 on: [ pull_request ]
 
 env:
-  IMAGE: ghcr.io/${{ github.repository }}
+  IMAGE: ghcr.io/navikt/medlemskap-saga:${{ github.sha }}
 jobs:
   build:
     runs-on: ubuntu-latest
