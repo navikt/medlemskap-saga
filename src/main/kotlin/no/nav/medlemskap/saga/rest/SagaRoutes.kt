@@ -17,7 +17,7 @@ import java.util.*
 private val secureLogger = KotlinLogging.logger("tjenestekall")
 private val logger = KotlinLogging.logger { }
 fun Routing.sagaRoutes(service: SagaService) {
-    get("demo"){
+    get("/demo"){
         call.respond("dette er en test")
     }
     route("/") {
