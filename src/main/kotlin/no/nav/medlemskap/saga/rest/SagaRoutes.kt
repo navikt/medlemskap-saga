@@ -17,8 +17,10 @@ import java.util.*
 private val secureLogger = KotlinLogging.logger("tjenestekall")
 private val logger = KotlinLogging.logger { }
 fun Routing.sagaRoutes(service: SagaService) {
-    get("/demo"){
-        call.respondText("dette er en test",ContentType.Text.Plain, HttpStatusCode.OK)
+    authenticate("azureAuth") {
+        get("/demo") {
+            call.respondText("dette er en test på get", ContentType.Text.Plain, HttpStatusCode.OK)
+        }
     }
     /*
     route("/") {
