@@ -64,9 +64,7 @@ fun Routing.sagaRoutes(service: SagaService) {
                 }
 
             }
-            get("{id}"){
-                call.respond("soon to contain vurdering by dbId")
-            }
+
         }
     }
     route("/findVureringerByFnr") {
