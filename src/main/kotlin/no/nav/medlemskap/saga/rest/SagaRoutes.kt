@@ -27,6 +27,8 @@ fun Routing.sagaRoutes(service: SagaService) {
                 val azp = callerPrincipal.payload.getClaim("azp").asString()
                 secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
                 val callId = call.callId ?: UUID.randomUUID().toString()
+
+                /*
                 try {
                     val request = call.receive<Request>()
                     val vurderinger = service.finnAlleVurderingerForFnr(request.fnr)
@@ -60,6 +62,8 @@ fun Routing.sagaRoutes(service: SagaService) {
                 } catch (t: Throwable) {
                     call.respond(t.stackTrace)
                 }
+                */
+                 call.respond("test test test ")
             }
             get("{id}"){
                 call.respond("soon to contain vurdering by dbId")
