@@ -66,6 +66,7 @@ fun Routing.sagaRoutes(service: SagaService) {
             }
         }
     }
+    /*
     route("/findVureringerByFnr") {
         authenticate("azureAuth") {
             post{
@@ -90,5 +91,7 @@ fun Routing.sagaRoutes(service: SagaService) {
             }
         }
     }
+    */
+
 
 }
