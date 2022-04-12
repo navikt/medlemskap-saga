@@ -27,7 +27,6 @@ import no.nav.medlemskap.saga.config.JwtConfig.Companion.REALM
 import no.nav.medlemskap.saga.lytter.Metrics
 import no.nav.medlemskap.saga.persistence.DataSourceBuilder
 import no.nav.medlemskap.saga.persistence.PostgresMedlemskapVurdertRepository
-import no.nav.medlemskap.saga.rest.UdiProxyRoute
 import no.nav.medlemskap.saga.rest.objectMapper
 import no.nav.medlemskap.saga.rest.sagaRoutes
 import no.nav.medlemskap.saga.service.SagaService
