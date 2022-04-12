@@ -63,10 +63,7 @@ fun Routing.sagaRoutes(service: SagaService) {
                     call.respond(t.stackTrace)
                 }
                 */
-                 call.respond("test test test ")
-            }
-            get("{id}"){
-                call.respond("soon to contain vurdering by dbId")
+                 call.respond(HttpStatusCode.OK,"test test test ")
             }
         }
     }
