@@ -70,7 +70,6 @@ fun createHttpServer(consumeJob: Job) = embeddedServer(Netty, applicationEngineE
         routing {
             naisRoutes(consumeJob)
             sagaRoutes(service)
-            UdiProxyRoute()
         }
     }
 })
