@@ -20,6 +20,7 @@ fun Routing.sagaRoutes(service: SagaService) {
     get("/demo"){
         call.respondText("dette er en test",ContentType.Text.Plain, HttpStatusCode.OK)
     }
+    /*
     route("/") {
         authenticate("azureAuth") {
             post("vurdering") {
@@ -81,4 +82,6 @@ fun Routing.sagaRoutes(service: SagaService) {
             }
         }
     }
+
+     */
 }
