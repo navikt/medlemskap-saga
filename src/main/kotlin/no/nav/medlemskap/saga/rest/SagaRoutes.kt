@@ -18,7 +18,7 @@ private val secureLogger = KotlinLogging.logger("tjenestekall")
 private val logger = KotlinLogging.logger { }
 fun Routing.sagaRoutes(service: SagaService) {
     get("/demo"){
-        call.respond("dette er en test")
+        call.respondText("dette er en test",ContentType.Text.Plain, HttpStatusCode.OK)
     }
     route("/") {
         authenticate("azureAuth") {
