@@ -52,6 +52,7 @@ fun Routing.sagaRoutes(service: SagaService) {
 
                 try {
                     val request = call.receive<Request>()
+                    secureLogger.info("finding data for ${request.fnr}")
                     val vurderinger = service.finnAlleVurderingerForFnr(request.fnr)
                     secureLogger.info {
                         "Antall vurderinger found in db for ${request.fnr} is : ${vurderinger.size}"
