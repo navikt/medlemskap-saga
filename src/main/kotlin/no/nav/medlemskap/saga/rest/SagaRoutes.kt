@@ -14,8 +14,8 @@ import no.nav.medlemskap.saga.persistence.Periode
 import no.nav.medlemskap.saga.service.SagaService
 import java.util.*
 
-private val secureLogger = KotlinLogging.logger("tjenestekall")
 private val logger = KotlinLogging.logger { }
+private val secureLogger = KotlinLogging.logger("tjenestekall")
 fun Routing.sagaRoutes(service: SagaService) {
     route("/findVureringerByFnr") {
         authenticate("azureAuth") {
@@ -41,12 +41,15 @@ fun Routing.sagaRoutes(service: SagaService) {
     route("/vurdering") {
         authenticate("azureAuth") {
             post{
-                logger.info("kall autentisert, url : /vurdering")
+
 
                 val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
                 val azp = callerPrincipal.payload.getClaim("azp").asString()
                 secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
                 val callId = call.callId ?: UUID.randomUUID().toString()
+                logger.info{"kall autentisert, url : /vurdering"
+                    kv("callId", callId)}
+
                 try {
                     val request = call.receive<Request>()
                     val vurderinger = service.finnAlleVurderingerForFnr(request.fnr)

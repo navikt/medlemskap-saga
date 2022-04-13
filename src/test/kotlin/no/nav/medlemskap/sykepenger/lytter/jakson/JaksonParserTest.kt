@@ -1,6 +1,7 @@
 package no.nav.medlemskap.sykepenger.lytter.jakson
 
 
+import no.nav.medlemskap.saga.persistence.Periode
 import no.nav.medlemskap.saga.rest.*
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
@@ -21,9 +22,12 @@ class JaksonParserTest {
     }
     @Test
     fun printRequest(){
+        val request = Request("1234", LocalDate.now(), InputPeriode(LocalDate.now(),LocalDate.now()),Ytelse.SYKEPENGER);
         println(objectMapper.writeValueAsString(
-            Request("1234", LocalDate.now(), InputPeriode(LocalDate.now(),LocalDate.now()),Ytelse.SYKEPENGER)
+            request
         ))
+        println(Periode(LocalDate.now(),LocalDate.now()))
+
     }
 
 }
