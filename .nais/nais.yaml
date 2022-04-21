@@ -17,6 +17,10 @@ spec:
   azure:
     application:
       enabled: true
+      claims:
+        extra:
+          - "NAVident"
+          - "azp_name"
   image: {{image}}
   liveness:
     path: "/isAlive"
@@ -28,6 +32,8 @@ spec:
     port: 8080
     initialDelay: 20
     timeout: 60
+  ingresses:
+    - https://medlemskap-vurdering.dev.intern.nav.no
   replicas:
     min: 2
     max: 2
@@ -43,9 +49,15 @@ spec:
     memory: "256Mi"
   secureLogs:
     enabled: true
+  webproxy: true
   kafka:
     pool: nav-dev
   accessPolicy:
+    inbound:
+      rules:
+        - application: sparkel-medlemskap
+          namespace: tbd
+          cluster: dev-fss
     outbound:
       external:
         - host: api-gw-q1.oera.no

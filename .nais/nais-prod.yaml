@@ -27,6 +27,8 @@ spec:
     port: 8080
     initialDelay: 20
     timeout: 60
+  ingresses:
+    - https://medlemskap-vurdering.intern.nav.no
   replicas:
     min: 2
     max: 2
@@ -42,9 +44,15 @@ spec:
     memory: "256Mi"
   secureLogs:
     enabled: true
+  webproxy: true
   kafka:
     pool: nav-prod
   accessPolicy:
+    inbound:
+      rules:
+        - application: sparkel-medlemskap
+          namespace: tbd
+          cluster: prod-fss
     outbound:
       external:
         - host: api-gw.oera.no

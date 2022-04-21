@@ -21,8 +21,6 @@ class Consumer(
     private val service: SagaService = SagaService(PostgresMedlemskapVurdertRepository(DataSourceBuilder(environment).getDataSource())),
     private val consumer: KafkaConsumer<String, String> = config.createConsumer(),
 ) {
-
-    private val secureLogger = KotlinLogging.logger("tjenestekall")
     private val logger = KotlinLogging.logger { }
     init {
         consumer.subscribe(listOf(config.topic))
