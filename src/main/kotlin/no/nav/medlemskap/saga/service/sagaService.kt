@@ -23,6 +23,7 @@ class SagaService(val medlemskapVurdertRepository: MedlemskapVurdertRepository) 
             catch (e:Exception){
                 record.logLagringFeilet(e)
                 log.error { record.json }
+                throw e
 
             }
             record.logSLagret()
