@@ -14,6 +14,7 @@ class SagaService(val medlemskapVurdertRepository: MedlemskapVurdertRepository) 
 
     companion object {
         private val log = KotlinLogging.logger { }
+        private val secureLogger = KotlinLogging.logger("tjenestekall")
     }
     fun handle(record: medlemskapVurdertRecord) {
         if (validateRecord(record)){
@@ -22,7 +23,7 @@ class SagaService(val medlemskapVurdertRepository: MedlemskapVurdertRepository) 
             }
             catch (e:Exception){
                 record.logLagringFeilet(e)
-                log.error { record.json }
+                secureLogger.error { record.json }
                 throw e
 
             }
