@@ -43,7 +43,7 @@ fun Routing.sagaRoutes(service: SagaService) {
             post{
                 val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
                 val azp = callerPrincipal.payload.getClaim("azp").asString()
-                secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
+                secureLogger.info("EvalueringRoute: azp-claim i principal-token: {} ", azp)
                 val callId = call.callId ?: UUID.randomUUID().toString()
                 logger.info("kall autentisert, url : /vurdering",
                     kv("callId", callId))
