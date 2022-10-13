@@ -27,10 +27,10 @@ fun mapToFnrResponse(dao: VurderingDao) :FnrResponse{
 }
 fun filterVurderinger(vurderinger:List<VurderingDao>, søkePeriode:Periode, fnr:String) : Optional<VurderingDao> {
     val vurdering = vurderinger
-        .filter { it.fnr()==fnr }
-        .sortedBy { it.periode().fom }
-        .filter { (søkePeriode.begynnerIPerioden(it.periode()) ||
-                  it.periode().erInnenforArbeidsGiverPerioden(søkePeriode))
+        .filter { vurderingIDB ->  vurderingIDB.fnr()==fnr }
+        .sortedBy {vurderingIDB ->vurderingIDB.periode().fom }
+        .filter {vurderingIDB -> (søkePeriode.begynnerIPerioden(vurderingIDB.periode()) ||
+                vurderingIDB.periode().erInnenforArbeidsGiverPerioden(søkePeriode))
 
         }
         .stream().findFirst()
