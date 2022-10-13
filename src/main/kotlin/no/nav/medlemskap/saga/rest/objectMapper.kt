@@ -25,11 +25,14 @@ fun mapToFnrResponse(dao: VurderingDao) :FnrResponse{
 
     return FnrResponse(dao.id,dao.soknadId,dao.date,resultat.get("svar").asText(),aarsaker.map { aarsaker(it.get("regelId").asText(),it.get("begrunnelse").asText()) })
 }
-fun filterVurderinger(vurderinger:List<VurderingDao>,periode:Periode,fnr:String) : Optional<VurderingDao> {
+fun filterVurderinger(vurderinger:List<VurderingDao>, søkePeriode:Periode, fnr:String) : Optional<VurderingDao> {
     val vurdering = vurderinger
         .filter { it.fnr()==fnr }
         .sortedBy { it.periode().fom }
-        .filter { periode.begynnerIPerioden(it.periode()) }
+        .filter { (søkePeriode.begynnerIPerioden(it.periode()) ||
+                  it.periode().erInnenforArbeidsGiverPerioden(søkePeriode))
+
+        }
         .stream().findFirst()
     return vurdering
 }

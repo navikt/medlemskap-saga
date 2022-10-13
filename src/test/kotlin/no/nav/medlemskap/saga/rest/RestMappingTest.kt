@@ -60,4 +60,12 @@ class RestMappingTest {
         val daoPeriode = Periode(LocalDate.parse("2022-01-21"),LocalDate.parse("2022-01-28"))
         Assertions.assertFalse(RequestPeridoe.begynnerIPerioden(daoPeriode))
     }
+    @Test
+    fun RequestPeriodeSomErPaaLopendeDerPeriodeIDBErArbeidsTagegerPeriodeSkalReturnereArbeidsPeriode(){
+        val RequestPeridoe = Periode(LocalDate.parse("2022-09-19"),LocalDate.parse("2022-10-02"))
+        val dao = VurderingDao("1",UUID.randomUUID().toString(),Date(),"{\"datagrunnlag\":{\"fnr\": \"08026644373\",\"periode\": {\"fom\": \"2022-09-08\",\"tom\": \"2022-09-18\"}}}")
+        val result = filterVurderinger(listOf(dao),RequestPeridoe,"08026644373")
+        println(result)
+
+    }
 }
