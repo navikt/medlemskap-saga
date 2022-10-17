@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  IMAGE: ghcr.io/${{ github.repository }}
+  IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
 jobs:
   build:
     runs-on: ubuntu-latest
