@@ -33,7 +33,9 @@ fun filterVurderinger(vurderinger:List<VurderingDao>, søkePeriode:Periode, fnr:
         .filter {vurderingIDB ->
                 (
                  søkePeriode.begynnerIPerioden(vurderingIDB.periode()) ||
-                 søkePeriode.erInnenforEllerSammePeriodeMedDagerDiffFør(16,vurderingIDB.periode())
+                 søkePeriode.erInnenforEllerSammePeriodeMedDagerDiffFør(16,vurderingIDB.periode()) ||
+                 søkePeriode.erdirektePaaFolgende(vurderingIDB.periode())
+
                  )
         }.stream().findFirst()
     return vurdering

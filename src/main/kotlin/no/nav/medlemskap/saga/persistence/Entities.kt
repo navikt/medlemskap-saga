@@ -18,6 +18,9 @@ fun Periode.erInnenforEllerSammePeriodeMedDagerDiffFør(dager:Int, periode: Peri
         return fom.isAfter(periode.fom.minusDays(dager.toLong())) &&
                 (tom.isBefore(periode.tom) || tom.isEqual(periode.tom))
 }
+fun Periode.erdirektePaaFolgende(periode: Periode) : Boolean{
+    return fom.isEqual(periode.tom.plusDays(1))
+}
 
 fun VurderingDao.fnr():String {
     return objectMapper.readTree(json).get("datagrunnlag").get("fnr").asText()
