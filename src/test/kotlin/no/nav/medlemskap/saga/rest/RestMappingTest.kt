@@ -1,9 +1,9 @@
-package no.nav.medlemskap. saga.rest
+package no.nav.medlemskap.saga.rest
 
-import no.nav.medlemskap.saga.persistence.Periode
-import no.nav.medlemskap.saga.persistence.VurderingDao
-import no.nav.medlemskap.saga.persistence.begynnerIPerioden
-import no.nav.medlemskap.saga.persistence.periode
+import no.nav.medlemskap.saga.persistence.*
+import no.nav.medlemskap.saga.rest.filterVurderinger
+import no.nav.medlemskap.saga.rest.mapToFnrResponse
+import org.junit.Assert
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
@@ -55,10 +55,16 @@ class RestMappingTest {
     }
 
     @Test
-    fun RequestPeriodeFomFoerDaoFomSkalIkkeFaaTrue(){
+    fun begynnerIPeriodenTest(){
         val RequestPeridoe = Periode(LocalDate.parse("2022-01-20"),LocalDate.parse("2022-01-29"))
         val daoPeriode = Periode(LocalDate.parse("2022-01-21"),LocalDate.parse("2022-01-28"))
         Assertions.assertFalse(RequestPeridoe.begynnerIPerioden(daoPeriode))
+    }
+    @Test
+    fun PerioderSomStarterMindreEn16DagerFørPeriodeSkalRetunereTrue(){
+        val RequestPeridoe = Periode(LocalDate.parse("2022-01-15"),LocalDate.parse("2022-01-29"))
+        val daoPeriode = Periode(LocalDate.parse("2022-01-21"),LocalDate.parse("2022-01-29"))
+        Assertions.assertTrue(RequestPeridoe.erInnenforEllerSammePeriodeMedDagerDiffFør(12,daoPeriode))
     }
     @Test
     fun RequestPeriodeSomErPaaLopendeDerPeriodeIDBErArbeidsTagegerPeriodeSkalReturnereArbeidsPeriode(){

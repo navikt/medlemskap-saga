@@ -14,12 +14,11 @@ fun Periode.begynnerIPerioden(periode: Periode):Boolean{
             (fom.isAfter(periode.fom) && fom.isBefore(periode.tom))
             )
 }
-
-fun Periode.erInnenforArbeidsGiverPerioden(periode: Periode):Boolean{
-    return  (
-            (fom.isAfter(periode.fom.minusDays(17)) && fom.isBefore(periode.fom))
-            )
+fun Periode.erInnenforEllerSammePeriodeMedDagerDiffFør(dager:Int, periode: Periode) : Boolean{
+        return fom.isAfter(periode.fom.minusDays(dager.toLong())) &&
+                (tom.isBefore(periode.tom) || tom.isEqual(periode.tom))
 }
+
 fun VurderingDao.fnr():String {
     return objectMapper.readTree(json).get("datagrunnlag").get("fnr").asText()
 }
