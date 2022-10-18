@@ -1,17 +1,16 @@
 package no.nav.medlemskap.saga.rest
 
 import no.nav.medlemskap.saga.persistence.*
-import no.nav.medlemskap.saga.rest.filterVurderinger
-import no.nav.medlemskap.saga.rest.mapToFnrResponse
-import org.junit.Assert
+
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
 import java.util.*
 
-class RestMappingTest {
 
+
+class RestMappingTest {
     @Test
     fun mappingAvFnrResponsUtenAArsakTest(){
         val fileContent = this::class.java.classLoader.getResource("sampleVurdering.json").readText(Charsets.UTF_8)
@@ -53,6 +52,12 @@ class RestMappingTest {
         val daoPeriode = Periode(LocalDate.parse("2022-01-21"),LocalDate.parse("2022-01-28"))
         Assertions.assertTrue(RequestPeridoe.begynnerIPerioden(daoPeriode))
     }
+    @Test
+    fun RequestPeriodeErDirektePaaFolgendeSkalReturnereTrue(){
+        val RequestPeridoe = Periode(LocalDate.parse("2022-01-20"),LocalDate.parse("2022-01-25"))
+        val daoPeriode = Periode(LocalDate.parse("2022-01-15"),LocalDate.parse("2022-01-19"))
+        Assertions.assertTrue(RequestPeridoe.erdirektePaaFolgende(daoPeriode))
+    }
 
     @Test
     fun begynnerIPeriodenTest(){
@@ -71,7 +76,15 @@ class RestMappingTest {
         val RequestPeridoe = Periode(LocalDate.parse("2022-09-19"),LocalDate.parse("2022-10-02"))
         val dao = VurderingDao("1",UUID.randomUUID().toString(),Date(),"{\"datagrunnlag\":{\"fnr\": \"08026644373\",\"periode\": {\"fom\": \"2022-09-08\",\"tom\": \"2022-09-18\"}}}")
         val result = filterVurderinger(listOf(dao),RequestPeridoe,"08026644373")
-        println(result)
+        Assertions.assertTrue(result.isPresent)
 
     }
+    @Test
+    fun direktePaaFolgendeRequestPeriodeSkalReturnereDAOPeriode(){
+        val RequestPeridoe = Periode(LocalDate.parse("2022-10-06"),LocalDate.parse("2022-10-17"))
+        val dao = VurderingDao("1",UUID.randomUUID().toString(),Date(),"{\"datagrunnlag\":{\"fnr\": \"08026644373\",\"periode\": {\"fom\": \"2022-10-01\",\"tom\": \"2022-10-05\"}}}")
+        val result = filterVurderinger(listOf(dao),RequestPeridoe,"08026644373")
+        Assertions.assertTrue(result.isPresent)
+    }
+
 }
