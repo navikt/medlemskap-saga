@@ -6,13 +6,18 @@ import java.time.LocalDate
 import java.util.*
 
 data class VurderingDao(val id: String, val soknadId: String, val date: Date, val json: String)
-data class Periode(val fom: LocalDate, val tom: LocalDate)
+data class Periode(val fom: LocalDate, val tom: LocalDate) {
+
+}
 
 fun Periode.begynnerIPerioden(periode: Periode):Boolean{
     return  (
             (fom.isEqual(periode.fom)) ||
             (fom.isAfter(periode.fom) && fom.isBefore(periode.tom))
             )
+}
+fun Periode.erMindreEnDagerFørPeriodeStarter(dager: Int, periode: Periode): Boolean {
+    return fom.minusDays(dager.toLong()).isBefore(periode.fom) && tom.isAfter(periode.tom)
 }
 fun Periode.erInnenforEllerSammePeriodeMedDagerDiffFør(dager:Int, periode: Periode) : Boolean{
         return fom.isAfter(periode.fom.minusDays(dager.toLong())) &&

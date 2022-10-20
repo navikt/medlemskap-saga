@@ -87,11 +87,11 @@ class RestMappingTest {
         Assertions.assertTrue(result.isPresent)
     }
     @Test
-    fun merEnEnDagErIkkePaaFolgendeOgSkalIkkeReturnereTreff(){
-        val RequestPeridoe = Periode(LocalDate.parse("2022-10-06"),LocalDate.parse("2022-10-17"))
-        val dao = VurderingDao("1",UUID.randomUUID().toString(),Date(),"{\"datagrunnlag\":{\"fnr\": \"08026644373\",\"periode\": {\"fom\": \"2022-10-01\",\"tom\": \"2022-10-04\"}}}")
+    fun skalFinnePerioderMedStartDatoMindreEn21DagerFørSoknadsPeriode(){
+        val RequestPeridoe = Periode(LocalDate.parse("2022-10-10"),LocalDate.parse("2022-10-16"))
+        val dao = VurderingDao("1",UUID.randomUUID().toString(),Date(),"{\"datagrunnlag\":{\"fnr\": \"08026644373\",\"periode\": {\"fom\": \"2022-09-23\",\"tom\": \"2022-10-02\"}}}")
         val result = filterVurderinger(listOf(dao),RequestPeridoe,"08026644373")
-        Assertions.assertTrue(result.isEmpty)
+        Assertions.assertTrue(result.isPresent)
     }
 
 }
