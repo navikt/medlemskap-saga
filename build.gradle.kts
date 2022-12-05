@@ -76,7 +76,7 @@ dependencies {
     testImplementation ("org.testcontainers:postgresql:1.16.0")
     testImplementation ("org.testcontainers:junit-jupiter:1.16.0")
     //Database
-    implementation("org.postgresql:postgresql:42.3.2")
+    implementation("org.postgresql:postgresql:42.5.1")
     implementation("org.flywaydb:flyway-core:$flywayVersion")
     implementation("com.zaxxer:HikariCP:$hikariVersion")
     implementation("com.github.seratch:kotliquery:$kotliqueryVersion")
