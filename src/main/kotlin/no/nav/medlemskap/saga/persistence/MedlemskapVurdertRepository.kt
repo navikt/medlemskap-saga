@@ -9,12 +9,12 @@ import kotliquery.using
 
 interface MedlemskapVurdertRepository {
     fun finnVurdering(soknadId: String): List<VurderingDao>
-    fun lagreVurdering(id: String, eventDate: Date, json: String)
+    fun lagreVurdering(id: String, eventDate: Date, json: String,ytelse:String)
     fun finnVurderingMedFnr(fnr: String): List<VurderingDao>
 }
 
 class PostgresMedlemskapVurdertRepository(val dataSource: DataSource) : MedlemskapVurdertRepository {
-    val INSERT_VURDERING = "INSERT INTO vurdering(soknadId, date, json) VALUES(?, ?, (to_json(?::json)))"
+    val INSERT_VURDERING = "INSERT INTO vurdering(soknadId, date, json,ytelse) VALUES(?, ?, (to_json(?::json)),?)"
     val SELECT_ALL = "select * from vurdering"
     val FIND_BY_SOKNAD_ID = "select * from vurdering where soknadId = ?"
     val FIND_BY_FNR = "select * from vurdering where json->'datagrunnlag'->>'fnr' =?"
@@ -42,10 +42,10 @@ class PostgresMedlemskapVurdertRepository(val dataSource: DataSource) : Medlemsk
             }
         }
 
-    override fun lagreVurdering(id: String, eventDate: Date, json: String) {
+    override fun lagreVurdering(id: String, eventDate: Date, json: String,ytelse: String) {
         using(sessionOf(dataSource)) { session ->
             session.transaction {
-                it.run(queryOf(INSERT_VURDERING, id, eventDate, json).asExecute)
+                it.run(queryOf(INSERT_VURDERING, id, eventDate, json,ytelse).asExecute)
             }
 
         }
