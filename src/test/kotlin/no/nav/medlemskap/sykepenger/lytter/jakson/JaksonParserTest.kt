@@ -3,6 +3,9 @@ package no.nav.medlemskap.sykepenger.lytter.jakson
 
 import no.nav.medlemskap.saga.persistence.Periode
 import no.nav.medlemskap.saga.rest.*
+import org.junit.Assert
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
@@ -12,8 +15,10 @@ class JaksonParserTest {
     @Test()
     fun `parse Json String`() {
         val fileContent = this::class.java.classLoader.getResource("sampleVurdering.json").readText(Charsets.UTF_8)
-        val JsonNode = JaksonParser().parse(fileContent)
-        assertNotNull(JsonNode)
+        val ytelse = kotlin.runCatching { objectMapper.readTree(fileContent).get("datagrunnlag").get("ytelse").asText() }.getOrElse { "UKJENT" }
+        assertEquals("SYKEPENGER", ytelse, "")
+        val jsonNode = JaksonParser().parse(fileContent)
+        assertNotNull(jsonNode)
     }
 
     @Test

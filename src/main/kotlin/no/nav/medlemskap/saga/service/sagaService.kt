@@ -6,6 +6,7 @@ import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.medlemskap.saga.domain.medlemskapVurdertRecord
 import no.nav.medlemskap.saga.persistence.MedlemskapVurdertRepository
 import no.nav.medlemskap.saga.persistence.VurderingDao
+import no.nav.medlemskap.saga.rest.objectMapper
 import no.nav.medlemskap.sykepenger.lytter.jakson.JaksonParser
 import java.lang.Exception
 import java.util.*
@@ -19,7 +20,8 @@ class SagaService(val medlemskapVurdertRepository: MedlemskapVurdertRepository) 
     fun handle(record: medlemskapVurdertRecord) {
         if (validateRecord(record)){
             try {
-                medlemskapVurdertRepository.lagreVurdering(record.key, Date(), record.json)
+                val ytelse = kotlin.runCatching { objectMapper.readTree(record.json).get("datagrunnlag").get("ytelse").asText() }.getOrElse { "UKJENT" }
+                medlemskapVurdertRepository.lagreVurdering(record.key, Date(), record.json,ytelse)
             }
             catch (e:Exception){
                 record.logLagringFeilet(e)

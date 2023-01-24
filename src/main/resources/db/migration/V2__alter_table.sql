@@ -1,0 +1,2 @@
+ALTER TABLE vurdering ADD COLUMN ytelse VARCHAR(40) DEFAULT null;
+ALTER TABLE vurdering ADD COLUMN dokumentid VARCHAR(255) DEFAULT null;
