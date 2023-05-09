@@ -7,6 +7,32 @@ Medlemskap Saga komponent som lagrer/oppdaterer status på medlemskap
 * Database (Postgres)
 * Kafka
 
+# Rest endepunkter
+https://medlemskap-vurdering.intern.nav.no/findVureringerByFnr
+## Eksempel på kall
+
+Kallet er en POST mot url definert over
+```
+{
+"fnr":"12345678912",
+}
+```
+https://medlemskap-vurdering.intern.nav.no/vurdering
+## Eksempel på kall
+
+Kallet er en POST mot url definert over
+```
+{
+  "fnr" : "03118041401",
+  "førsteDagForYtelse" : "2022-05-11",
+  "periode" : {
+    "fom" : "2022-05-11",
+    "tom" : "2022-05-29"
+  },
+  "ytelse" : "SYKEPENGER"
+}
+```
+
 
 # Testing
 Tester bruker test containers for å verifisere lagring til database.
