@@ -17,16 +17,38 @@ import java.util.*
 private val logger = KotlinLogging.logger { }
 private val secureLogger = KotlinLogging.logger("tjenestekall")
 fun Routing.sagaRoutes(service: SagaService) {
-    route("/findVureringerByFnr") {
+    route("/Person") {
         authenticate("azureAuth") {
-            post{
+            get{
                 logger.info("kall autentisert, url : /findVureringerByFnr")
 
                 val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
                 val azp = callerPrincipal.payload.getClaim("azp").asString()
                 secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
                 val callId = call.callId ?: UUID.randomUUID().toString()
+                val fnr = call.request.header("x_fnr")
+                if (fnr.isNullOrBlank()){
+                    call.respond(HttpStatusCode.BadRequest,"x_fnr ikke funnet i headers")
+                }
                 try{
+
+                    val vurderinger = service.finnAlleVurderingerForFnr(fnr!!)
+                    call.respond(vurderinger.map { mapToFnrResponse(it) })
+                }
+                catch (t:Throwable){
+                    call.respond(t.stackTrace)
+
+                }
+            }
+            post{
+                logger.info("kall autentisert, url : /Person/")
+
+                val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
+                val azp = callerPrincipal.payload.getClaim("azp").asString()
+                secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
+                val callId = call.callId ?: UUID.randomUUID().toString()
+                try{
+
                     val request = call.receive<FnrRequest>()
                     val vurderinger = service.finnAlleVurderingerForFnr(request.fnr)
                     call.respond(vurderinger.map { mapToFnrResponse(it) })
