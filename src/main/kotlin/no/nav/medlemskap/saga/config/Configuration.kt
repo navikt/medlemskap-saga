@@ -9,31 +9,18 @@ private val logger = KotlinLogging.logger { }
 
 private val defaultProperties = ConfigurationMap(
     mapOf(
-        "AZURE_TENANT" to "",
-        "AZURE_AUTHORITY_ENDPOINT" to "",
-        "SERVICE_USER_USERNAME" to "test",
-        "MEDLEMSKAP_REGLER_URL" to "",
-        "MEDL2_BASE_URL" to "",
-        "MEDL2_API_KEY" to "",
-        "AAREG_BASE_URL" to "",
-        "AAREG_API_KEY" to "",
-        "SECURITY_TOKEN_SERVICE_URL" to "",
-        "SECURITY_TOKEN_SERVICE_REST_URL" to "",
-        "SECURITY_TOKEN_SERVICE_API_KEY" to "",
-        "SERVICE_USER_PASSWORD" to "",
+        "AZURE_OPENID_CONFIG_TOKEN_ENDPOINT" to "https://login.microsoftonline.com/966ac572-f5b7-4bbe-aa88-c76419c0f851/oauth2/v2.0/token",
+        "AZURE_APP_WELL_KNOWN_URL" to "https://login.microsoftonline.com/966ac572-f5b7-4bbe-aa88-c76419c0f851/v2.0/.well-known/openid-configuration",
+        "AZURE_TENANT" to "966ac572-f5b7-4bbe-aa88-c76419c0f851",
+        "AZURE_AUTHORITY_ENDPOINT" to "https://login.microsoftonline.com",
+        "SERVICE_USER_USERNAME" to "srvmedlemskap",
+        "SERVICE_USER_PASSWORD" to "Ks7NeOThPx9otSu",
+        "AZURE_APP_TENANT_ID" to "966ac572-f5b7-4bbe-aa88-c76419c0f851",
         "NAIS_APP_NAME" to "",
-        "NAIS_CLUSTER_NAME" to "",
+        "NAIS_CLUSTER_NAME" to "localhost",
         "NAIS_APP_IMAGE" to "",
-        "AZURE_APP_CLIENT_ID" to "",
-        "SAF_BASE_URL" to "",
-        "SAF_API_KEY" to "",
-        "OPPGAVE_BASE_URL" to "",
-        "OPPGAVE_API_KEY" to "",
-        "PDL_BASE_URL" to "",
-        "PDL_API_KEY" to "",
-        "EREG_BASE_URL" to "",
-        "EREG_API_KEY" to "",
-        "UDI_BASE_URL" to "",
+        "AZURE_APP_CLIENT_ID" to "39f402c0-7373-49e3-9e64-9669181f78d4",
+        "AZURE_APP_CLIENT_SECRET" to "",
         "KAFKA_BROKERS" to "nav-dev-kafka-nav-dev.aivencloud.com:26484",
         "KAFKA_TRUSTSTORE_PATH" to "c:\\dev\\secrets\\client.truststore.jks",
         "KAFKA_CREDSTORE_PASSWORD" to "changeme",
@@ -64,36 +51,12 @@ private fun hentCommitSha(image: String): String {
 }
 
 data class Configuration(
-    val register: Register = Register(),
-    val sts: Sts = Sts(),
     val azureAd: AzureAd = AzureAd(),
     val kafkaConfig: KafkaConfig = KafkaConfig(),
     val cluster: String = "NAIS_CLUSTER_NAME".configProperty(),
     val commitSha: String = hentCommitSha("NAIS_APP_IMAGE".configProperty())
 ) {
-    data class Register(
-        val medl2BaseUrl: String = "MEDL2_BASE_URL".configProperty(),
-        val medl2ApiKey: String = "MEDL2_API_KEY".configProperty(),
-        val aaRegBaseUrl: String = "AAREG_BASE_URL".configProperty(),
-        val aaRegApiKey: String = "AAREG_API_KEY".configProperty(),
-        val safBaseUrl: String = "SAF_BASE_URL".configProperty(),
-        val safApiKey: String = "SAF_API_KEY".configProperty(),
-        val oppgaveBaseUrl: String = "OPPGAVE_BASE_URL".configProperty(),
-        val oppgaveApiKey: String = "OPPGAVE_API_KEY".configProperty(),
-        val pdlBaseUrl: String = "PDL_BASE_URL".configProperty(),
-        val pdlApiKey: String = "PDL_API_KEY".configProperty(),
-        val eregBaseUrl: String = "EREG_BASE_URL".configProperty(),
-        val eregApiKey: String = "EREG_API_KEY".configProperty(),
-        val udiBaseUrl: String = "UDI_BASE_URL".configProperty()
-    )
 
-    data class Sts(
-        val endpointUrl: String = "SECURITY_TOKEN_SERVICE_URL".configProperty(),
-        val restUrl: String = "SECURITY_TOKEN_SERVICE_REST_URL".configProperty(),
-        val apiKey: String = "SECURITY_TOKEN_SERVICE_API_KEY".configProperty(),
-        val username: String = "SERVICE_USER_USERNAME".configProperty(),
-        val password: String = "SERVICE_USER_PASSWORD".configProperty()
-    )
 
     data class AzureAd(
         val clientId: String = "NAIS_APP_NAME".configProperty(),

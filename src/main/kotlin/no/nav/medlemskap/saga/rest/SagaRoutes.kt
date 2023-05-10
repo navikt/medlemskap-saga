@@ -26,6 +26,7 @@ fun Routing.sagaRoutes(service: SagaService) {
                 val azp = callerPrincipal.payload.getClaim("azp").asString()
                 secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
                 val callId = call.callId ?: UUID.randomUUID().toString()
+                call.request.headers.entries().forEach{ logger.info(" ---->Header --> ${it.key} , ${it.value}")}
                 val fnr = call.request.header("x_fnr")
                 if (fnr.isNullOrBlank()){
                     call.respond(HttpStatusCode.BadRequest,"x_fnr ikke funnet i headers")
