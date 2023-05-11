@@ -15,6 +15,7 @@ interface MedlemskapVurdertRepository {
 
 class PostgresMedlemskapVurdertRepository(val dataSource: DataSource) : MedlemskapVurdertRepository {
     val INSERT_VURDERING = "INSERT INTO vurdering(soknadId, date, json,ytelse) VALUES(?, ?, (to_json(?::json)),?)"
+    val prototypesql = "select v.id,s.id from vurderinger as v, søknader as s where input.personID = s.personId, v.søknadsId = s.id"
     val SELECT_ALL = "select * from vurdering"
     val FIND_BY_SOKNAD_ID = "select * from vurdering where soknadId = ?"
     val FIND_BY_FNR = "select * from vurdering where json->'datagrunnlag'->>'fnr' =?"

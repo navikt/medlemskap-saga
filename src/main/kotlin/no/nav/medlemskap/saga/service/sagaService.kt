@@ -6,6 +6,8 @@ import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.medlemskap.saga.domain.medlemskapVurdertRecord
 import no.nav.medlemskap.saga.persistence.MedlemskapVurdertRepository
 import no.nav.medlemskap.saga.persistence.VurderingDao
+import no.nav.medlemskap.saga.rest.Soknad
+import no.nav.medlemskap.saga.rest.VurderingV2
 import no.nav.medlemskap.saga.rest.objectMapper
 import no.nav.medlemskap.sykepenger.lytter.jakson.JaksonParser
 import java.lang.Exception
@@ -68,6 +70,13 @@ class SagaService(val medlemskapVurdertRepository: MedlemskapVurdertRepository) 
             "Søknad lagret til Lovme - sykmeldingId:Søknad lagret til Lovme - sykmeldingId: ${key}, offsett: $offset, partiotion: $partition, topic: $topic",
            kv("callId", key),
         )
+
+    fun finnAlleVurderingerForPersonIdent(personId: UUID): List<VurderingV2> {
+        return listOf(VurderingV2(UUID.randomUUID(),UUID.randomUUID()))
+    }
+    fun finnAlleSoknaderForPersonIdent(personId: UUID): List<Soknad> {
+        return listOf(Soknad(UUID.randomUUID()),Soknad(UUID.randomUUID()))
+    }
 
 
 }

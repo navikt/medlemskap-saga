@@ -17,7 +17,7 @@ import java.util.*
 private val logger = KotlinLogging.logger { }
 private val secureLogger = KotlinLogging.logger("tjenestekall")
 fun Routing.sagaRoutes(service: SagaService) {
-    route("/Person") {
+    route("/person") {
         authenticate("azureAuth") {
             get{
                 logger.info("kall autentisert, url : /findVureringerByFnr")
@@ -26,21 +26,25 @@ fun Routing.sagaRoutes(service: SagaService) {
                 val azp = callerPrincipal.payload.getClaim("azp").asString()
                 secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
                 val callId = call.callId ?: UUID.randomUUID().toString()
-                call.request.headers.entries().forEach{ logger.info(" ---->Header --> ${it.key} , ${it.value}")}
-                val fnr = call.request.header("x_fnr")
-                if (fnr.isNullOrBlank()){
-                    call.respond(HttpStatusCode.BadRequest,"x_fnr ikke funnet i headers")
+                //call.request.headers.entries().forEach{ logger.info(" ---->Header --> ${it.key} , ${it.value}")}
+                val person_Id = call.request.header("Person-Id")
+                if (person_Id.isNullOrBlank()){
+                    call.respond(HttpStatusCode.BadRequest,"Person-Id ikke funnet i headers")
                 }
                 try{
-
-                    val vurderinger = service.finnAlleVurderingerForFnr(fnr!!)
-                    call.respond(vurderinger.map { mapToFnrResponse(it) })
+                    var personIdentIDB = ""
+                    //kjør oppslag mot tabell og se om det funnes nøkkel på person
+                    //kjør oppslag mot PDL og hent ut FNR&DNR
+                    //hvis hverken fnr eller dnr finne
+                    // val vurderinger = service.finnAlleVurderingerForFnr(person_Id!!)
+                    call.respond(PersonIDRespons(UUID.randomUUID().toString(),person_Id!!,"FNR"))
                 }
                 catch (t:Throwable){
                     call.respond(t.stackTrace)
 
                 }
             }
+
             post{
                 logger.info("kall autentisert, url : /Person/")
 
@@ -53,6 +57,54 @@ fun Routing.sagaRoutes(service: SagaService) {
                     val request = call.receive<FnrRequest>()
                     val vurderinger = service.finnAlleVurderingerForFnr(request.fnr)
                     call.respond(vurderinger.map { mapToFnrResponse(it) })
+                }
+                catch (t:Throwable){
+                    call.respond(t.stackTrace)
+
+                }
+            }
+        }
+    }
+    route("/person/{UUID}/vurderinger") {
+        authenticate("azureAuth") {
+            get{
+                val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
+                val azp = callerPrincipal.payload.getClaim("azp").asString()
+                secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
+                val callId = call.callId ?: UUID.randomUUID().toString()
+                try{
+                    val uuid = call.parameters["UUID"]
+                    if (uuid.isNullOrBlank()){
+                        call.respond(HttpStatusCode.NotFound)
+                    }
+                    val personId = UUID.fromString(uuid)
+                    //TODO: Bytt ut vurderingV2 med svar fra databasen med vurderiger på denne personen
+                    val vurderinger:List<VurderingV2> = service.finnAlleVurderingerForPersonIdent(personId)
+                   call.respond(PersonVurderingerResponse(personId, vurderinger))
+                }
+                catch (t:Throwable){
+                    call.respond(t.stackTrace)
+
+                }
+            }
+        }
+    }
+    route("/person/{UUID}/soknader") {
+        authenticate("azureAuth") {
+            get{
+                val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
+                val azp = callerPrincipal.payload.getClaim("azp").asString()
+                secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
+                val callId = call.callId ?: UUID.randomUUID().toString()
+                try{
+                    val uuid = call.parameters["UUID"]
+                    if (uuid.isNullOrBlank()){
+                        call.respond(HttpStatusCode.NotFound)
+                    }
+                    val personId = UUID.fromString(uuid)
+                    //TODO: Bytt ut vurderingV2 med svar fra databasen med vurderiger på denne personen
+                    val soknader:List<Soknad> = service.finnAlleSoknaderForPersonIdent(personId)
+                    call.respond(PersonSoknaderResponse(personId, soknader))
                 }
                 catch (t:Throwable){
                     call.respond(t.stackTrace)
@@ -108,3 +160,4 @@ fun Routing.sagaRoutes(service: SagaService) {
         }
     }
 }
+
