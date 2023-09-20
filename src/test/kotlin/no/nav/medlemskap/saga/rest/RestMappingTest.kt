@@ -93,5 +93,12 @@ class RestMappingTest {
         val result = filterVurderinger(listOf(dao),RequestPeridoe,"08026644373")
         Assertions.assertTrue(result.isPresent)
     }
+    @Test
+    fun feilsøkProduksjon(){
+        val RequestPeridoe = Periode(LocalDate.parse("2023-08-01"),LocalDate.parse("2023-09-11"))
+        val dao = VurderingDao("1",UUID.randomUUID().toString(),Date(),"{\"datagrunnlag\":{\"fnr\": \"08026644373\",\"periode\": {\"fom\": \"2023-08-21\",\"tom\": \"2023-09-11\"}}}")
+        val result = filterVurderinger(listOf(dao),RequestPeridoe,"08026644373")
+        Assertions.assertTrue(result.isPresent)
+    }
 
 }

@@ -17,7 +17,7 @@ fun Periode.begynnerIPerioden(periode: Periode):Boolean{
             )
 }
 fun Periode.erMindreEnDagerFørPeriodeStarter(dager: Int, periode: Periode): Boolean {
-    return fom.minusDays(dager.toLong()).isBefore(periode.fom) && tom.isAfter(periode.tom)
+    return fom.minusDays(dager.toLong()).isBefore(periode.fom) && ( tom.isAfter(periode.tom) || tom.isEqual(periode.tom))
 }
 fun Periode.erInnenforEllerSammePeriodeMedDagerDiffFør(dager:Int, periode: Periode) : Boolean{
         return fom.isAfter(periode.fom.minusDays(dager.toLong())) &&
