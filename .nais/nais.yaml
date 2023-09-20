@@ -33,7 +33,7 @@ spec:
     initialDelay: 20
     timeout: 60
   ingresses:
-    - https://medlemskap-vurdering.dev.intern.nav.no
+    - https://medlemskap-vurdering.intern.dev.nav.no
   replicas:
     min: 2
     max: 2
