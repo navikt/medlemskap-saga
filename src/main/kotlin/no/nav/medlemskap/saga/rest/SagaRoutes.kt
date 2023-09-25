@@ -62,7 +62,7 @@ fun Routing.sagaRoutes(service: SagaService) {
                         kv("fnr", request.fnr),
                         kv("callId", callId)
                     )
-                    val match = vurderinger.first() { it.soknadId==request.sykepengesoknad_id }
+                    val match = vurderinger.firstOrNull { it.soknadId==request.sykepengesoknad_id }
                     if (match!=null){
                         call.respond(HttpStatusCode.OK,mapToFlexVurderingsRespons(match))
                     }
