@@ -86,7 +86,7 @@ fun Routing.sagaRoutes(service: SagaService) {
                             kv("soknadId", response.soknadId),
                             kv("id", response.id)
                         )
-                        call.respond(HttpStatusCode.OK, response.json)
+                        call.respond(HttpStatusCode.OK, mapToFlexVurderingsRespons(response))
                     }
                 } catch (t: Throwable) {
                     call.respond(t.stackTrace)
