@@ -18,3 +18,19 @@ enum class Ytelse {
     AAP,
 }
 
+data class FlexRequest(
+    val sykepengesoknad_id: String,
+    val fnr: String,
+    val fom: LocalDate,
+    val tom: LocalDate,
+    val ytelse: Ytelse = Ytelse.SYKEPENGER,
+)
+data class FlexVurderingRespons(
+    val sykepengesoknad_id: String,
+    val vurdering_id: String,
+    val fnr: String,
+    val fom: LocalDate,
+    val tom: LocalDate,
+    val status:String
+)
+
