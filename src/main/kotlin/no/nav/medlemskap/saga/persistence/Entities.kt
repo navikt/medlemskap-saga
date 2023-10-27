@@ -7,7 +7,6 @@ import java.time.LocalDate
 import java.util.*
 
 data class VurderingDao(val id: String, val soknadId: String, val date: Date, val json: String)
-data class VurderingDao2(val id: String, val soknadId: String, val date: Date, val json: JsonNode)
 
 data class Periode(val fom: LocalDate, val tom: LocalDate) {
 

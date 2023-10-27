@@ -113,11 +113,11 @@ fun Routing.sagaRoutes(service: SagaService) {
 
                 }
                 else{
-                    val vurderinger = service.medlemskapVurdertRepository.finnVurdering2(soknadID)
+                    val vurderinger = service.medlemskapVurdertRepository.finnVurdering(soknadID)
                     val vurdering = vurderinger.sortedByDescending { it.id }.firstOrNull()
                     if (vurdering!=null){
                         logger.info { "vurdering funnet for soknadID $soknadID" }
-                        call.respond(HttpStatusCode.OK,vurdering)
+                        call.respond(HttpStatusCode.OK,mapToLetmeResponse(vurdering))
                     }
                     else{
                         logger.warn { "ingen vurdering funnet for soknadID $soknadID" }
@@ -170,6 +170,8 @@ fun Routing.sagaRoutes(service: SagaService) {
         }
     }
 }
+
+
 
 fun mapToFlexVurderingsRespons(match: VurderingDao): FlexVurderingRespons {
     val jsonNode:JsonNode = JaksonParser().parse(match.json)

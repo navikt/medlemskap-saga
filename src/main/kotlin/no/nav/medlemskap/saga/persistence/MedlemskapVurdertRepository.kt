@@ -11,7 +11,6 @@ import no.nav.medlemskap.sykepenger.lytter.jakson.JaksonParser
 interface MedlemskapVurdertRepository {
     fun finnVurdering(soknadId: String): List<VurderingDao>
 
-    fun finnVurdering2(soknadId: String): List<VurderingDao2>
     fun lagreVurdering(id: String, eventDate: Date, json: String,ytelse:String)
     fun finnVurderingMedFnr(fnr: String): List<VurderingDao>
 }
@@ -26,12 +25,6 @@ class PostgresMedlemskapVurdertRepository(val dataSource: DataSource) : Medlemsk
 
         return using(sessionOf(dataSource)) {
                 it.run(queryOf(FIND_BY_SOKNAD_ID, soknadId).map(toVurderingDao).asList)
-        }
-    }
-    override fun finnVurdering2(soknadId: String): List<VurderingDao2> {
-
-        return using(sessionOf(dataSource)) {
-            it.run(queryOf(FIND_BY_SOKNAD_ID, soknadId).map(toVurderingDao2).asList)
         }
     }
     override fun finnVurderingMedFnr(fnr: String): List<VurderingDao> {
@@ -60,7 +53,6 @@ class PostgresMedlemskapVurdertRepository(val dataSource: DataSource) : Medlemsk
         }
     }
 
-
     fun using(datasource: DataSource): PostgresMedlemskapVurdertRepository {
         return PostgresMedlemskapVurdertRepository(datasource)
     }
@@ -71,14 +63,6 @@ class PostgresMedlemskapVurdertRepository(val dataSource: DataSource) : Medlemsk
             row.string("soknadId"),
             row.sqlDate("date"),
             row.string("json")
-        )
-    }
-    val toVurderingDao2: (Row) -> VurderingDao2 = { row ->
-        VurderingDao2(
-            row.int("id").toString(),
-            row.string("soknadId"),
-            row.sqlDate("date"),
-            JaksonParser().parse(row.string("json"))
         )
     }
 }
