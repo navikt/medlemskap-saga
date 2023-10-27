@@ -96,6 +96,35 @@ fun Routing.sagaRoutes(service: SagaService) {
     }
     route("/vurdering") {
         authenticate("azureAuth") {
+            get("/{soknadId}") {
+                val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
+                val azp = callerPrincipal.payload.getClaim("azp").asString()
+                secureLogger.info("EvalueringRoute: azp-claim i principal-token: {} ", azp)
+                val callId = call.callId ?: UUID.randomUUID().toString()
+                logger.info("kall autentisert, url : /vurdering/{soknadId}",
+                    kv("callId", callId))
+                val soknadID = call.parameters["soknadId"]
+                /*
+                * Henter ut nødvendige parameter. kan evnt endres senere ved behov
+                * */
+                if (soknadID.isNullOrBlank()){
+                    logger.warn { "bad request. Ingen soknadID oppgitt" }
+                    call.respond(HttpStatusCode.BadRequest,"soknadId request parameter forventet")
+
+                }
+                else{
+                    val vurderinger = service.medlemskapVurdertRepository.finnVurdering(soknadID)
+                    val vurdering = vurderinger.sortedByDescending { it.id }.firstOrNull()
+                    if (vurdering!=null){
+                        logger.info { "vurdering funnet for soknadID $soknadID" }
+                        call.respond(HttpStatusCode.OK,vurdering)
+                    }
+                    else{
+                        logger.warn { "ingen vurdering funnet for soknadID $soknadID" }
+                        call.respond(HttpStatusCode.NotFound)
+                    }
+                }
+            }
             post{
                 val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
                 val azp = callerPrincipal.payload.getClaim("azp").asString()
