@@ -113,7 +113,7 @@ fun Routing.sagaRoutes(service: SagaService) {
 
                 }
                 else{
-                    val vurderinger = service.medlemskapVurdertRepository.finnVurdering(soknadID)
+                    val vurderinger = service.medlemskapVurdertRepository.finnVurdering2(soknadID)
                     val vurdering = vurderinger.sortedByDescending { it.id }.firstOrNull()
                     if (vurdering!=null){
                         logger.info { "vurdering funnet for soknadID $soknadID" }
