@@ -60,6 +60,9 @@ spec:
         - application: sparkel-medlemskap
           namespace: tbd
           cluster: dev-fss
+        - application: azure-token-generator
+          namespace: aura
+          cluster: dev-gcp
     outbound:
       external:
         - host: api-gw-q1.oera.no
