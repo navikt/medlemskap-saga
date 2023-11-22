@@ -181,10 +181,22 @@ fun mapToFlexVurderingsRespons(match: VurderingDao): FlexVurderingRespons {
         fnr = jsonNode.fnr(),
         fom = jsonNode.fom(),
         tom = jsonNode.tom(),
-        status = jsonNode.status())
+        status = jsonNode.statusKonklusjon())
 }
 fun JsonNode.status():String{
     return this.get("resultat").get("svar").asText()
+}
+fun JsonNode.statusKonklusjon():String{
+    runCatching { this.get("konklusjon").get(0).get("status").asText() }
+        .onSuccess { return it }
+        .onFailure {
+            secureLogger.warn(
+                "Gammel modell i respons for vurdering",
+                kv("fnr", this.fnr()),
+            )
+            return status() }
+    return ""
+
 }
 fun JsonNode.fom():LocalDate{
     val fom = this.get("datagrunnlag").get("periode").get("fom").asText()
