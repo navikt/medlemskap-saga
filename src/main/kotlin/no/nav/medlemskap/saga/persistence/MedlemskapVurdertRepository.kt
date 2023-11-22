@@ -6,9 +6,11 @@ import javax.sql.DataSource
 import kotliquery.queryOf
 import kotliquery.sessionOf
 import kotliquery.using
+import no.nav.medlemskap.sykepenger.lytter.jakson.JaksonParser
 
 interface MedlemskapVurdertRepository {
     fun finnVurdering(soknadId: String): List<VurderingDao>
+
     fun lagreVurdering(id: String, eventDate: Date, json: String,ytelse:String)
     fun finnVurderingMedFnr(fnr: String): List<VurderingDao>
 }
@@ -50,7 +52,6 @@ class PostgresMedlemskapVurdertRepository(val dataSource: DataSource) : Medlemsk
 
         }
     }
-
 
     fun using(datasource: DataSource): PostgresMedlemskapVurdertRepository {
         return PostgresMedlemskapVurdertRepository(datasource)

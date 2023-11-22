@@ -96,6 +96,35 @@ fun Routing.sagaRoutes(service: SagaService) {
     }
     route("/vurdering") {
         authenticate("azureAuth") {
+            get("/{soknadId}") {
+                val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
+                val azp = callerPrincipal.payload.getClaim("azp").asString()
+                secureLogger.info("EvalueringRoute: azp-claim i principal-token: {} ", azp)
+                val callId = call.callId ?: UUID.randomUUID().toString()
+                logger.info("kall autentisert, url : /vurdering/{soknadId}",
+                    kv("callId", callId))
+                val soknadID = call.parameters["soknadId"]
+                /*
+                * Henter ut nødvendige parameter. kan evnt endres senere ved behov
+                * */
+                if (soknadID.isNullOrBlank()){
+                    logger.warn { "bad request. Ingen soknadID oppgitt" }
+                    call.respond(HttpStatusCode.BadRequest,"soknadId request parameter forventet")
+
+                }
+                else{
+                    val vurderinger = service.medlemskapVurdertRepository.finnVurdering(soknadID)
+                    val vurdering = vurderinger.sortedByDescending { it.id }.firstOrNull()
+                    if (vurdering!=null){
+                        logger.info { "vurdering funnet for soknadID $soknadID" }
+                        call.respond(HttpStatusCode.OK,mapToLetmeResponse(vurdering))
+                    }
+                    else{
+                        logger.warn { "ingen vurdering funnet for soknadID $soknadID" }
+                        call.respond(HttpStatusCode.NotFound)
+                    }
+                }
+            }
             post{
                 val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
                 val azp = callerPrincipal.payload.getClaim("azp").asString()
@@ -142,6 +171,8 @@ fun Routing.sagaRoutes(service: SagaService) {
     }
 }
 
+
+
 fun mapToFlexVurderingsRespons(match: VurderingDao): FlexVurderingRespons {
     val jsonNode:JsonNode = JaksonParser().parse(match.json)
     return FlexVurderingRespons(
@@ -150,10 +181,22 @@ fun mapToFlexVurderingsRespons(match: VurderingDao): FlexVurderingRespons {
         fnr = jsonNode.fnr(),
         fom = jsonNode.fom(),
         tom = jsonNode.tom(),
-        status = jsonNode.status())
+        status = jsonNode.statusKonklusjon())
 }
 fun JsonNode.status():String{
     return this.get("resultat").get("svar").asText()
+}
+fun JsonNode.statusKonklusjon():String{
+    runCatching { this.get("konklusjon").get(0).get("status").asText() }
+        .onSuccess { return it }
+        .onFailure {
+            secureLogger.warn(
+                "Gammel modell i respons for vurdering",
+                kv("fnr", this.fnr()),
+            )
+            return status() }
+    return ""
+
 }
 fun JsonNode.fom():LocalDate{
     val fom = this.get("datagrunnlag").get("periode").get("fom").asText()
