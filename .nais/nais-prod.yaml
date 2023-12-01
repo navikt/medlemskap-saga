@@ -18,6 +18,11 @@ spec:
   azure:
     application:
       enabled: true
+      allowAllUsers: true
+      claims:
+        extra:
+          - "NAVident"
+          - "azp_name"
   image: {{image}}
   liveness:
     path: "/isAlive"
@@ -53,6 +58,7 @@ spec:
     inbound:
       rules:
         - application: medlemskap-sykepenger-listener
+        - application: letme-lovme
         - application: sparkel-medlemskap
           namespace: tbd
           cluster: prod-fss
