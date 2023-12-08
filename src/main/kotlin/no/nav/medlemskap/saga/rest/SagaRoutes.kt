@@ -94,6 +94,15 @@ fun Routing.sagaRoutes(service: SagaService) {
             }
         }
     }
+    route("test"){
+        authenticate {
+            post {
+                val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
+                val username = callerPrincipal!!.payload.getClaim("preferred_username").asString()
+                call.respond(HttpStatusCode.OK,"Hello $username")
+            }
+        }
+    }
     route("/vurdering") {
         authenticate("azureAuth") {
             get("/{soknadId}") {
@@ -110,13 +119,13 @@ fun Routing.sagaRoutes(service: SagaService) {
                 if (soknadID.isNullOrBlank()){
                     logger.warn { "bad request. Ingen soknadID oppgitt" }
                     call.respond(HttpStatusCode.BadRequest,"soknadId request parameter forventet")
-
                 }
                 else{
                     val vurderinger = service.medlemskapVurdertRepository.finnVurdering(soknadID)
                     val vurdering = vurderinger.sortedByDescending { it.id }.firstOrNull()
                     if (vurdering!=null){
                         logger.info { "vurdering funnet for soknadID $soknadID" }
+                        audit(call.authentication,vurdering)
                         call.respond(HttpStatusCode.OK,mapToLetmeResponse(vurdering))
                     }
                     else{
@@ -171,6 +180,9 @@ fun Routing.sagaRoutes(service: SagaService) {
     }
 }
 
+fun audit(authentication: AuthenticationContext, vurdering: VurderingDao) {
+    print("test")
+}
 
 
 fun mapToFlexVurderingsRespons(match: VurderingDao): FlexVurderingRespons {
