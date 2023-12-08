@@ -95,7 +95,7 @@ fun Routing.sagaRoutes(service: SagaService) {
         }
     }
     route("test"){
-        authenticate {
+        authenticate ("azureAuth"){
             post {
                 val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
                 val username = callerPrincipal!!.payload.getClaim("preferred_username").asString()
