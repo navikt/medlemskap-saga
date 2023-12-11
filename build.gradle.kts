@@ -61,7 +61,9 @@ dependencies {
     implementation("io.ktor:ktor-server-metrics-micrometer-jvm:2.1.2")
     implementation("com.natpryce:konfig:$konfigVersion")
     implementation("io.github.microutils:kotlin-logging:$kotlinLoggerVersion")
+    implementation("com.papertrailapp:logback-syslog4j:1.0.0")
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashVersion")
+
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     // 2.8.0 er tilgjengelig, burde kanskje oppdatere
     implementation("org.apache.kafka:kafka-clients:$kafkaVersion")
