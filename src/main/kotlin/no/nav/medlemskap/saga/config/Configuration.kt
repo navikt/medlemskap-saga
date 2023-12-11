@@ -9,7 +9,8 @@ private val logger = KotlinLogging.logger { }
 
 private val defaultProperties = ConfigurationMap(
     mapOf(
-        "AZURE_TENANT" to "",
+        "AZURE_TENANT" to "966ac572-f5b7-4bbe-aa88-c76419c0f851",
+        "AZURE_APP_CLIENT_ID" to "39f402c0-7373-49e3-9e64-9669181f78d4",
         "AZURE_APP_TENANT_ID" to "966ac572-f5b7-4bbe-aa88-c76419c0f851",
         "AZURE_AUTHORITY_ENDPOINT" to "https://login.microsoftonline.com",
         "SERVICE_USER_USERNAME" to "test",
@@ -25,7 +26,6 @@ private val defaultProperties = ConfigurationMap(
         "NAIS_APP_NAME" to "",
         "NAIS_CLUSTER_NAME" to "",
         "NAIS_APP_IMAGE" to "",
-        "AZURE_APP_CLIENT_ID" to "",
         "SAF_BASE_URL" to "",
         "SAF_API_KEY" to "",
         "OPPGAVE_BASE_URL" to "",

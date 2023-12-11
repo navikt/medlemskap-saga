@@ -22,6 +22,7 @@ import java.util.*
 
 private val logger = KotlinLogging.logger { }
 private val secureLogger = KotlinLogging.logger("tjenestekall")
+private val auditLogger = KotlinLogging.logger("audit")
 fun Routing.sagaRoutes(service: SagaService) {
     route("/findVureringerByFnr") {
         authenticate("azureAuth") {
@@ -94,15 +95,7 @@ fun Routing.sagaRoutes(service: SagaService) {
             }
         }
     }
-    route("test"){
-        authenticate ("azureAuth"){
-            post {
-                val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
-                val username = callerPrincipal!!.payload.getClaim("preferred_username").asString()
-                call.respond(HttpStatusCode.OK,"Hello $username")
-            }
-        }
-    }
+
     route("/vurdering") {
         authenticate("azureAuth") {
             get("/{soknadId}") {
@@ -181,7 +174,11 @@ fun Routing.sagaRoutes(service: SagaService) {
 }
 
 fun audit(authentication: AuthenticationContext, vurdering: VurderingDao) {
-    print("test")
+    val callerPrincipal: JWTPrincipal = authentication.principal()!!
+    val navIdent = callerPrincipal!!.payload.getClaim("NAVident").asString()
+    val azp_name = callerPrincipal!!.payload.getClaim("azp_name").asString()
+    val name = callerPrincipal!!.payload.getClaim("name").asString()
+    auditLogger.info("CEF:0|Lovvalg og Medlemskap|Lovme|1.0|audit:read|Vurdering av lovvalg og medlemskap|INFO|end="+System.currentTimeMillis()+" suid=$navIdent duid=${vurdering.fnr()} outcome=PERMIT msg=Vurdering av lovvalg og medlemskap");
 }
 
 
