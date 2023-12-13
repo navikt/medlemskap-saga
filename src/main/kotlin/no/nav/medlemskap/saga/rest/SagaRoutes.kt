@@ -188,8 +188,8 @@ fun audit(authentication: AuthenticationContext, vurdering: VurderingDao) {
     val today = LocalDate.now()
     val key = "$name-${vurdering.fnr()}-${today.year}-${today.month}-${today.dayOfMonth}-GET"
     if (!keys.contains(key)){
-        secureLogger.info("CEF:0|Lovvalg og Medlemskap|Lovme|1.0|audit:read|Vurdering av lovvalg og medlemskap|INFO|end="+System.currentTimeMillis()+" suid=$navIdent duid=${vurdering.fnr()} outcome=PERMIT msg=Vurdering av lovvalg og medlemskap");
-        //auditLogger.info("CEF:0|Lovvalg og Medlemskap|Lovme|1.0|audit:read|Vurdering av lovvalg og medlemskap|INFO|end="+System.currentTimeMillis()+" suid=$navIdent duid=${vurdering.fnr()} outcome=PERMIT msg=Vurdering av lovvalg og medlemskap");
+        //secureLogger.info("CEF:0|Lovvalg og Medlemskap|Lovme|1.0|audit:read|Vurdering av lovvalg og medlemskap|INFO|end="+System.currentTimeMillis()+" suid=$navIdent duid=${vurdering.fnr()} outcome=PERMIT msg=Vurdering av lovvalg og medlemskap");
+        auditLogger.info("CEF:0|Lovvalg og Medlemskap|Lovme|1.0|audit:read|Vurdering av lovvalg og medlemskap|INFO|end="+System.currentTimeMillis()+" suid=$navIdent duid=${vurdering.fnr()} outcome=PERMIT msg=Vurdering av lovvalg og medlemskap");
         keys.add(key)
     }
 }
