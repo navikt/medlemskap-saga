@@ -239,5 +239,5 @@ private fun cleanup(keys: MutableSet<String>){
         logger.info("Cleaning up cache!!")
         keys.clear()
 
-    }, 1, 1, TimeUnit.MINUTES)
+    }, 1, 1, TimeUnit.DAYS)
 }
