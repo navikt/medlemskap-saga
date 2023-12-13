@@ -19,11 +19,18 @@ import no.nav.medlemskap.saga.service.SagaService
 import no.nav.medlemskap.sykepenger.lytter.jakson.JaksonParser
 import java.time.LocalDate
 import java.util.*
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 private val logger = KotlinLogging.logger { }
 private val secureLogger = KotlinLogging.logger("tjenestekall")
 private val auditLogger = KotlinLogging.logger("audit")
+val keys = mutableSetOf<String>()
+
+
+
 fun Routing.sagaRoutes(service: SagaService) {
+    cleanup(keys)
     route("/findVureringerByFnr") {
         authenticate("azureAuth") {
             post{
@@ -172,14 +179,21 @@ fun Routing.sagaRoutes(service: SagaService) {
         }
     }
 }
-
 fun audit(authentication: AuthenticationContext, vurdering: VurderingDao) {
+
     val callerPrincipal: JWTPrincipal = authentication.principal()!!
     val navIdent = callerPrincipal!!.payload.getClaim("NAVident").asString()
     val azp_name = callerPrincipal!!.payload.getClaim("azp_name").asString()
     val name = callerPrincipal!!.payload.getClaim("name").asString()
-    auditLogger.info("CEF:0|Lovvalg og Medlemskap|Lovme|1.0|audit:read|Vurdering av lovvalg og medlemskap|INFO|end="+System.currentTimeMillis()+" suid=$navIdent duid=${vurdering.fnr()} outcome=PERMIT msg=Vurdering av lovvalg og medlemskap");
+    val today = LocalDate.now()
+    val key = "$name-${vurdering.fnr()}-${today.year}-${today.month}-${today.dayOfMonth}-GET"
+    if (!keys.contains(key)){
+        secureLogger.info("CEF:0|Lovvalg og Medlemskap|Lovme|1.0|audit:read|Vurdering av lovvalg og medlemskap|INFO|end="+System.currentTimeMillis()+" suid=$navIdent duid=${vurdering.fnr()} outcome=PERMIT msg=Vurdering av lovvalg og medlemskap");
+        //auditLogger.info("CEF:0|Lovvalg og Medlemskap|Lovme|1.0|audit:read|Vurdering av lovvalg og medlemskap|INFO|end="+System.currentTimeMillis()+" suid=$navIdent duid=${vurdering.fnr()} outcome=PERMIT msg=Vurdering av lovvalg og medlemskap");
+        keys.add(key)
+    }
 }
+
 
 
 fun mapToFlexVurderingsRespons(match: VurderingDao): FlexVurderingRespons {
@@ -217,4 +231,13 @@ fun JsonNode.tom():LocalDate{
 }
 fun JsonNode.fnr():String{
     return this.get("datagrunnlag").get("fnr").asText()
+}
+
+private fun cleanup(keys: MutableSet<String>){
+
+    Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate({
+        logger.info("Cleaning up cache!!")
+        keys.clear()
+
+    }, 1, 1, TimeUnit.MINUTES)
 }
