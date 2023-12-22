@@ -142,8 +142,9 @@ fun Routing.sagaRoutes(service: SagaService) {
                 val callId = call.callId ?: UUID.randomUUID().toString()
                 try {
                     if (!callerPrincipal.hasRole(Roles.CAN_WRITE)){
-                        secureLogger.info("Uautorisert akksess : /vurdering",
+                        secureLogger.warn("Uautorisert aksess. bruker har ikke skrive rettigheter",
                             kv("callId", callId),
+                            kv("endpoint", "/vurdering"),
                             kv("operation", "PUT"),
                             kv("user", objectMapper.writeValueAsString(callerPrincipal.payload))
                         )
