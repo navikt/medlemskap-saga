@@ -23,8 +23,12 @@ enum class Roles {
 }
 
 fun JWTPrincipal.getRoles():Set<Roles>{
-    val roles = mutableListOf<Roles>()
-    val groups:Array<String> = payload.getClaim("groups").asArray(String::class.java)
+    var groups:Array<String> = emptyArray()
+    try{
+     groups = payload.getClaim("groups").asArray(String::class.java)}
+    catch (t:Throwable){
+
+    }
     return groups.map { findRolesToGroup(it) }.toSet()
 
 }
