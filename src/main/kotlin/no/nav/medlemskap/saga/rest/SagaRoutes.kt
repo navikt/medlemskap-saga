@@ -151,6 +151,7 @@ fun Routing.sagaRoutes(service: SagaService) {
                 catch (t:Throwable){
 
                 }
+                call.respond(HttpStatusCode.Accepted)
             }
             post{
                 val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
