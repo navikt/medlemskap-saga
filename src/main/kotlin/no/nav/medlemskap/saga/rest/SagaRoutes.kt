@@ -149,7 +149,7 @@ fun Routing.sagaRoutes(service: SagaService) {
                     val request = call.receive<PutRequest>()
                 }
                 catch (t:Throwable){
-
+                    call.respond(HttpStatusCode.InternalServerError,t.printStackTrace())
                 }
                 call.respond(HttpStatusCode.Accepted)
             }
