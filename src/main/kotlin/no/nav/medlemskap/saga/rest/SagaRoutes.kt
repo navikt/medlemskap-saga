@@ -16,7 +16,7 @@ import no.nav.medlemskap.saga.persistence.Periode
 import no.nav.medlemskap.saga.persistence.VurderingDao
 import no.nav.medlemskap.saga.persistence.fnr
 import no.nav.medlemskap.saga.rest.security.Roles
-import no.nav.medlemskap.saga.rest.security.validateAutorization
+import no.nav.medlemskap.saga.rest.security.haveAccess
 import no.nav.medlemskap.saga.service.SagaService
 import no.nav.medlemskap.sykepenger.lytter.jakson.JaksonParser
 import java.time.LocalDate
@@ -145,7 +145,10 @@ fun Routing.sagaRoutes(service: SagaService) {
                     kv("callId", callId),
                     kv("operation", "PUT"))
                 try {
-                    validateAutorization(call, Roles.CAN_WRITE)
+
+                    if (!haveAccess(call,Roles.CAN_WRITE)){
+                        call.respond(HttpStatusCode.Unauthorized,"User has not the propper rights to access this endpoint")
+                    }
                     val request = call.receive<PutRequest>()
                 }
                 catch (t:Throwable){
