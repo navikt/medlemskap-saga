@@ -10,13 +10,12 @@ import io.ktor.server.plugins.callid.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import io.ktor.util.debug.*
 import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.medlemskap.saga.persistence.Periode
 import no.nav.medlemskap.saga.persistence.VurderingDao
 import no.nav.medlemskap.saga.persistence.fnr
 import no.nav.medlemskap.saga.rest.security.Roles
-import no.nav.medlemskap.saga.rest.security.haveAccess
+import no.nav.medlemskap.saga.rest.security.hasRole
 import no.nav.medlemskap.saga.service.SagaService
 import no.nav.medlemskap.sykepenger.lytter.jakson.JaksonParser
 import java.time.LocalDate
@@ -141,14 +140,18 @@ fun Routing.sagaRoutes(service: SagaService) {
                 val azp = callerPrincipal.payload.getClaim("azp").asString()
                 secureLogger.info("EvalueringRoute: azp-claim i principal-token: {} ", azp)
                 val callId = call.callId ?: UUID.randomUUID().toString()
-                logger.info("kall autentisert, url : /vurdering",
-                    kv("callId", callId),
-                    kv("operation", "PUT"))
                 try {
-
-                    if (!haveAccess(call,Roles.CAN_WRITE)){
+                    if (!callerPrincipal.hasRole(Roles.CAN_WRITE)){
+                        secureLogger.info("Uautorisert akksess : /vurdering",
+                            kv("callId", callId),
+                            kv("operation", "PUT"),
+                            kv("user", objectMapper.writeValueAsString(callerPrincipal.payload))
+                        )
                         call.respond(HttpStatusCode.Unauthorized,"User has not the propper rights to access this endpoint")
                     }
+                    logger.info("kall autentisert, url : /vurdering",
+                        kv("callId", callId),
+                        kv("operation", "PUT"))
                     val request = call.receive<PutRequest>()
                 }
                 catch (t:Throwable){

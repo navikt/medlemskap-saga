@@ -32,6 +32,16 @@ fun JWTPrincipal.getRoles():Set<Roles>{
     return groups.map { findRolesToGroup(it) }.toSet()
 
 }
+fun JWTPrincipal.hasRole(role:Roles):Boolean{
+    var groups:Array<String> = emptyArray()
+    try{
+        groups = payload.getClaim("groups").asArray(String::class.java)}
+    catch (t:Throwable){
+
+    }
+    return groups.map { findRolesToGroup(it) }.toSet().contains(role)
+
+}
 fun findRolesToGroup(group:String):Roles{
 
     return clientIdToYRolesMap.getOrDefault(group,Roles.CAN_READ)
