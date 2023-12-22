@@ -15,6 +15,8 @@ import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.medlemskap.saga.persistence.Periode
 import no.nav.medlemskap.saga.persistence.VurderingDao
 import no.nav.medlemskap.saga.persistence.fnr
+import no.nav.medlemskap.saga.rest.security.Roles
+import no.nav.medlemskap.saga.rest.security.validateAutorization
 import no.nav.medlemskap.saga.service.SagaService
 import no.nav.medlemskap.sykepenger.lytter.jakson.JaksonParser
 import java.time.LocalDate
@@ -134,6 +136,22 @@ fun Routing.sagaRoutes(service: SagaService) {
                     }
                 }
             }
+            put ("/{soknadId}"){
+                val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
+                val azp = callerPrincipal.payload.getClaim("azp").asString()
+                secureLogger.info("EvalueringRoute: azp-claim i principal-token: {} ", azp)
+                val callId = call.callId ?: UUID.randomUUID().toString()
+                logger.info("kall autentisert, url : /vurdering",
+                    kv("callId", callId),
+                    kv("operation", "PUT"))
+                try {
+                    validateAutorization(call, Roles.CAN_WRITE)
+                    val request = call.receive<PutRequest>()
+                }
+                catch (t:Throwable){
+
+                }
+            }
             post{
                 val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
                 val azp = callerPrincipal.payload.getClaim("azp").asString()
@@ -179,6 +197,9 @@ fun Routing.sagaRoutes(service: SagaService) {
         }
     }
 }
+
+
+
 fun audit(authentication: AuthenticationContext, vurdering: VurderingDao) {
 
     val callerPrincipal: JWTPrincipal = authentication.principal()!!
