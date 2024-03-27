@@ -21,7 +21,7 @@ class RepositoryTests : AbstractContainerDatabaseTest() {
     companion object {
         // will be shared between test methods
         @Container
-        private val postgresqlContainer     = MyPostgreSQLContainer("postgres:12")
+        private val postgresqlContainer     = MyPostgreSQLContainer("postgres:14")
             .withDatabaseName("medlemskap")
             .withUsername("postgres")
             .withPassword("test")
