@@ -21,7 +21,6 @@ spec:
         databases:
           - name: medlemskap
             envVarPrefix: DB
-            diskAutoresize: true
   azure:
     application:
       enabled: true
