@@ -12,6 +12,13 @@ data class VurderingRespons(
     val vurdering:JsonNode
 )
 
+data class PutRequest(
+    val dbId:String,
+    val soknadId: String,
+    val vurderingsDato: Date,
+    val vurdering:JsonNode
+)
+
 
 fun mapToLetmeResponse(vurdering: VurderingDao): VurderingRespons {
 return VurderingRespons(

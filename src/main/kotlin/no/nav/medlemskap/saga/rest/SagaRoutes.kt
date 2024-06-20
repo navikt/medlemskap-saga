@@ -10,19 +10,28 @@ import io.ktor.server.plugins.callid.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import io.ktor.util.debug.*
 import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.medlemskap.saga.persistence.Periode
 import no.nav.medlemskap.saga.persistence.VurderingDao
 import no.nav.medlemskap.saga.persistence.fnr
+import no.nav.medlemskap.saga.rest.security.Roles
+import no.nav.medlemskap.saga.rest.security.hasRole
 import no.nav.medlemskap.saga.service.SagaService
 import no.nav.medlemskap.sykepenger.lytter.jakson.JaksonParser
 import java.time.LocalDate
 import java.util.*
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 private val logger = KotlinLogging.logger { }
 private val secureLogger = KotlinLogging.logger("tjenestekall")
+private val auditLogger = KotlinLogging.logger("audit")
+val keys = mutableSetOf<String>()
+
+
+
 fun Routing.sagaRoutes(service: SagaService) {
+    cleanup(keys)
     route("/findVureringerByFnr") {
         authenticate("azureAuth") {
             post{
@@ -94,6 +103,7 @@ fun Routing.sagaRoutes(service: SagaService) {
             }
         }
     }
+
     route("/vurdering") {
         authenticate("azureAuth") {
             get("/{soknadId}") {
@@ -110,13 +120,13 @@ fun Routing.sagaRoutes(service: SagaService) {
                 if (soknadID.isNullOrBlank()){
                     logger.warn { "bad request. Ingen soknadID oppgitt" }
                     call.respond(HttpStatusCode.BadRequest,"soknadId request parameter forventet")
-
                 }
                 else{
                     val vurderinger = service.medlemskapVurdertRepository.finnVurdering(soknadID)
                     val vurdering = vurderinger.sortedByDescending { it.id }.firstOrNull()
                     if (vurdering!=null){
                         logger.info { "vurdering funnet for soknadID $soknadID" }
+                        audit(call.authentication,vurdering)
                         call.respond(HttpStatusCode.OK,mapToLetmeResponse(vurdering))
                     }
                     else{
@@ -124,6 +134,31 @@ fun Routing.sagaRoutes(service: SagaService) {
                         call.respond(HttpStatusCode.NotFound)
                     }
                 }
+            }
+            put ("/{soknadId}"){
+                val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
+                val azp = callerPrincipal.payload.getClaim("azp").asString()
+                secureLogger.info("EvalueringRoute: azp-claim i principal-token: {} ", azp)
+                val callId = call.callId ?: UUID.randomUUID().toString()
+                try {
+                    if (!callerPrincipal.hasRole(Roles.CAN_WRITE)){
+                        secureLogger.warn("Uautorisert aksess. bruker har ikke skrive rettigheter",
+                            kv("callId", callId),
+                            kv("endpoint", "/vurdering"),
+                            kv("operation", "PUT"),
+                            kv("user", objectMapper.writeValueAsString(callerPrincipal.payload))
+                        )
+                        call.respond(HttpStatusCode.Unauthorized,"User has not the propper rights to access this endpoint")
+                    }
+                    logger.info("kall autentisert, url : /vurdering",
+                        kv("callId", callId),
+                        kv("operation", "PUT"))
+                    val request = call.receive<PutRequest>()
+                }
+                catch (t:Throwable){
+                    call.respond(HttpStatusCode.InternalServerError,t.printStackTrace())
+                }
+                call.respond(HttpStatusCode.Accepted)
             }
             post{
                 val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
@@ -173,6 +208,23 @@ fun Routing.sagaRoutes(service: SagaService) {
 
 
 
+fun audit(authentication: AuthenticationContext, vurdering: VurderingDao) {
+
+    val callerPrincipal: JWTPrincipal = authentication.principal()!!
+    val navIdent = callerPrincipal!!.payload.getClaim("NAVident").asString()
+    val azp_name = callerPrincipal!!.payload.getClaim("azp_name").asString()
+    val name = callerPrincipal!!.payload.getClaim("name").asString()
+    val today = LocalDate.now()
+    val key = "$name-${vurdering.fnr()}-${today.year}-${today.month}-${today.dayOfMonth}-GET"
+    if (!keys.contains(key)){
+        //secureLogger.info("CEF:0|Lovvalg og Medlemskap|Lovme|1.0|audit:read|Vurdering av lovvalg og medlemskap|INFO|end="+System.currentTimeMillis()+" suid=$navIdent duid=${vurdering.fnr()} outcome=PERMIT msg=Vurdering av lovvalg og medlemskap");
+        auditLogger.info("CEF:0|Lovvalg og Medlemskap|Lovme|1.0|audit:read|Vurdering av lovvalg og medlemskap|INFO|end="+System.currentTimeMillis()+" suid=$navIdent duid=${vurdering.fnr()} outcome=PERMIT msg=Vurdering av lovvalg og medlemskap");
+        keys.add(key)
+    }
+}
+
+
+
 fun mapToFlexVurderingsRespons(match: VurderingDao): FlexVurderingRespons {
     val jsonNode:JsonNode = JaksonParser().parse(match.json)
     return FlexVurderingRespons(
@@ -208,4 +260,13 @@ fun JsonNode.tom():LocalDate{
 }
 fun JsonNode.fnr():String{
     return this.get("datagrunnlag").get("fnr").asText()
+}
+
+private fun cleanup(keys: MutableSet<String>){
+
+    Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate({
+        logger.info("Cleaning up cache!!")
+        keys.clear()
+
+    }, 1, 1, TimeUnit.DAYS)
 }

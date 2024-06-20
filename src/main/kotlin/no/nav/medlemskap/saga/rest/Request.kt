@@ -9,6 +9,7 @@ data class Request(
     val ytelse: Ytelse?,
 )
 
+
 data class InputPeriode(
     val fom: LocalDate,
     val tom: LocalDate
