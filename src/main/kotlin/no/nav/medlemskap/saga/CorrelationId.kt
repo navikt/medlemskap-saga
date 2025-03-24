@@ -1,7 +1,5 @@
 package no.nav.medlemskap.saga
 
-import io.ktor.client.engine.*
-import io.ktor.server.application.*
 import org.slf4j.MDC
 import java.util.*
 

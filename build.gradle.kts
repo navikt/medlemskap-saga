@@ -44,7 +44,6 @@ dependencies {
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
-    implementation("org.apache.httpcomponents:httpclient:$httpClientVersion")
     implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
     implementation("io.ktor:ktor-server-call-logging-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-call-id-jvm:$ktorVersion")
@@ -55,7 +54,7 @@ dependencies {
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
     implementation("io.ktor:ktor-client-apache:$ktorVersion")
     implementation("io.ktor:ktor-client-json:$ktorVersion")
-    implementation("org.apache.httpcomponents:httpclient:$httpClientVersion")
+
 
     implementation("io.micrometer:micrometer-registry-prometheus:1.7.0")
     implementation("io.ktor:ktor-server-metrics-micrometer-jvm:2.1.2")
