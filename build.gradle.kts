@@ -57,7 +57,7 @@ dependencies {
 
 
     implementation("io.micrometer:micrometer-registry-prometheus:1.7.0")
-    implementation("io.ktor:ktor-server-metrics-micrometer-jvm:2.1.2")
+    implementation("io.ktor:ktor-server-metrics-micrometer-jvm:$ktorVersion")
     implementation("com.natpryce:konfig:$konfigVersion")
     implementation("io.github.microutils:kotlin-logging:$kotlinLoggerVersion")
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashVersion")
