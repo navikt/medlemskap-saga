@@ -1,4 +1,4 @@
-val ktorVersion = "2.1.3"
+val ktorVersion = "3.0.3"
 val kafkaVersion = "3.3.1"
 val jacksonVersion = "2.14.0"
 val konfigVersion = "1.6.10.0"
@@ -13,7 +13,7 @@ val httpClientVersion = "4.5.13"
 val mainClass = "no.nav.medlemskap.saga.ApplicationKt"
 
 plugins {
-    kotlin("jvm") version "1.7.10"
+    kotlin("jvm") version "2.1.0"
     application
     id("com.github.johnrengelman.shadow") version "7.0.0"
 }
@@ -79,10 +79,26 @@ dependencies {
     implementation("com.github.seratch:kotliquery:$kotliqueryVersion")
 
 }
+kotlin {
+    jvmToolchain(21)
+}
 
+tasks.withType<Test> {
+    javaLauncher.set(javaToolchains.launcherFor {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    })
+}
+tasks.withType<Wrapper> {
+    gradleVersion = "8.12"
+}
+tasks.compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "21" // Set JVM target for Kotlin code to 21
+    }
+}
 tasks {
     compileKotlin {
-        kotlinOptions.jvmTarget = "15"
+        kotlinOptions.jvmTarget = "21"
         kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
     }
     shadowJar {
@@ -97,14 +113,19 @@ tasks {
             )
         }
     }
+    java{
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
 
+    }
     test {
         useJUnitPlatform()
-        //Trengs inntil videre for bytebuddy med java 16, som brukes av mockk.
         jvmArgs = listOf("-Dnet.bytebuddy.experimental=true")
+        java.targetCompatibility = JavaVersion.VERSION_21
+        java.sourceCompatibility = JavaVersion.VERSION_21
     }
-}
 
+}
 application {
     mainClass.set("no.nav.medlemskap.saga.ApplicationKt")
 }
