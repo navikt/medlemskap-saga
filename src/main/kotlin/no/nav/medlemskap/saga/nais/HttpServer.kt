@@ -8,9 +8,7 @@ import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.plugins.callid.*
 import io.ktor.server.plugins.contentnegotiation.*
-import io.ktor.server.plugins.statuspages.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
+
 import io.ktor.server.routing.*
 import io.ktor.server.metrics.micrometer.*
 
@@ -32,9 +30,8 @@ import no.nav.medlemskap.saga.persistence.PostgresMedlemskapVurdertRepository
 import no.nav.medlemskap.saga.rest.objectMapper
 import no.nav.medlemskap.saga.rest.sagaRoutes
 import no.nav.medlemskap.saga.service.SagaService
-import org.apache.http.impl.conn.SystemDefaultRoutePlanner
 import java.io.Writer
-import java.net.ProxySelector
+
 import java.util.*
 
 fun createHttpServer(consumeJob: Job) = embeddedServer(Netty, port = 8080) {
