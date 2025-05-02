@@ -21,7 +21,7 @@ class JwtConfig(val configuration: Configuration, azureAdOpenIdConfiguration: Az
         .rateLimited(10, 1, TimeUnit.MINUTES)
         .build()
 
-    fun validate(credentials: JWTCredential): Principal? {
+    fun validate(credentials: JWTCredential): JWTPrincipal? {
         logger.info { "Validerer JWT Credential" }
         return try {
             requireNotNull(credentials.payload.audience) { "Auth: Audience mangler i token" }

@@ -1,10 +1,4 @@
 package no.nav.medlemskap.saga.nais
-import com.fasterxml.jackson.core.util.DefaultIndenter
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.MapperFeature
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import io.ktor.client.*
 import io.ktor.client.engine.apache.*
 import io.ktor.http.*
@@ -13,17 +7,15 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.plugins.callid.*
-import io.ktor.server.plugins.callloging.*
 import io.ktor.server.plugins.contentnegotiation.*
-import io.ktor.server.plugins.statuspages.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
+
 import io.ktor.server.routing.*
 import io.ktor.server.metrics.micrometer.*
 
 import org.slf4j.event.Level
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
+import io.ktor.server.plugins.calllogging.CallLogging
 import io.micrometer.prometheus.PrometheusMeterRegistry
 import io.prometheus.client.exporter.common.TextFormat
 import kotlinx.coroutines.Dispatchers
@@ -38,19 +30,15 @@ import no.nav.medlemskap.saga.persistence.PostgresMedlemskapVurdertRepository
 import no.nav.medlemskap.saga.rest.objectMapper
 import no.nav.medlemskap.saga.rest.sagaRoutes
 import no.nav.medlemskap.saga.service.SagaService
-import org.apache.http.impl.conn.SystemDefaultRoutePlanner
 import java.io.Writer
-import java.net.ProxySelector
+
 import java.util.*
 
-fun createHttpServer(consumeJob: Job) = embeddedServer(Netty, applicationEngineEnvironment {
+fun createHttpServer(consumeJob: Job) = embeddedServer(Netty, port = 8080) {
     val useAuthentication: Boolean = true
     val configuration: Configuration = Configuration()
     val azureAdOpenIdConfiguration: AzureAdOpenIdConfiguration = getAadConfig(configuration.azureAd)
     val service: SagaService = SagaService(PostgresMedlemskapVurdertRepository(DataSourceBuilder(System.getenv()).getDataSource()))
-
-    connector { port = 8080 }
-    module {
 
         install(CallId) {
             header(MDC_CALL_ID)
@@ -90,7 +78,7 @@ fun createHttpServer(consumeJob: Job) = embeddedServer(Netty, applicationEngineE
             sagaRoutes(service)
         }
     }
-})
+
 
 suspend fun writeMetrics004(writer: Writer, registry: PrometheusMeterRegistry) {
     withContext(Dispatchers.IO) {
