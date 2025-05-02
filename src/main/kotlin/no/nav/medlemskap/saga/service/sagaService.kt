@@ -18,6 +18,13 @@ class SagaService(val medlemskapVurdertRepository: MedlemskapVurdertRepository) 
         private val secureLogger = KotlinLogging.logger("tjenestekall")
     }
     fun handle(record: medlemskapVurdertRecord) {
+        secureLogger.info("Kafka: Leser melding fra medlemskap vurdert",
+            kv("callId", record.key),
+            kv("topic", record.topic),
+            kv("partition", record.partition),
+            kv("offset", record.offset)
+        )
+
         if (validateRecord(record)){
             try {
                 val ytelse = kotlin.runCatching { objectMapper.readTree(record.json).get("datagrunnlag").get("ytelse").asText() }.getOrElse { "UKJENT" }
@@ -53,12 +60,12 @@ class SagaService(val medlemskapVurdertRepository: MedlemskapVurdertRepository) 
 
 
     private fun medlemskapVurdertRecord.logIkkeLagret() =
-        SagaService.log.warn(
+        log.warn(
             "Søknad ikke  lagret til lovme basert på validering ${key}, offsett: $offset, partiotion: $partition, topic: $topic",
             kv("callId", key),
         )
     private fun medlemskapVurdertRecord.logLagringFeilet(cause:Throwable) =
-        SagaService.log.error(
+        log.error(
             "Lagring av medlemskapsvurdering feilet pga teknisk feil. Årsak  : ${cause.message}",
             kv("callId", key),
         )

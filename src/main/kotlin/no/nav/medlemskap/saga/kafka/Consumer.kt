@@ -12,6 +12,7 @@ import no.nav.medlemskap.saga.lytter.Metrics
 import no.nav.medlemskap.saga.persistence.DataSourceBuilder
 import no.nav.medlemskap.saga.persistence.PostgresMedlemskapVurdertRepository
 import no.nav.medlemskap.saga.service.SagaService
+import org.apache.kafka.clients.consumer.CommitFailedException
 import org.apache.kafka.clients.consumer.KafkaConsumer
 import java.time.Duration
 
@@ -36,12 +37,6 @@ class Consumer(
                 it.topic(),
                 it.value())
             }
-            .also {
-                //Metrics.incReceivedTotal(it.count())
-                //it.forEach { hendelse ->
-                //    Metrics.incReceivedKilde(hendelse.kilde)
-                //}
-            }
 
     fun flow(): Flow<List<medlemskapVurdertRecord>> =
         flow {
@@ -53,7 +48,11 @@ class Consumer(
             logger.debug { "received  :"+ it.size + "on topic "+config.topic }
             it.forEach { record -> service.handle(record) }
         }.onEach {
-            consumer.commitAsync()
+            try {
+                consumer.commitSync()
+            } catch (e: CommitFailedException) {
+                logger.error { "Commit feilet med feilmeldingen: ${e.message}" }
+            }
         }.onEach {
             Metrics.incProcessedTotal(it.count())
         }
