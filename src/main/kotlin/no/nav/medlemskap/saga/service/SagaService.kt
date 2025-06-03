@@ -8,22 +8,25 @@ import no.nav.medlemskap.saga.persistence.MedlemskapVurdertRepository
 import no.nav.medlemskap.saga.persistence.VurderingDao
 import no.nav.medlemskap.saga.rest.objectMapper
 import no.nav.medlemskap.sykepenger.lytter.jakson.JaksonParser
+import org.slf4j.MarkerFactory
 import java.lang.Exception
 import java.util.*
 
 class SagaService(val medlemskapVurdertRepository: MedlemskapVurdertRepository) {
 
-    companion object {
-        private val log = KotlinLogging.logger { }
-        private val secureLogger = KotlinLogging.logger("tjenestekall")
-    }
+    private val log = KotlinLogging.logger { }
+    private val teamLogs = MarkerFactory.getMarker("TEAM_LOGS")
+
     fun handle(record: medlemskapVurdertRecord) {
-        secureLogger.info("Kafka: Leser melding fra medlemskap vurdert",
+        log.info(
+            teamLogs,
+            "Kafka: Leser melding fra medlemskap vurdert",
             kv("callId", record.key),
             kv("topic", record.topic),
             kv("partition", record.partition),
             kv("offset", record.offset)
         )
+
 
         if (validateRecord(record)){
             try {
@@ -32,7 +35,10 @@ class SagaService(val medlemskapVurdertRepository: MedlemskapVurdertRepository) 
             }
             catch (e:Exception){
                 record.logLagringFeilet(e)
-                secureLogger.error { record.json }
+                log.error(
+                    teamLogs,
+                    "Feil oppstod ved lagring av medlemskap vurdert med feilmelding: {}", record.json
+                )
                 throw e
 
             }
@@ -71,7 +77,7 @@ class SagaService(val medlemskapVurdertRepository: MedlemskapVurdertRepository) 
         )
 
     private fun medlemskapVurdertRecord.logSLagret() =
-        SagaService.log.info(
+        log.info(
             "Søknad lagret til Lovme - sykmeldingId:Søknad lagret til Lovme - sykmeldingId: ${key}, offsett: $offset, partiotion: $partition, topic: $topic",
            kv("callId", key),
         )
