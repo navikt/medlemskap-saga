@@ -10,9 +10,11 @@ spec:
     logging:
       destinations:
         - id: loki
+    autoInstrumentation:
+      enabled: true
+      runtime: java
   resources:
     limits:
-      cpu: 500m
       memory: 512Mi
     requests:
       cpu: 200m
