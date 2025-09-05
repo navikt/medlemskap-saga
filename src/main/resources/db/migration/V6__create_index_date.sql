@@ -1,0 +1,1 @@
+CREATE INDEX date_index ON public.vurdering USING btree (date);
