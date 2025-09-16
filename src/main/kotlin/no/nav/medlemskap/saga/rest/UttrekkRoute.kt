@@ -27,8 +27,8 @@ fun Routing.uttrekkRoute(uttrekkService: UttrekkService) {
                     status = HttpStatusCode.BadRequest
                 )
 
-                val måned = maanedParam.split("-")[0]
-                val år = maanedParam.split("-")[1]
+                val år = maanedParam.split("-")[0]
+                val måned = maanedParam.split("-")[1]
 
                 call.respond(HttpStatusCode.OK, "Dette skal være endepunktet for hentUttrekk for måned $måned og år $år")
             }
