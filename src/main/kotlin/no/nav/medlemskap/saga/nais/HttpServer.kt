@@ -27,9 +27,12 @@ import no.nav.medlemskap.saga.config.JwtConfig.Companion.REALM
 import no.nav.medlemskap.saga.lytter.Metrics
 import no.nav.medlemskap.saga.persistence.DataSourceBuilder
 import no.nav.medlemskap.saga.persistence.PostgresMedlemskapVurdertRepository
+import no.nav.medlemskap.saga.persistence.UttrekkRepository
 import no.nav.medlemskap.saga.rest.objectMapper
 import no.nav.medlemskap.saga.rest.sagaRoutes
+import no.nav.medlemskap.saga.rest.uttrekkRoute
 import no.nav.medlemskap.saga.service.SagaService
+import no.nav.medlemskap.saga.service.UttrekkService
 import java.io.Writer
 
 import java.util.*
@@ -39,6 +42,7 @@ fun createHttpServer(consumeJob: Job) = embeddedServer(Netty, port = 8080) {
     val configuration: Configuration = Configuration()
     val azureAdOpenIdConfiguration: AzureAdOpenIdConfiguration = getAadConfig(configuration.azureAd)
     val service: SagaService = SagaService(PostgresMedlemskapVurdertRepository(DataSourceBuilder(System.getenv()).getDataSource()))
+    val uttrekkService = UttrekkService(UttrekkRepository())
 
         install(CallId) {
             header(MDC_CALL_ID)
@@ -76,6 +80,7 @@ fun createHttpServer(consumeJob: Job) = embeddedServer(Netty, port = 8080) {
         routing {
             naisRoutes(consumeJob)
             sagaRoutes(service)
+            uttrekkRoute(uttrekkService)
         }
     }
 

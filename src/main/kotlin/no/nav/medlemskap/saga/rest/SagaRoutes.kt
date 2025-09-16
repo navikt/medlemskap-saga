@@ -174,16 +174,6 @@ fun Routing.sagaRoutes(service: SagaService) {
             }
         }
     }
-
-
-    route("/hentUttrekk") {
-        authenticate("azureAuth") {
-            get {
-                call.respond(HttpStatusCode.OK, "Dette skal være endepunktet for hentUttrekk")
-            }
-        }
-    }
-
 }
 
 
