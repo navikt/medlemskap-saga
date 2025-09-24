@@ -1,13 +1,13 @@
 package no.nav.medlemskap.saga.service
 
-import no.nav.medlemskap.saga.domain.JacksonParser
 import no.nav.medlemskap.saga.domain.Vurdering
 import no.nav.medlemskap.saga.persistence.VurderingForAnalyse
+import no.nav.medlemskap.sykepenger.lytter.jakson.JacksonParser
 
 class UtledVurderingstagger {
     fun utled(jsonVurdering: String): VurderingForAnalyse {
 
-        val vurdering = JacksonParser().ToJson(jsonVurdering)
+        val vurdering = JacksonParser().parse(jsonVurdering)
         val vurderingFraJson: Vurdering = JacksonParser().toDomainObject(vurdering)
 
         return VurderingForAnalyse(

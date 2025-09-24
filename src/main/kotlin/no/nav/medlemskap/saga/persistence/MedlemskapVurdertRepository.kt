@@ -6,7 +6,6 @@ import javax.sql.DataSource
 import kotliquery.queryOf
 import kotliquery.sessionOf
 import kotliquery.using
-import no.nav.medlemskap.sykepenger.lytter.jakson.JaksonParser
 
 interface MedlemskapVurdertRepository {
     fun finnVurdering(soknadId: String): List<VurderingDao>
