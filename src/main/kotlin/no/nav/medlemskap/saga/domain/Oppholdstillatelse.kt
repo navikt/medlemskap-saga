@@ -2,7 +2,7 @@ package no.nav.medlemskap.saga.domain
 
 import java.time.LocalDate
 
-data class Oppholdstilatelse(
+data class Oppholdstillatelse(
     val id: String,
     val sporsmalstekst: String?,
     val svar:Boolean,

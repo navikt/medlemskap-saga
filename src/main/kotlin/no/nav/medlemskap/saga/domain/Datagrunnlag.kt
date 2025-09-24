@@ -7,10 +7,9 @@ import java.time.LocalDate
 data class Datagrunnlag(
     val ytelse: Ytelse,
     val periode: InputPeriode,
-    val fnr:String,
+    val fnr: String,
     val førsteDagForYtelse: LocalDate,
     val startDatoForYtelse: LocalDate,
     val brukerinput: Brukerinput,
-    val pdlpersonhistorikk:PdlPersonHistorikk,
-    val arbeidsforhold: List<Arbeidsforhold> = listOf()
+    val pdlpersonhistorikk: PdlPersonHistorikk,
 )
