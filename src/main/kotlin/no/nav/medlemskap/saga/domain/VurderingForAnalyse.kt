@@ -1,8 +1,8 @@
-package no.nav.medlemskap.saga.persistence
+package no.nav.medlemskap.saga.domain
 
-import no.nav.medlemskap.saga.domain.Svar
 import no.nav.medlemskap.saga.rest.Ytelse
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
 data class VurderingForAnalyse(
     val ytelse: Ytelse,
@@ -14,5 +14,8 @@ data class VurderingForAnalyse(
     val svar: Svar,
     val årsaker: List<String>,
     val konklusjon: Svar,
-    val avklaringsListe: List<String>
+    val avklaringsListe: List<String>,
+    val nyeSpørsmål: Boolean,
+    val antallDagerMedSykmelding: Long
+
 )

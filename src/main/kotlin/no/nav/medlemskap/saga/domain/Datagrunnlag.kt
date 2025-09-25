@@ -1,6 +1,5 @@
 package no.nav.medlemskap.saga.domain
 
-import no.nav.medlemskap.saga.rest.InputPeriode
 import no.nav.medlemskap.saga.rest.Ytelse
 import java.time.LocalDate
 
