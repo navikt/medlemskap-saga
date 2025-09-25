@@ -22,7 +22,8 @@ class UtledVurderingstagger {
             vurderingFraJson.konklusjon.status,
             vurderingFraJson.konklusjon.avklaringsListe.map { it.regel_id },
             vurderingFraJson.datagrunnlag.brukerinput.utfortAarbeidUtenforNorge != null,
-            vurderingFraJson.datagrunnlag.periode.antallDager()
+            vurderingFraJson.datagrunnlag.periode.antallDager(),
+            vurderingFraJson.datagrunnlag.pdlpersonhistorikk.finnAktiveStatsborgerskap()
         )
     }
 }

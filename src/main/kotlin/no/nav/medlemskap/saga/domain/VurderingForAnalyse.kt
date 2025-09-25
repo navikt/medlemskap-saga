@@ -2,7 +2,6 @@ package no.nav.medlemskap.saga.domain
 
 import no.nav.medlemskap.saga.rest.Ytelse
 import java.time.LocalDate
-import java.time.temporal.ChronoUnit
 
 data class VurderingForAnalyse(
     val ytelse: Ytelse,
@@ -16,6 +15,7 @@ data class VurderingForAnalyse(
     val konklusjon: Svar,
     val avklaringsListe: List<String>,
     val nyeSpørsmål: Boolean,
-    val antallDagerMedSykmelding: Long
+    val antallDagerMedSykmelding: Long,
+    val statsborgerskap: List<String>
 
 )
