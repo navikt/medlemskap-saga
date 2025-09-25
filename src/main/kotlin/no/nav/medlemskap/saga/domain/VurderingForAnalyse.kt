@@ -16,6 +16,7 @@ data class VurderingForAnalyse(
     val avklaringsListe: List<String>,
     val nyeSpørsmål: Boolean,
     val antallDagerMedSykmelding: Long,
-    val statsborgerskap: List<String>
+    val statsborgerskap: List<String>,
+    val statsborgerskapskategori: Statsborgerskapskategori
 
 )
