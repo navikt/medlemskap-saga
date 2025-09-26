@@ -12,10 +12,10 @@ data class UtfortArbeidUtenforNorge(
         arbeidUtenforNorge.firstOrNull()?.land ?: ""
 
     fun utførtArbeidUtenforNorgePeriodeFom(): String =
-        arbeidUtenforNorge.firstOrNull()?.perioder?.fom ?: ""
+        arbeidUtenforNorge.firstOrNull()?.perioder?.firstOrNull()?.fom ?: ""
 
     fun utførtArbeidUtenforNorgePeriodeTom(): String =
-        arbeidUtenforNorge.firstOrNull()?.perioder?.tom ?: ""
+        arbeidUtenforNorge.firstOrNull()?.perioder?.firstOrNull()?.fom ?: ""
 
     fun utførtArbeidUtenforNorgeAntallPerioderOppgitt(): Int =
         arbeidUtenforNorge.size

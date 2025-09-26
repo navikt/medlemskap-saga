@@ -1,5 +1,7 @@
 package no.nav.medlemskap.saga.domain
 
+import java.time.LocalDate
+
 data class Brukerinput(
     val arbeidUtenforNorge: Boolean,
     val oppholdstilatelse: Oppholdstillatelse? = null,
@@ -17,4 +19,32 @@ data class Brukerinput(
         )
     }
 
+    fun hentOppholdUtenforEØS(): OppholdUtenforEos {
+        return this.oppholdUtenforEos ?: OppholdUtenforEos(
+            id = "",
+            sporsmalstekst = "",
+            svar = false,
+            oppholdUtenforEOS = emptyList()
+        )
+    }
+
+    fun hentOppholdUtenforNorge(): OppholdUtenforNorge {
+        return this.oppholdUtenforNorge ?: OppholdUtenforNorge(
+            id = "",
+            sporsmalstekst = "",
+            svar = false,
+            oppholdUtenforNorge = emptyList()
+        )
+    }
+
+    fun hentOppholdstillatelseOppgitt(): Oppholdstillatelse {
+        return this.oppholdstilatelse ?: Oppholdstillatelse(
+            id = "",
+            sporsmalstekst = "",
+            svar = false,
+            vedtaksdato = LocalDate.MAX,
+            vedtaksTypePermanent = false,
+            perioder = emptyList()
+        )
+    }
 }

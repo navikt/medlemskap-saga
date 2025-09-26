@@ -30,7 +30,23 @@ class UtledVurderingstagger {
             vurderingFraJson.datagrunnlag.brukerinput.hentUtførtArbeidUtenforNorge().utførtArbeidUtenforNorgeFørsteLandetOppgitt(),
             vurderingFraJson.datagrunnlag.brukerinput.hentUtførtArbeidUtenforNorge().utførtArbeidUtenforNorgePeriodeFom(),
             vurderingFraJson.datagrunnlag.brukerinput.hentUtførtArbeidUtenforNorge().utførtArbeidUtenforNorgePeriodeTom(),
-            vurderingFraJson.datagrunnlag.brukerinput.hentUtførtArbeidUtenforNorge().utførtArbeidUtenforNorgeAntallPerioderOppgitt()
+            vurderingFraJson.datagrunnlag.brukerinput.hentUtførtArbeidUtenforNorge().utførtArbeidUtenforNorgeAntallPerioderOppgitt(),
+            vurderingFraJson.datagrunnlag.brukerinput.hentOppholdUtenforEØS().oppholdUtenforEØSOppgitt(),
+            vurderingFraJson.datagrunnlag.brukerinput.hentOppholdUtenforEØS().oppgittOppholdUtenforEØSLand(),
+            vurderingFraJson.datagrunnlag.brukerinput.hentOppholdUtenforEØS().oppholdUtenforEØSPeriodeFom(),
+            vurderingFraJson.datagrunnlag.brukerinput.hentOppholdUtenforEØS().oppholdUtenforEØSPeriodeTom(),
+            vurderingFraJson.datagrunnlag.brukerinput.hentOppholdUtenforEØS().oppholdUtenforEØSAntallPerioderOppgitt(),
+            vurderingFraJson.datagrunnlag.brukerinput.hentOppholdUtenforEØS().oppholdUtenforEØSGrunn(),
+            vurderingFraJson.datagrunnlag.brukerinput.hentOppholdUtenforNorge().oppholdUtenforNorgeOppgitt(),
+            vurderingFraJson.datagrunnlag.brukerinput.hentOppholdUtenforNorge().oppgittOppholdUtenforNorgeLand(),
+            vurderingFraJson.datagrunnlag.brukerinput.hentOppholdUtenforNorge().oppholdUtenforNorgePeriodeFom(),
+            vurderingFraJson.datagrunnlag.brukerinput.hentOppholdUtenforNorge().oppholdUtenforNorgePeriodeTom(),
+            vurderingFraJson.datagrunnlag.brukerinput.hentOppholdUtenforNorge().oppholdUtenforNorgeAntallPerioderOppgitt(),
+            vurderingFraJson.datagrunnlag.brukerinput.hentOppholdUtenforNorge().oppholdUtenforNorgeGrunn(),
+            vurderingFraJson.datagrunnlag.brukerinput.hentOppholdstillatelseOppgitt().oppholdstillatelseOppgitt(),
+            vurderingFraJson.datagrunnlag.brukerinput.hentOppholdstillatelseOppgitt().oppholdstillatelseOppgittFom(),
+            vurderingFraJson.datagrunnlag.brukerinput.hentOppholdstillatelseOppgitt().oppholdstillatelseOppgittTom(),
+            vurderingFraJson.datagrunnlag.brukerinput.hentOppholdstillatelseOppgitt().oppholdstillatelseAntallPerioder(),
         )
     }
 }
