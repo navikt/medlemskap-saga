@@ -24,7 +24,13 @@ class UtledVurderingstagger {
             vurderingFraJson.datagrunnlag.brukerinput.utfortAarbeidUtenforNorge != null,
             vurderingFraJson.datagrunnlag.periode.antallDager(),
             vurderingFraJson.datagrunnlag.pdlpersonhistorikk.finnAktiveStatsborgerskap(),
-            vurderingFraJson.konklusjon.enUtledetInformasjon().informasjon.tilKategori()
+            vurderingFraJson.konklusjon.enUtledetInformasjon().informasjon.tilKategori(),
+            vurderingFraJson.datagrunnlag.brukerinput.arbeidUtenforNorge,
+            vurderingFraJson.datagrunnlag.brukerinput.hentUtførtArbeidUtenforNorge().utførtArbeidUtenforNorgeOppgitt(),
+            vurderingFraJson.datagrunnlag.brukerinput.hentUtførtArbeidUtenforNorge().utførtArbeidUtenforNorgeFørsteLandetOppgitt(),
+            vurderingFraJson.datagrunnlag.brukerinput.hentUtførtArbeidUtenforNorge().utførtArbeidUtenforNorgePeriodeFom(),
+            vurderingFraJson.datagrunnlag.brukerinput.hentUtførtArbeidUtenforNorge().utførtArbeidUtenforNorgePeriodeTom(),
+            vurderingFraJson.datagrunnlag.brukerinput.hentUtførtArbeidUtenforNorge().utførtArbeidUtenforNorgeAntallPerioderOppgitt()
         )
     }
 }

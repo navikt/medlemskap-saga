@@ -17,6 +17,11 @@ data class VurderingForAnalyse(
     val nyeSpørsmål: Boolean,
     val antallDagerMedSykmelding: Long,
     val statsborgerskap: List<String>,
-    val statsborgerskapskategori: Statsborgerskapskategori
-
+    val statsborgerskapskategori: Statsborgerskapskategori,
+    val arbeidUtenforNorge: Boolean,
+    val utførtArbeidUtenforNorge: Boolean,
+    val utførtArbeidUtenforNorgeLand: String,
+    val utførtArbeidUtenforNorgeFom: String,
+    val utførtArbeidUtenforNorgeTom: String,
+    val utførtArbeidUtenforNorgeAntallPerioder: Int
 )
