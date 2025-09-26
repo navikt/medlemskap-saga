@@ -1,6 +1,7 @@
 package no.nav.medlemskap.saga.domain
 
-import no.nav.medlemskap.saga.rest.Ytelse
+import no.nav.medlemskap.saga.domain.datagrunnlag.Ytelse
+import no.nav.medlemskap.saga.domain.konklusjon.Statsborgerskapskategori
 import java.time.LocalDate
 
 data class VurderingForAnalyse(

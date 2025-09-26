@@ -1,5 +1,7 @@
 package no.nav.medlemskap.saga.domain
 
+import no.nav.medlemskap.saga.domain.datagrunnlag.PdlPersonHistorikk
+import no.nav.medlemskap.saga.domain.datagrunnlag.Statsborgerskap
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test

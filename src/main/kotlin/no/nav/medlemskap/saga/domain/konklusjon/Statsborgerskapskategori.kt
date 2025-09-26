@@ -1,4 +1,4 @@
-package no.nav.medlemskap.saga.domain
+package no.nav.medlemskap.saga.domain.konklusjon
 
 enum class Statsborgerskapskategori {
     NORSK_BORGER,

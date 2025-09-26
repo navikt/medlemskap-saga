@@ -1,4 +1,4 @@
-package no.nav.medlemskap.saga.domain.udi
+package no.nav.medlemskap.saga.domain.datagrunnlag.udi
 
 data class OppholdsTillatelse(
     val gjeldendeOppholdsstatus: GjeldendeOppholdsstatus?

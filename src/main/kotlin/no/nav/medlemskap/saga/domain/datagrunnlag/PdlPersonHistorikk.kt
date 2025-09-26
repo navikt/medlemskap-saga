@@ -1,4 +1,6 @@
-package no.nav.medlemskap.saga.domain
+package no.nav.medlemskap.saga.domain.datagrunnlag
+
+import no.nav.medlemskap.saga.domain.datagrunnlag.Statsborgerskap
 
 data class PdlPersonHistorikk(
     val statsborgerskap: List<Statsborgerskap> = emptyList()

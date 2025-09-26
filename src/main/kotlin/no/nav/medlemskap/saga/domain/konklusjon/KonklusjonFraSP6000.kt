@@ -1,5 +1,8 @@
-package no.nav.medlemskap.saga.domain
+package no.nav.medlemskap.saga.domain.konklusjon
 
+import no.nav.medlemskap.saga.domain.konklusjon.Avklaring
+import no.nav.medlemskap.saga.domain.Svar
+import no.nav.medlemskap.saga.domain.konklusjon.UtledetInformasjon
 
 data class KonklusjonFraSP6000(
     val status: Svar,

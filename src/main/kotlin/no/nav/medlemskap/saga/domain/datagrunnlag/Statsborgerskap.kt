@@ -1,4 +1,4 @@
-package no.nav.medlemskap.saga.domain
+package no.nav.medlemskap.saga.domain.datagrunnlag
 
 import java.time.LocalDate
 

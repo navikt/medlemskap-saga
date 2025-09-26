@@ -1,7 +1,6 @@
-package no.nav.medlemskap.saga.domain
+package no.nav.medlemskap.saga.domain.datagrunnlag
 
-import no.nav.medlemskap.saga.domain.udi.OppholdsTillatelse
-import no.nav.medlemskap.saga.rest.Ytelse
+import no.nav.medlemskap.saga.domain.datagrunnlag.udi.OppholdsTillatelse
 import java.time.LocalDate
 
 data class Datagrunnlag(

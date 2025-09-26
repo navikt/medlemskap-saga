@@ -1,4 +1,4 @@
-package no.nav.medlemskap.saga.domain
+package no.nav.medlemskap.saga.domain.datagrunnlag
 
 data class UtfortArbeidUtenforNorge(
     val id: String,

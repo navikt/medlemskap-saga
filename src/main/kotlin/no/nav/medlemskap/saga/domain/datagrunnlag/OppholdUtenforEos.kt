@@ -1,4 +1,4 @@
-package no.nav.medlemskap.saga.domain
+package no.nav.medlemskap.saga.domain.datagrunnlag
 
 data class OppholdUtenforEos(
     val id: String,
