@@ -1,5 +1,6 @@
 package no.nav.medlemskap.saga.domain
 
+import no.nav.medlemskap.saga.domain.udi.OppholdsTillatelse
 import no.nav.medlemskap.saga.rest.Ytelse
 import java.time.LocalDate
 
@@ -11,4 +12,5 @@ data class Datagrunnlag(
     val startDatoForYtelse: LocalDate,
     val brukerinput: Brukerinput,
     val pdlpersonhistorikk: PdlPersonHistorikk,
+    val oppholdstillatelse: OppholdsTillatelse?
 )
