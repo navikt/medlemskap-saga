@@ -1,5 +1,9 @@
 package no.nav.medlemskap.saga.domain
 
+import no.nav.medlemskap.saga.domain.datagrunnlag.OppholdUtenforEOSTag
+import no.nav.medlemskap.saga.domain.datagrunnlag.OppholdUtenforNorgeTag
+import no.nav.medlemskap.saga.domain.datagrunnlag.OppholdstillatelseOppgittTag
+import no.nav.medlemskap.saga.domain.datagrunnlag.UtfortArbeidUtenforNorgeTag
 import no.nav.medlemskap.saga.domain.datagrunnlag.Ytelse
 import no.nav.medlemskap.saga.domain.konklusjon.Statsborgerskapskategori
 import java.time.LocalDate
@@ -20,27 +24,10 @@ data class VurderingForAnalyse(
     val statsborgerskap: List<String>,
     val statsborgerskapskategori: Statsborgerskapskategori,
     val arbeidUtenforNorge: Boolean,
-    val utførtArbeidUtenforNorge: Boolean,
-    val utførtArbeidUtenforNorgeLand: String,
-    val utførtArbeidUtenforNorgeFom: String,
-    val utførtArbeidUtenforNorgeTom: String,
-    val utførtArbeidUtenforNorgeAntallPerioder: Int,
-    val oppholdUtenforEØS: Boolean,
-    val oppholdUtenforEØSLand: String,
-    val oppholdUtenforEØSFom: String,
-    val oppholdUtenforEØSTom: String,
-    val oppholdUtenforEØSAntallPerioder: Int,
-    val oppholdUtenforEØSGrunn: String,
-    val oppholdUtenforNorge: Boolean,
-    val oppholdUtenforNorgeLand: String,
-    val oppholdUtenforNorgeFom: String,
-    val oppholdUtenforNorgeTom: String,
-    val oppholdUtenforNorgeAntallPerioder: Int,
-    val oppholdUtenforNorgeGrunn: String,
-    val oppholdstillatelseOppgitt: Boolean,
-    val oppholdstillatelseOppgittFom: String,
-    val oppholdstillatelseOppgittTom: String,
-    val oppholdstillatelseOppgittAntallPerioder: Int,
+    val utførtArbeidUtenforNorgeTag: UtfortArbeidUtenforNorgeTag,
+    val oppholdUtenforEOSTag: OppholdUtenforEOSTag,
+    val oppholdUtenforNorgeTag: OppholdUtenforNorgeTag,
+    val oppholdstillatelseOppgittTag: OppholdstillatelseOppgittTag,
     val oppholdTillatelseUDIFom: String,
     val oppholdTillatelseUDITom: String,
     val oppholdTillatelseUDIType: String,

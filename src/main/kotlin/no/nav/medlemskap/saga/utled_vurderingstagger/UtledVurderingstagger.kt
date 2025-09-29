@@ -2,6 +2,10 @@ package no.nav.medlemskap.saga.utled_vurderingstagger
 
 import no.nav.medlemskap.saga.domain.Vurdering
 import no.nav.medlemskap.saga.domain.VurderingForAnalyse
+import no.nav.medlemskap.saga.domain.datagrunnlag.OppholdUtenforEOSTag
+import no.nav.medlemskap.saga.domain.datagrunnlag.OppholdUtenforNorgeTag
+import no.nav.medlemskap.saga.domain.datagrunnlag.OppholdstillatelseOppgittTag
+import no.nav.medlemskap.saga.domain.datagrunnlag.UtfortArbeidUtenforNorgeTag
 import no.nav.medlemskap.sykepenger.lytter.jakson.JacksonParser
 
 class UtledVurderingstagger {
@@ -32,31 +36,35 @@ class UtledVurderingstagger {
             konklusjon.enUtledetInformasjon().informasjon.tilKategori(),
 
             brukerinput.arbeidUtenforNorge,
-
-            brukerinput.hentUtførtArbeidUtenforNorge().utførtArbeidUtenforNorgeOppgitt(),
-            brukerinput.hentUtførtArbeidUtenforNorge().utførtArbeidUtenforNorgeFørsteLandetOppgitt(),
-            brukerinput.hentUtførtArbeidUtenforNorge().utførtArbeidUtenforNorgePeriodeFom(),
-            brukerinput.hentUtførtArbeidUtenforNorge().utførtArbeidUtenforNorgePeriodeTom(),
-            brukerinput.hentUtførtArbeidUtenforNorge().utførtArbeidUtenforNorgeAntallPerioderOppgitt(),
-            brukerinput.hentOppholdUtenforEØS().oppholdUtenforEØSOppgitt(),
-
-            brukerinput.hentOppholdUtenforEØS().oppgittOppholdUtenforEØSLand(),
-            brukerinput.hentOppholdUtenforEØS().oppholdUtenforEØSPeriodeFom(),
-            brukerinput.hentOppholdUtenforEØS().oppholdUtenforEØSPeriodeTom(),
-            brukerinput.hentOppholdUtenforEØS().oppholdUtenforEØSAntallPerioderOppgitt(),
-            brukerinput.hentOppholdUtenforEØS().oppholdUtenforEØSGrunn(),
-
-            brukerinput.hentOppholdUtenforNorge().oppholdUtenforNorgeOppgitt(),
-            brukerinput.hentOppholdUtenforNorge().oppgittOppholdUtenforNorgeLand(),
-            brukerinput.hentOppholdUtenforNorge().oppholdUtenforNorgePeriodeFom(),
-            brukerinput.hentOppholdUtenforNorge().oppholdUtenforNorgePeriodeTom(),
-            brukerinput.hentOppholdUtenforNorge().oppholdUtenforNorgeAntallPerioderOppgitt(),
-            brukerinput.hentOppholdUtenforNorge().oppholdUtenforNorgeGrunn(),
-
-            brukerinput.hentOppholdstillatelseOppgitt().oppholdstillatelseOppgitt(),
-            brukerinput.hentOppholdstillatelseOppgitt().oppholdstillatelseOppgittFom(),
-            brukerinput.hentOppholdstillatelseOppgitt().oppholdstillatelseOppgittTom(),
-            brukerinput.hentOppholdstillatelseOppgitt().oppholdstillatelseAntallPerioder(),
+            UtfortArbeidUtenforNorgeTag(
+                brukerinput.hentUtførtArbeidUtenforNorge().utførtArbeidUtenforNorgeOppgitt(),
+                brukerinput.hentUtførtArbeidUtenforNorge().utførtArbeidUtenforNorgeFørsteLandetOppgitt(),
+                brukerinput.hentUtførtArbeidUtenforNorge().utførtArbeidUtenforNorgePeriodeFom(),
+                brukerinput.hentUtførtArbeidUtenforNorge().utførtArbeidUtenforNorgePeriodeTom(),
+                brukerinput.hentUtførtArbeidUtenforNorge().utførtArbeidUtenforNorgeAntallPerioderOppgitt()
+            ),
+            OppholdUtenforEOSTag(
+                brukerinput.hentOppholdUtenforEØS().oppholdUtenforEØSOppgitt(),
+                brukerinput.hentOppholdUtenforEØS().oppgittOppholdUtenforEØSLand(),
+                brukerinput.hentOppholdUtenforEØS().oppholdUtenforEØSPeriodeFom(),
+                brukerinput.hentOppholdUtenforEØS().oppholdUtenforEØSPeriodeTom(),
+                brukerinput.hentOppholdUtenforEØS().oppholdUtenforEØSAntallPerioderOppgitt(),
+                brukerinput.hentOppholdUtenforEØS().oppholdUtenforEØSGrunn()
+            ),
+            OppholdUtenforNorgeTag(
+                brukerinput.hentOppholdUtenforNorge().oppholdUtenforNorgeOppgitt(),
+                brukerinput.hentOppholdUtenforNorge().oppgittOppholdUtenforNorgeLand(),
+                brukerinput.hentOppholdUtenforNorge().oppholdUtenforNorgePeriodeFom(),
+                brukerinput.hentOppholdUtenforNorge().oppholdUtenforNorgePeriodeTom(),
+                brukerinput.hentOppholdUtenforNorge().oppholdUtenforNorgeAntallPerioderOppgitt(),
+                brukerinput.hentOppholdUtenforNorge().oppholdUtenforNorgeGrunn()
+            ),
+            OppholdstillatelseOppgittTag(
+                brukerinput.hentOppholdstillatelseOppgitt().oppholdstillatelseOppgitt(),
+                brukerinput.hentOppholdstillatelseOppgitt().oppholdstillatelseOppgittFom(),
+                brukerinput.hentOppholdstillatelseOppgitt().oppholdstillatelseOppgittTom(),
+                brukerinput.hentOppholdstillatelseOppgitt().oppholdstillatelseAntallPerioder()
+            ),
             datagrunnlag.oppholdstillatelse?.hentOppholdstillatelseUDIFom() ?: "",
             datagrunnlag.oppholdstillatelse?.hentOppholdstillatelseUDITom() ?: "",
             datagrunnlag.oppholdstillatelse?.hentOppholdstillatelseUDIType() ?: "",
