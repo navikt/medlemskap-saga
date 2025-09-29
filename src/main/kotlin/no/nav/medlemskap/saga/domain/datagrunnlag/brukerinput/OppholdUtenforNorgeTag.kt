@@ -1,4 +1,4 @@
-package no.nav.medlemskap.saga.domain.datagrunnlag
+package no.nav.medlemskap.saga.domain.datagrunnlag.brukerinput
 
 data class OppholdUtenforNorgeTag(
     val oppholdUtenforNorge: Boolean,

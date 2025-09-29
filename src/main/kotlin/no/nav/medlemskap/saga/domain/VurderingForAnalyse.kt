@@ -1,9 +1,9 @@
 package no.nav.medlemskap.saga.domain
 
-import no.nav.medlemskap.saga.domain.datagrunnlag.OppholdUtenforEOSTag
-import no.nav.medlemskap.saga.domain.datagrunnlag.OppholdUtenforNorgeTag
-import no.nav.medlemskap.saga.domain.datagrunnlag.OppholdstillatelseOppgittTag
-import no.nav.medlemskap.saga.domain.datagrunnlag.UtfortArbeidUtenforNorgeTag
+import no.nav.medlemskap.saga.domain.datagrunnlag.brukerinput.OppholdUtenforEOSTag
+import no.nav.medlemskap.saga.domain.datagrunnlag.brukerinput.OppholdUtenforNorgeTag
+import no.nav.medlemskap.saga.domain.datagrunnlag.brukerinput.OppholdstillatelseOppgittTag
+import no.nav.medlemskap.saga.domain.datagrunnlag.brukerinput.UtfortArbeidUtenforNorgeTag
 import no.nav.medlemskap.saga.domain.datagrunnlag.Ytelse
 import no.nav.medlemskap.saga.domain.konklusjon.Statsborgerskapskategori
 import java.time.LocalDate

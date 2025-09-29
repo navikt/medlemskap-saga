@@ -2,10 +2,10 @@ package no.nav.medlemskap.saga.utled_vurderingstagger
 
 import no.nav.medlemskap.saga.domain.Vurdering
 import no.nav.medlemskap.saga.domain.VurderingForAnalyse
-import no.nav.medlemskap.saga.domain.datagrunnlag.OppholdUtenforEOSTag
-import no.nav.medlemskap.saga.domain.datagrunnlag.OppholdUtenforNorgeTag
-import no.nav.medlemskap.saga.domain.datagrunnlag.OppholdstillatelseOppgittTag
-import no.nav.medlemskap.saga.domain.datagrunnlag.UtfortArbeidUtenforNorgeTag
+import no.nav.medlemskap.saga.domain.datagrunnlag.brukerinput.OppholdUtenforEOSTag
+import no.nav.medlemskap.saga.domain.datagrunnlag.brukerinput.OppholdUtenforNorgeTag
+import no.nav.medlemskap.saga.domain.datagrunnlag.brukerinput.OppholdstillatelseOppgittTag
+import no.nav.medlemskap.saga.domain.datagrunnlag.brukerinput.UtfortArbeidUtenforNorgeTag
 import no.nav.medlemskap.sykepenger.lytter.jakson.JacksonParser
 
 class UtledVurderingstagger {
@@ -60,12 +60,7 @@ class UtledVurderingstagger {
                 brukerinput.hentOppholdUtenforNorge().oppholdUtenforNorgeAntallPerioderOppgitt(),
                 brukerinput.hentOppholdUtenforNorge().oppholdUtenforNorgeGrunn()
             ),
-            OppholdstillatelseOppgittTag(
-                brukerinput.hentOppholdstillatelseOppgitt().oppholdstillatelseOppgitt(),
-                brukerinput.hentOppholdstillatelseOppgitt().oppholdstillatelseOppgittFom(),
-                brukerinput.hentOppholdstillatelseOppgitt().oppholdstillatelseOppgittTom(),
-                brukerinput.hentOppholdstillatelseOppgitt().oppholdstillatelseAntallPerioder()
-            ),
+            OppholdstillatelseOppgittTag(brukerinput.hentOppholdstillatelseOppgitt()),
             oppholdstillatelseUDI?.hentOppholdstillatelseUDIFom() ?: "",
             oppholdstillatelseUDI?.hentOppholdstillatelseUDITom() ?: "",
             oppholdstillatelseUDI?.hentOppholdstillatelseUDIType() ?: "",

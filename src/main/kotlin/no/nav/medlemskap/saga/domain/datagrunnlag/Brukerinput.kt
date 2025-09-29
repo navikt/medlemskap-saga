@@ -1,50 +1,30 @@
 package no.nav.medlemskap.saga.domain.datagrunnlag
 
-import java.time.LocalDate
+import no.nav.medlemskap.saga.domain.datagrunnlag.brukerinput.OppholdUtenforEOS
+import no.nav.medlemskap.saga.domain.datagrunnlag.brukerinput.OppholdUtenforNorge
+import no.nav.medlemskap.saga.domain.datagrunnlag.brukerinput.OppholdstillatelseOppgitt
+import no.nav.medlemskap.saga.domain.datagrunnlag.brukerinput.UtfortArbeidUtenforNorge
 
 data class Brukerinput(
     val arbeidUtenforNorge: Boolean,
-    val oppholdstilatelse: Oppholdstillatelse? = null,
+    val oppholdstilatelse: OppholdstillatelseOppgitt? = null,
     val utfortAarbeidUtenforNorge: UtfortArbeidUtenforNorge? = null,
-    val oppholdUtenforEos: OppholdUtenforEos? = null,
+    val oppholdUtenforEos: OppholdUtenforEOS? = null,
     val oppholdUtenforNorge: OppholdUtenforNorge? = null
 ) {
-
     fun hentUtførtArbeidUtenforNorge(): UtfortArbeidUtenforNorge {
-        return this.utfortAarbeidUtenforNorge ?: UtfortArbeidUtenforNorge(
-            id = "",
-            sporsmalstekst = "",
-            svar = false,
-            arbeidUtenforNorge = emptyList()
-        )
+        return this.utfortAarbeidUtenforNorge ?: UtfortArbeidUtenforNorge()
     }
 
-    fun hentOppholdUtenforEØS(): OppholdUtenforEos {
-        return this.oppholdUtenforEos ?: OppholdUtenforEos(
-            id = "",
-            sporsmalstekst = "",
-            svar = false,
-            oppholdUtenforEOS = emptyList()
-        )
+    fun hentOppholdUtenforEØS(): OppholdUtenforEOS {
+        return this.oppholdUtenforEos ?: OppholdUtenforEOS()
     }
 
     fun hentOppholdUtenforNorge(): OppholdUtenforNorge {
-        return this.oppholdUtenforNorge ?: OppholdUtenforNorge(
-            id = "",
-            sporsmalstekst = "",
-            svar = false,
-            oppholdUtenforNorge = emptyList()
-        )
+        return this.oppholdUtenforNorge ?: OppholdUtenforNorge()
     }
 
-    fun hentOppholdstillatelseOppgitt(): Oppholdstillatelse {
-        return this.oppholdstilatelse ?: Oppholdstillatelse(
-            id = "",
-            sporsmalstekst = "",
-            svar = false,
-            vedtaksdato = LocalDate.MAX,
-            vedtaksTypePermanent = false,
-            perioder = emptyList()
-        )
+    fun hentOppholdstillatelseOppgitt(): OppholdstillatelseOppgitt {
+        return this.oppholdstilatelse ?: OppholdstillatelseOppgitt()
     }
 }

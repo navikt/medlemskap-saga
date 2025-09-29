@@ -1,6 +1,6 @@
 package no.nav.medlemskap.saga.domain
 
-import no.nav.medlemskap.saga.domain.datagrunnlag.UtfortArbeidUtenforNorge
+import no.nav.medlemskap.saga.domain.datagrunnlag.brukerinput.UtfortArbeidUtenforNorge
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
