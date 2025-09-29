@@ -57,6 +57,9 @@ class UtledVurderingstagger {
             brukerinput.hentOppholdstillatelseOppgitt().oppholdstillatelseOppgittFom(),
             brukerinput.hentOppholdstillatelseOppgitt().oppholdstillatelseOppgittTom(),
             brukerinput.hentOppholdstillatelseOppgitt().oppholdstillatelseAntallPerioder(),
+            datagrunnlag.oppholdstillatelse?.hentOppholdstillatelseUDIFom() ?: "",
+            datagrunnlag.oppholdstillatelse?.hentOppholdstillatelseUDITom() ?: "",
+            datagrunnlag.oppholdstillatelse?.hentOppholdstillatelseUDIType() ?: "",
         )
     }
 }

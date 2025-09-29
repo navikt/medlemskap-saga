@@ -41,4 +41,7 @@ data class VurderingForAnalyse(
     val oppholdstillatelseOppgittFom: String,
     val oppholdstillatelseOppgittTom: String,
     val oppholdstillatelseOppgittAntallPerioder: Int,
+    val oppholdTillatelseUDIFom: String,
+    val oppholdTillatelseUDITom: String,
+    val oppholdTillatelseUDIType: String,
 )
