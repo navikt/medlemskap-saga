@@ -9,5 +9,5 @@ data class Vurdering(
     val tidspunkt : LocalDateTime,
     val datagrunnlag: Datagrunnlag,
     val resultat: ResultatFraMedlemskapOppslag,
-    val konklusjon: KonklusjonFraSP6000
+    val konklusjon: List<KonklusjonFraSP6000>
 )

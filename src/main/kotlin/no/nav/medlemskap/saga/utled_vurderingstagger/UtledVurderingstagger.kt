@@ -16,8 +16,9 @@ class UtledVurderingstagger {
 
         val datagrunnlag = vurderingFraJson.datagrunnlag
         val resultat = vurderingFraJson.resultat
-        val konklusjon = vurderingFraJson.konklusjon
+        val konklusjon = vurderingFraJson.konklusjon.first()
         val brukerinput = vurderingFraJson.datagrunnlag.brukerinput
+        val oppholdstillatelseUDI = vurderingFraJson.datagrunnlag.oppholdstillatelse
 
         return VurderingForAnalyse(
             datagrunnlag.ytelse,
@@ -65,9 +66,9 @@ class UtledVurderingstagger {
                 brukerinput.hentOppholdstillatelseOppgitt().oppholdstillatelseOppgittTom(),
                 brukerinput.hentOppholdstillatelseOppgitt().oppholdstillatelseAntallPerioder()
             ),
-            datagrunnlag.oppholdstillatelse?.hentOppholdstillatelseUDIFom() ?: "",
-            datagrunnlag.oppholdstillatelse?.hentOppholdstillatelseUDITom() ?: "",
-            datagrunnlag.oppholdstillatelse?.hentOppholdstillatelseUDIType() ?: "",
+            oppholdstillatelseUDI?.hentOppholdstillatelseUDIFom() ?: "",
+            oppholdstillatelseUDI?.hentOppholdstillatelseUDITom() ?: "",
+            oppholdstillatelseUDI?.hentOppholdstillatelseUDIType() ?: "",
         )
     }
 }
