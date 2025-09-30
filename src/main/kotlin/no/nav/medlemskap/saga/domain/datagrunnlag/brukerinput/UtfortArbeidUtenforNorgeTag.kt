@@ -6,4 +6,12 @@ data class UtfortArbeidUtenforNorgeTag(
     val utførtArbeidUtenforNorgeFom: String,
     val utførtArbeidUtenforNorgeTom: String,
     val utførtArbeidUtenforNorgeAntallPerioder: Int
-)
+) {
+    constructor(utførtArbeidUtenforNorge: UtfortArbeidUtenforNorge) : this(
+        utførtArbeidUtenforNorge.utførtArbeidUtenforNorgeOppgitt(),
+        utførtArbeidUtenforNorge.utførtArbeidUtenforNorgeFørsteLandetOppgitt(),
+        utførtArbeidUtenforNorge.utførtArbeidUtenforNorgeFørsteOppgitteFom(),
+        utførtArbeidUtenforNorge.utførtArbeidUtenforNorgeFørsteOppgitteTom(),
+        utførtArbeidUtenforNorge.utførtArbeidUtenforNorgeAntallPerioderOppgitt()
+    )
+}

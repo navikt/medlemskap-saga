@@ -10,13 +10,13 @@ data class OppholdUtenforNorge(
 ) {
     fun oppholdUtenforNorgeOppgitt(): Boolean = svar
 
-    fun oppgittOppholdUtenforNorgeLand(): String =
+    fun oppholdUtenforNorgeFørsteOppgitteLand(): String =
         oppholdUtenforNorge
             .firstOrNull()
             ?.land
             ?: ""
 
-    fun oppholdUtenforNorgePeriodeFom(): String =
+    fun oppholdUtenforNorgeFørsteOppgitteFom(): String =
         oppholdUtenforNorge
             .firstOrNull()
             ?.perioder
@@ -24,7 +24,7 @@ data class OppholdUtenforNorge(
             ?.fom
             ?: ""
 
-    fun oppholdUtenforNorgePeriodeTom(): String =
+    fun oppholdUtenforNorgeFørsteOppgitteTom(): String =
         oppholdUtenforNorge
             .firstOrNull()
             ?.perioder
@@ -34,7 +34,7 @@ data class OppholdUtenforNorge(
 
     fun oppholdUtenforNorgeAntallPerioderOppgitt(): Int = oppholdUtenforNorge.size
 
-    fun oppholdUtenforNorgeGrunn(): String =
+    fun oppholdUtenforNorgeFørsteOppgitteGrunn(): String =
         oppholdUtenforNorge
             .firstOrNull()
             ?.grunn

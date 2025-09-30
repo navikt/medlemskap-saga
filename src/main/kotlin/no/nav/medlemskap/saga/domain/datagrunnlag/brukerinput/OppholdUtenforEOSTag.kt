@@ -7,4 +7,13 @@ data class OppholdUtenforEOSTag(
     val oppholdUtenforEØSTom: String,
     val oppholdUtenforEØSAntallPerioder: Int,
     val oppholdUtenforEØSGrunn: String,
-)
+) {
+    constructor(oppholdUtenforEØS: OppholdUtenforEOS) : this(
+        oppholdUtenforEØS.oppholdUtenforEØSOppgitt(),
+        oppholdUtenforEØS.ppholdUtenforEØSFørsteOppgitteLand(),
+        oppholdUtenforEØS.oppholdUtenforEØSFørsteOppgitteFom(),
+        oppholdUtenforEØS.oppholdUtenforEØSFørsteOppgitteTom(),
+        oppholdUtenforEØS.oppholdUtenforEØSAntallPerioderOppgitt(),
+        oppholdUtenforEØS.oppholdUtenforEØSFørsteOppgitteGrunn()
+    )
+}

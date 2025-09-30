@@ -15,8 +15,8 @@ class UtfortArbeidUtenforNorgeTest {
             emptyList()
         )
         assertEquals("", utførtArbeidUtenforNorge.utførtArbeidUtenforNorgeFørsteLandetOppgitt())
-        assertEquals("", utførtArbeidUtenforNorge.utførtArbeidUtenforNorgePeriodeFom())
-        assertEquals("", utførtArbeidUtenforNorge.utførtArbeidUtenforNorgePeriodeTom())
+        assertEquals("", utførtArbeidUtenforNorge.utførtArbeidUtenforNorgeFørsteOppgitteFom())
+        assertEquals("", utførtArbeidUtenforNorge.utførtArbeidUtenforNorgeFørsteOppgitteTom())
         assertEquals(0, utførtArbeidUtenforNorge.utførtArbeidUtenforNorgeAntallPerioderOppgitt())
     }
 }

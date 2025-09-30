@@ -15,7 +15,7 @@ data class UtfortArbeidUtenforNorge(
             ?.land
             ?: ""
 
-    fun utførtArbeidUtenforNorgePeriodeFom(): String =
+    fun utførtArbeidUtenforNorgeFørsteOppgitteFom(): String =
         arbeidUtenforNorge
             .firstOrNull()
             ?.perioder
@@ -23,11 +23,11 @@ data class UtfortArbeidUtenforNorge(
             ?.fom
             ?: ""
 
-    fun utførtArbeidUtenforNorgePeriodeTom(): String =
+    fun utførtArbeidUtenforNorgeFørsteOppgitteTom(): String =
         arbeidUtenforNorge.firstOrNull()
             ?.perioder
             ?.firstOrNull()
-            ?.fom
+            ?.tom
             ?: ""
 
     fun utførtArbeidUtenforNorgeAntallPerioderOppgitt(): Int =

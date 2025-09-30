@@ -35,31 +35,10 @@ class UtledVurderingstagger {
             datagrunnlag.periode.antallDager(),
             datagrunnlag.pdlpersonhistorikk.finnAktiveStatsborgerskap(),
             konklusjon.enUtledetInformasjon().informasjon.tilKategori(),
-
             brukerinput.arbeidUtenforNorge,
-            UtfortArbeidUtenforNorgeTag(
-                brukerinput.hentUtførtArbeidUtenforNorge().utførtArbeidUtenforNorgeOppgitt(),
-                brukerinput.hentUtførtArbeidUtenforNorge().utførtArbeidUtenforNorgeFørsteLandetOppgitt(),
-                brukerinput.hentUtførtArbeidUtenforNorge().utførtArbeidUtenforNorgePeriodeFom(),
-                brukerinput.hentUtførtArbeidUtenforNorge().utførtArbeidUtenforNorgePeriodeTom(),
-                brukerinput.hentUtførtArbeidUtenforNorge().utførtArbeidUtenforNorgeAntallPerioderOppgitt()
-            ),
-            OppholdUtenforEOSTag(
-                brukerinput.hentOppholdUtenforEØS().oppholdUtenforEØSOppgitt(),
-                brukerinput.hentOppholdUtenforEØS().oppgittOppholdUtenforEØSLand(),
-                brukerinput.hentOppholdUtenforEØS().oppholdUtenforEØSPeriodeFom(),
-                brukerinput.hentOppholdUtenforEØS().oppholdUtenforEØSPeriodeTom(),
-                brukerinput.hentOppholdUtenforEØS().oppholdUtenforEØSAntallPerioderOppgitt(),
-                brukerinput.hentOppholdUtenforEØS().oppholdUtenforEØSGrunn()
-            ),
-            OppholdUtenforNorgeTag(
-                brukerinput.hentOppholdUtenforNorge().oppholdUtenforNorgeOppgitt(),
-                brukerinput.hentOppholdUtenforNorge().oppgittOppholdUtenforNorgeLand(),
-                brukerinput.hentOppholdUtenforNorge().oppholdUtenforNorgePeriodeFom(),
-                brukerinput.hentOppholdUtenforNorge().oppholdUtenforNorgePeriodeTom(),
-                brukerinput.hentOppholdUtenforNorge().oppholdUtenforNorgeAntallPerioderOppgitt(),
-                brukerinput.hentOppholdUtenforNorge().oppholdUtenforNorgeGrunn()
-            ),
+            UtfortArbeidUtenforNorgeTag(brukerinput.hentUtførtArbeidUtenforNorge()),
+            OppholdUtenforEOSTag(brukerinput.hentOppholdUtenforEØS()),
+            OppholdUtenforNorgeTag(brukerinput.hentOppholdUtenforNorge()),
             OppholdstillatelseOppgittTag(brukerinput.hentOppholdstillatelseOppgitt()),
             oppholdstillatelseUDI?.hentOppholdstillatelseUDIFom() ?: "",
             oppholdstillatelseUDI?.hentOppholdstillatelseUDITom() ?: "",

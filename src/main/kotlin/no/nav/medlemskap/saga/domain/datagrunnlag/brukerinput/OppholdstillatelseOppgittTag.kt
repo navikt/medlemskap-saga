@@ -8,8 +8,8 @@ data class OppholdstillatelseOppgittTag(
 ) {
     constructor(oppholdstillatelseOppgitt: OppholdstillatelseOppgitt) : this(
         oppholdstillatelseOppgitt.oppholdstillatelseOppgitt(),
-        oppholdstillatelseOppgitt.oppholdstillatelseOppgittFom(),
-        oppholdstillatelseOppgitt.oppholdstillatelseOppgittTom(),
-        oppholdstillatelseOppgitt.oppholdstillatelseAntallPerioder()
+        oppholdstillatelseOppgitt.oppholdstillatelseFørsteOppgitteFom(),
+        oppholdstillatelseOppgitt.oppholdstillatelseFørsteOppgitteTom(),
+        oppholdstillatelseOppgitt.oppholdstillatelseAntallPerioderOppgitt()
     )
 }

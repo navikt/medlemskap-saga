@@ -7,4 +7,13 @@ data class OppholdUtenforNorgeTag(
     val oppholdUtenforNorgeTom: String,
     val oppholdUtenforNorgeAntallPerioder: Int,
     val oppholdUtenforNorgeGrunn: String
-)
+) {
+    constructor(oppholdUtenforNorge: OppholdUtenforNorge) : this(
+        oppholdUtenforNorge.oppholdUtenforNorgeOppgitt(),
+        oppholdUtenforNorge.oppholdUtenforNorgeFørsteOppgitteLand(),
+        oppholdUtenforNorge.oppholdUtenforNorgeFørsteOppgitteFom(),
+        oppholdUtenforNorge.oppholdUtenforNorgeFørsteOppgitteTom(),
+        oppholdUtenforNorge.oppholdUtenforNorgeAntallPerioderOppgitt(),
+        oppholdUtenforNorge.oppholdUtenforNorgeFørsteOppgitteGrunn()
+    )
+}

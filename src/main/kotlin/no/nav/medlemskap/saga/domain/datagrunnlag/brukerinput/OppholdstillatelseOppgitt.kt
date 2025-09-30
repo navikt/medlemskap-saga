@@ -13,17 +13,17 @@ data class OppholdstillatelseOppgitt(
 ) {
     fun oppholdstillatelseOppgitt(): Boolean = svar
 
-    fun oppholdstillatelseOppgittFom(): String =
+    fun oppholdstillatelseFørsteOppgitteFom(): String =
         perioder
             .firstOrNull()
             ?.fom
             ?: ""
 
-    fun oppholdstillatelseOppgittTom(): String =
+    fun oppholdstillatelseFørsteOppgitteTom(): String =
         perioder
             .firstOrNull()
             ?.tom
             ?: ""
 
-    fun oppholdstillatelseAntallPerioder(): Int = perioder.size
+    fun oppholdstillatelseAntallPerioderOppgitt(): Int = perioder.size
 }
