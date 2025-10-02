@@ -1,23 +1,21 @@
 package no.nav.medlemskap.saga.domain.datagrunnlag.udi
 
+import java.time.LocalDate
+
 data class OppholdsTillatelse(
     val gjeldendeOppholdsstatus: GjeldendeOppholdsstatus?
 ) {
-    fun hentOppholdstillatelseUDIFom(): String =
+    fun hentOppholdstillatelseUDIFom(): LocalDate? =
         gjeldendeOppholdsstatus
             ?.oppholdstillatelsePaSammeVilkar
             ?.periode
             ?.fom
-            ?.toString()
-            ?: ""
 
-    fun hentOppholdstillatelseUDITom(): String {
+    fun hentOppholdstillatelseUDITom(): LocalDate? {
         return gjeldendeOppholdsstatus
             ?.oppholdstillatelsePaSammeVilkar
             ?.periode
             ?.tom
-            ?.toString()
-            ?: ""
     }
 
     fun hentOppholdstillatelseUDIType(): String {

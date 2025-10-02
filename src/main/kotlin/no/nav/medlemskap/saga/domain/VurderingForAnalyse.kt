@@ -28,7 +28,7 @@ data class VurderingForAnalyse(
     val oppholdUtenforEOSTag: OppholdUtenforEOSTag,
     val oppholdUtenforNorgeTag: OppholdUtenforNorgeTag,
     val oppholdstillatelseOppgittTag: OppholdstillatelseOppgittTag,
-    val oppholdTillatelseUDIFom: String,
-    val oppholdTillatelseUDITom: String,
+    val oppholdTillatelseUDIFom: LocalDate?,
+    val oppholdTillatelseUDITom: LocalDate?,
     val oppholdTillatelseUDIType: String,
 )

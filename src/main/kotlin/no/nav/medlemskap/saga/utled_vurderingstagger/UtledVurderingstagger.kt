@@ -40,8 +40,8 @@ class UtledVurderingstagger {
             OppholdUtenforEOSTag(brukerinput.hentOppholdUtenforEØS()),
             OppholdUtenforNorgeTag(brukerinput.hentOppholdUtenforNorge()),
             OppholdstillatelseOppgittTag(brukerinput.hentOppholdstillatelseOppgitt()),
-            oppholdstillatelseUDI?.hentOppholdstillatelseUDIFom() ?: "",
-            oppholdstillatelseUDI?.hentOppholdstillatelseUDITom() ?: "",
+            oppholdstillatelseUDI?.hentOppholdstillatelseUDIFom(),
+            oppholdstillatelseUDI?.hentOppholdstillatelseUDITom(),
             oppholdstillatelseUDI?.hentOppholdstillatelseUDIType() ?: "",
         )
     }
