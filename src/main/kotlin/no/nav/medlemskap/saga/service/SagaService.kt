@@ -7,7 +7,8 @@ import no.nav.medlemskap.saga.domain.medlemskapVurdertRecord
 import no.nav.medlemskap.saga.persistence.MedlemskapVurdertRepository
 import no.nav.medlemskap.saga.persistence.VurderingDao
 import no.nav.medlemskap.saga.rest.objectMapper
-import no.nav.medlemskap.sykepenger.lytter.jakson.JaksonParser
+import no.nav.medlemskap.saga.utled_vurderingstagger.UtledVurderingstagger
+import no.nav.medlemskap.sykepenger.lytter.jakson.JacksonParser
 import org.slf4j.MarkerFactory
 import java.lang.Exception
 import java.util.*
@@ -56,7 +57,7 @@ class SagaService(val medlemskapVurdertRepository: MedlemskapVurdertRepository) 
 
     private fun validateRecord(record: medlemskapVurdertRecord) :Boolean{
         try{
-            val node = JaksonParser().parse(record.json)
+            val node = JacksonParser().parse(record.json)
         }
         catch (e:Exception){
             return false

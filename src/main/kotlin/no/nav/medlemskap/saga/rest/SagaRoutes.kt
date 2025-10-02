@@ -13,7 +13,7 @@ import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.medlemskap.saga.persistence.Periode
 import no.nav.medlemskap.saga.persistence.VurderingDao
 import no.nav.medlemskap.saga.service.SagaService
-import no.nav.medlemskap.sykepenger.lytter.jakson.JaksonParser
+import no.nav.medlemskap.sykepenger.lytter.jakson.JacksonParser
 import org.slf4j.MarkerFactory
 import java.time.LocalDate
 import java.util.*
@@ -179,7 +179,7 @@ fun Routing.sagaRoutes(service: SagaService) {
 
 
 fun mapToFlexVurderingsRespons(match: VurderingDao): FlexVurderingRespons {
-    val jsonNode:JsonNode = JaksonParser().parse(match.json)
+    val jsonNode:JsonNode = JacksonParser().parse(match.json)
     return FlexVurderingRespons(
         sykepengesoknad_id = match.soknadId,
         vurdering_id = match.id,

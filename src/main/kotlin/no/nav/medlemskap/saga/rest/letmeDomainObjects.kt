@@ -2,7 +2,7 @@ package no.nav.medlemskap.saga.rest
 
 import com.fasterxml.jackson.databind.JsonNode
 import no.nav.medlemskap.saga.persistence.VurderingDao
-import no.nav.medlemskap.sykepenger.lytter.jakson.JaksonParser
+import no.nav.medlemskap.sykepenger.lytter.jakson.JacksonParser
 import java.util.*
 
 data class VurderingRespons(
@@ -18,6 +18,6 @@ return VurderingRespons(
     dbId = vurdering.id,
     soknadId = vurdering.soknadId,
     vurderingsDato = vurdering.date,
-    vurdering = JaksonParser().parse(vurdering.json)
+    vurdering = JacksonParser().parse(vurdering.json)
 )
 }
