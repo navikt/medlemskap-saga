@@ -23,5 +23,5 @@ CREATE TABLE vurdering_analyse
     oppholdstillatelseOppgittTag            JSONB,
     oppholdstillatelseUDIFom                DATE,
     oppholdstillatelseUDITom                DATE,
-    oppholdstillatelseUDIType               TEXT,
+    oppholdstillatelseUDIType               TEXT
 );
