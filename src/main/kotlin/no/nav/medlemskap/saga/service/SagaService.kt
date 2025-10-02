@@ -33,7 +33,6 @@ class SagaService(val medlemskapVurdertRepository: MedlemskapVurdertRepository) 
             try {
                 val ytelse = kotlin.runCatching { objectMapper.readTree(record.json).get("datagrunnlag").get("ytelse").asText() }.getOrElse { "UKJENT" }
                 medlemskapVurdertRepository.lagreVurdering(record.key, Date(), record.json,ytelse)
-                val utledVurderingstagger = UtledVurderingstagger().utled(record.json)
             }
             catch (e:Exception){
                 record.logLagringFeilet(e)
