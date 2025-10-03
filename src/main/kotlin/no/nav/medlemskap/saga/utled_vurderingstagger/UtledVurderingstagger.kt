@@ -9,6 +9,7 @@ import no.nav.medlemskap.saga.domain.datagrunnlag.brukerinput.UtfortArbeidUtenfo
 import no.nav.medlemskap.sykepenger.lytter.jakson.JacksonParser
 
 class UtledVurderingstagger {
+
     fun utled(jsonVurdering: String): VurderingForAnalyse {
 
         val vurdering = JacksonParser().parse(jsonVurdering)

@@ -6,17 +6,23 @@ import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.medlemskap.saga.domain.medlemskapVurdertRecord
 import no.nav.medlemskap.saga.persistence.MedlemskapVurdertRepository
 import no.nav.medlemskap.saga.persistence.VurderingDao
+import no.nav.medlemskap.saga.persistence.VurderingForAnalyseRepository
 import no.nav.medlemskap.saga.rest.objectMapper
 import no.nav.medlemskap.saga.utled_vurderingstagger.UtledVurderingstagger
+import no.nav.medlemskap.saga.utled_vurderingstagger.VurderingForAnalyseService
 import no.nav.medlemskap.sykepenger.lytter.jakson.JacksonParser
 import org.slf4j.MarkerFactory
 import java.lang.Exception
 import java.util.*
 
-class SagaService(val medlemskapVurdertRepository: MedlemskapVurdertRepository) {
+class SagaService(
+    val medlemskapVurdertRepository: MedlemskapVurdertRepository,
+    vurderingForAnalyseRepository: VurderingForAnalyseRepository
+) {
 
     private val log = KotlinLogging.logger { }
     private val teamLogs = MarkerFactory.getMarker("TEAM_LOGS")
+    private val vurderingForAnalyseService = VurderingForAnalyseService(vurderingForAnalyseRepository, UtledVurderingstagger())
 
     fun handle(record: medlemskapVurdertRecord) {
         log.info(
@@ -28,11 +34,12 @@ class SagaService(val medlemskapVurdertRepository: MedlemskapVurdertRepository) 
             kv("offset", record.offset)
         )
 
-
         if (validateRecord(record)){
             try {
                 val ytelse = kotlin.runCatching { objectMapper.readTree(record.json).get("datagrunnlag").get("ytelse").asText() }.getOrElse { "UKJENT" }
                 medlemskapVurdertRepository.lagreVurdering(record.key, Date(), record.json,ytelse)
+
+                vurderingForAnalyseService.lagreTilVurderingForAnalyse(record.json)
             }
             catch (e:Exception){
                 record.logLagringFeilet(e)
