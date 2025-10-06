@@ -1,0 +1,27 @@
+CREATE TABLE vurdering_analyse
+(
+    id                                  SERIAL PRIMARY KEY,
+    dato                                DATE,
+    ytelse                              TEXT,
+    fom                                 DATE,
+    tom                                 DATE,
+    fnr                                 TEXT,
+    foerste_dag_for_ytelse              DATE,
+    start_dato_for_ytelse               DATE,
+    svar                                TEXT,
+    aarsaker                            TEXT[],
+    konklusjon                          TEXT,
+    avklaringsliste                     TEXT[],
+    nye_spoersmaal                      BOOLEAN,
+    antall_dager_med_sykmelding         INT,
+    statsborgerskap                     TEXT[],
+    statsborgerskapskategori            TEXT,
+    arbeid_utenfor_norge                BOOLEAN,
+    utfoert_arbeid_utenfor_norge        JSONB,
+    opphold_utenfor_eos                 JSONB,
+    opphold_utenfor_norge               JSONB,
+    oppholdstillatelse_oppgitt          JSONB,
+    oppholdstillatelse_udi_fom          DATE,
+    oppholdstillatelse_udi_tom          DATE,
+    oppholdstillatelse_udi_type         TEXT
+);
