@@ -6,10 +6,17 @@ data class OppholdstillatelseOppgittTag(
     val oppholdstillatelseOppgittTom: String,
     val oppholdstillatelseOppgittAntallPerioder: Int,
 ) {
-    constructor(oppholdstillatelseOppgitt: OppholdstillatelseOppgitt) : this(
-        oppholdstillatelseOppgitt.oppholdstillatelseOppgitt(),
-        oppholdstillatelseOppgitt.oppholdstillatelseFørsteOppgitteFom(),
-        oppholdstillatelseOppgitt.oppholdstillatelseFørsteOppgitteTom(),
-        oppholdstillatelseOppgitt.oppholdstillatelseAntallPerioderOppgitt()
-    )
+    companion object {
+        fun fra(oppholdstillatelseOppgitt: OppholdstillatelseOppgitt?): OppholdstillatelseOppgittTag? {
+            if (oppholdstillatelseOppgitt == null) return null
+
+            return OppholdstillatelseOppgittTag(
+                oppholdstillatelseOppgitt.oppholdstillatelseOppgitt(),
+                oppholdstillatelseOppgitt.oppholdstillatelseFørsteOppgitteFom(),
+                oppholdstillatelseOppgitt.oppholdstillatelseFørsteOppgitteTom(),
+                oppholdstillatelseOppgitt.oppholdstillatelseAntallPerioderOppgitt()
+            )
+        }
+
+    }
 }
