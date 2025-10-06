@@ -63,10 +63,10 @@ class VurderingForAnalyseRepositoryImpl(val dataSource: DataSource) : VurderingF
             "oppholdstillatelse_udi_type" +
             ") " +
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, " +
-            "(to_json(?::utfoert_arbeid_utenfor_norge)), " +
-            "(to_json(?::opphold_utenfor_eos)), " +
-            "(to_json(?::opphold_utenfor_norge)), " +
-            "(to_json(?::oppholdstillatelse_oppgitt)), ?, ?, ?" +
+            "(to_json(?::json)), " +
+            "(to_json(?::json)), " +
+            "(to_json(?::json)), " +
+            "(to_json(?::json)), ?, ?, ?" +
             ");"
 
 
