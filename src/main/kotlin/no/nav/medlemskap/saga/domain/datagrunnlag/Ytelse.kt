@@ -1,5 +1,6 @@
 package no.nav.medlemskap.saga.domain.datagrunnlag
 
 enum class Ytelse {
-    SYKEPENGER
+    SYKEPENGER,
+    LOVME_GCP
 }
