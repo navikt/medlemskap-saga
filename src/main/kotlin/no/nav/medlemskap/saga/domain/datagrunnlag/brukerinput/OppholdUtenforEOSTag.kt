@@ -8,12 +8,18 @@ data class OppholdUtenforEOSTag(
     val oppholdUtenforEØSAntallPerioder: Int,
     val oppholdUtenforEØSGrunn: String,
 ) {
-    constructor(oppholdUtenforEØS: OppholdUtenforEOS) : this(
-        oppholdUtenforEØS.oppholdUtenforEØSOppgitt(),
-        oppholdUtenforEØS.ppholdUtenforEØSFørsteOppgitteLand(),
-        oppholdUtenforEØS.oppholdUtenforEØSFørsteOppgitteFom(),
-        oppholdUtenforEØS.oppholdUtenforEØSFørsteOppgitteTom(),
-        oppholdUtenforEØS.oppholdUtenforEØSAntallPerioderOppgitt(),
-        oppholdUtenforEØS.oppholdUtenforEØSFørsteOppgitteGrunn()
-    )
+    companion object {
+        fun fra(oppholdUtenforEØS: OppholdUtenforEOS?): OppholdUtenforEOSTag? {
+            if (oppholdUtenforEØS == null) return null
+
+            return OppholdUtenforEOSTag(
+                oppholdUtenforEØS.oppholdUtenforEØSOppgitt(),
+                oppholdUtenforEØS.ppholdUtenforEØSFørsteOppgitteLand(),
+                oppholdUtenforEØS.oppholdUtenforEØSFørsteOppgitteFom(),
+                oppholdUtenforEØS.oppholdUtenforEØSFørsteOppgitteTom(),
+                oppholdUtenforEØS.oppholdUtenforEØSAntallPerioderOppgitt(),
+                oppholdUtenforEØS.oppholdUtenforEØSFørsteOppgitteGrunn()
+            )
+        }
+    }
 }

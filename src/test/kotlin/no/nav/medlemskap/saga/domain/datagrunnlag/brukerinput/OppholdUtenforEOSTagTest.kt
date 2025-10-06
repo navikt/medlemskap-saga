@@ -3,27 +3,19 @@ package no.nav.medlemskap.saga.domain.datagrunnlag.brukerinput
 import no.nav.medlemskap.saga.domain.datagrunnlag.Opphold
 import no.nav.medlemskap.saga.domain.datagrunnlag.Periode
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 class OppholdUtenforEOSTagTest {
 
     @Test
-    fun `skal ha tomme felter når det ikke finnes OppholdUtenforEOS`() {
-        val defaultOppholdUtenforEOS = OppholdUtenforEOS()
-        val tag = OppholdUtenforEOSTag(defaultOppholdUtenforEOS)
+    fun `skal ikke utlede felter når det ikke finnes OppholdUtenforEOS`() {
+        val fra = OppholdUtenforEOSTag.fra(null)
 
-        assertFalse(tag.oppholdUtenforEØS)
-        assertEquals("", tag.oppholdUtenforEØSLand)
-        assertEquals("", tag.oppholdUtenforEØSFom)
-        assertEquals("", tag.oppholdUtenforEØSTom)
-        assertEquals(0, tag.oppholdUtenforEØSAntallPerioder)
-        assertEquals("", tag.oppholdUtenforEØSGrunn)
+        assertEquals(fra, null)
     }
 
     @Test
-    fun `skal utlede verdier fra OppholdUtenforEOS`() {
+    fun `skal utlede felter fra OppholdUtenforEOS når svar er Ja`() {
         val opphold = listOf(
             Opphold(
                 id = "1",
@@ -42,13 +34,36 @@ class OppholdUtenforEOSTagTest {
             svar = true,
             oppholdUtenforEOS = opphold
         )
-        val tag = OppholdUtenforEOSTag(oppholdUtenforEOS)
+        val fra = OppholdUtenforEOSTag.fra(oppholdUtenforEOS)
+        val forventet = OppholdUtenforEOSTag(
+            oppholdUtenforEØS = true,
+            oppholdUtenforEØSLand = "Sverige",
+            oppholdUtenforEØSFom = "2024-01-01",
+            oppholdUtenforEØSTom = "2024-01-15",
+            oppholdUtenforEØSAntallPerioder = 2,
+            oppholdUtenforEØSGrunn = "Ferie"
+        )
 
-        assertTrue(tag.oppholdUtenforEØS)
-        assertEquals("Sverige", tag.oppholdUtenforEØSLand)
-        assertEquals("2024-01-01", tag.oppholdUtenforEØSFom)
-        assertEquals("2024-01-15", tag.oppholdUtenforEØSTom)
-        assertEquals(2, tag.oppholdUtenforEØSAntallPerioder)
-        assertEquals("Ferie", tag.oppholdUtenforEØSGrunn)
+        assertEquals(fra, forventet)
+    }
+
+    @Test
+    fun `skal ha tomme felter fra OppholdUtenforEOS når svar er Nei`() {
+        val oppholdUtenforEOS = OppholdUtenforEOS(
+            svar = false,
+            oppholdUtenforEOS = emptyList()
+        )
+        val fra = OppholdUtenforEOSTag.fra(oppholdUtenforEOS)
+
+        val forventet = OppholdUtenforEOSTag(
+            oppholdUtenforEØS = false,
+            oppholdUtenforEØSLand = "",
+            oppholdUtenforEØSFom = "",
+            oppholdUtenforEØSTom = "",
+            oppholdUtenforEØSAntallPerioder = 0,
+            oppholdUtenforEØSGrunn = ""
+        )
+
+        assertEquals(fra, forventet)
     }
 }

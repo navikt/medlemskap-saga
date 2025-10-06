@@ -12,19 +12,19 @@ data class Brukerinput(
     val oppholdUtenforEos: OppholdUtenforEOS? = null,
     val oppholdUtenforNorge: OppholdUtenforNorge? = null
 ) {
-    fun hentUtførtArbeidUtenforNorge(): UtfortArbeidUtenforNorge {
-        return this.utfortAarbeidUtenforNorge ?: UtfortArbeidUtenforNorge()
+    fun hentUtførtArbeidUtenforNorge(): UtfortArbeidUtenforNorge? {
+        return this.utfortAarbeidUtenforNorge
     }
 
-    fun hentOppholdUtenforEØS(): OppholdUtenforEOS {
-        return this.oppholdUtenforEos ?: OppholdUtenforEOS()
+    fun hentOppholdUtenforEØS(): OppholdUtenforEOS? {
+        return this.oppholdUtenforEos
     }
 
-    fun hentOppholdUtenforNorge(): OppholdUtenforNorge {
-        return this.oppholdUtenforNorge ?: OppholdUtenforNorge()
+    fun hentOppholdUtenforNorge(): OppholdUtenforNorge? {
+        return this.oppholdUtenforNorge
     }
 
-    fun hentOppholdstillatelseOppgitt(): OppholdstillatelseOppgitt {
-        return this.oppholdstilatelse ?: OppholdstillatelseOppgitt()
+    fun hentOppholdstillatelseOppgitt(): OppholdstillatelseOppgitt? {
+        return this.oppholdstilatelse
     }
 }

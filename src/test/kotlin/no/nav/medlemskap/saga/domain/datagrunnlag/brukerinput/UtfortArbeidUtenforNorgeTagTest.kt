@@ -7,19 +7,15 @@ import org.junit.jupiter.api.Test
 class UtfortArbeidUtenforNorgeTagTest {
 
     @Test
-    fun `skal ha tomme felter når det ikke finnes UtfortArbeidUtenforNorge`() {
-        val defaultArbeid = UtfortArbeidUtenforNorge()
-        val tag = UtfortArbeidUtenforNorgeTag(defaultArbeid)
+    fun `skal ikke utlede felter når utført utenfor norge ikke finnes`() {
 
-        assertFalse(tag.utførtArbeidUtenforNorge)
-        assertEquals("", tag.utførtArbeidUtenforNorgeLand)
-        assertEquals("", tag.utførtArbeidUtenforNorgeFom)
-        assertEquals("", tag.utførtArbeidUtenforNorgeTom)
-        assertEquals(0, tag.utførtArbeidUtenforNorgeAntallPerioder)
+        val fra = UtfortArbeidUtenforNorgeTag.fra(null)
+
+        assertEquals(null, fra)
     }
 
     @Test
-    fun `skal utlede verdier fra UtfortArbeidUtenforNorge`() {
+    fun `skal utlede felter fra UtfortArbeidUtenforNorge når svar er ja`() {
         val arbeidUtenforNorge = listOf(
             ArbeidUtenforNorge(
                 id = "1",
@@ -40,12 +36,40 @@ class UtfortArbeidUtenforNorgeTagTest {
             arbeidUtenforNorge = arbeidUtenforNorge
         )
 
-        val tag = UtfortArbeidUtenforNorgeTag(utførtArbeidUtenforNorge)
+        val fra = UtfortArbeidUtenforNorgeTag.fra(utførtArbeidUtenforNorge)
 
-        assertTrue(tag.utførtArbeidUtenforNorge)
-        assertEquals("Et land", tag.utførtArbeidUtenforNorgeLand)
-        assertEquals("2024-05-01", tag.utførtArbeidUtenforNorgeFom)
-        assertEquals("2024-05-10", tag.utførtArbeidUtenforNorgeTom)
-        assertEquals(2, tag.utførtArbeidUtenforNorgeAntallPerioder)
+        val forventet = UtfortArbeidUtenforNorgeTag(
+            utførtArbeidUtenforNorge = true,
+            utførtArbeidUtenforNorgeLand = "Et land",
+            utførtArbeidUtenforNorgeFom = "2024-05-01",
+            utførtArbeidUtenforNorgeTom = "2024-05-10",
+            utførtArbeidUtenforNorgeAntallPerioder = 2
+        )
+
+        assertEquals(fra, forventet)
+
+    }
+
+
+    @Test
+    fun `skal ha tomme felter fra UtfortArbeidUtenforNorge når svar er nei`() {
+
+        val utførtArbeidUtenforNorge = UtfortArbeidUtenforNorge(
+            svar = false,
+            arbeidUtenforNorge = emptyList()
+        )
+
+        val fra = UtfortArbeidUtenforNorgeTag.fra(utførtArbeidUtenforNorge)
+
+        val forventet = UtfortArbeidUtenforNorgeTag(
+            utførtArbeidUtenforNorge = false,
+            utførtArbeidUtenforNorgeLand = "",
+            utførtArbeidUtenforNorgeFom = "",
+            utførtArbeidUtenforNorgeTom = "",
+            utførtArbeidUtenforNorgeAntallPerioder = 0
+        )
+
+        assertEquals(fra, forventet)
+
     }
 }

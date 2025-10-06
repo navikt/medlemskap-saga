@@ -7,11 +7,18 @@ data class UtfortArbeidUtenforNorgeTag(
     val utførtArbeidUtenforNorgeTom: String,
     val utførtArbeidUtenforNorgeAntallPerioder: Int
 ) {
-    constructor(utførtArbeidUtenforNorge: UtfortArbeidUtenforNorge) : this(
-        utførtArbeidUtenforNorge.utførtArbeidUtenforNorgeOppgitt(),
-        utførtArbeidUtenforNorge.utførtArbeidUtenforNorgeFørsteLandetOppgitt(),
-        utførtArbeidUtenforNorge.utførtArbeidUtenforNorgeFørsteOppgitteFom(),
-        utførtArbeidUtenforNorge.utførtArbeidUtenforNorgeFørsteOppgitteTom(),
-        utførtArbeidUtenforNorge.utførtArbeidUtenforNorgeAntallPerioderOppgitt()
-    )
+
+    companion object {
+        fun fra(utførtArbeidUtenforNorge: UtfortArbeidUtenforNorge?): UtfortArbeidUtenforNorgeTag? {
+            if (utførtArbeidUtenforNorge == null) return null
+
+            return UtfortArbeidUtenforNorgeTag(
+                utførtArbeidUtenforNorge.utførtArbeidUtenforNorgeOppgitt(),
+                utførtArbeidUtenforNorge.utførtArbeidUtenforNorgeFørsteLandetOppgitt(),
+                utførtArbeidUtenforNorge.utførtArbeidUtenforNorgeFørsteOppgitteFom(),
+                utførtArbeidUtenforNorge.utførtArbeidUtenforNorgeFørsteOppgitteTom(),
+                utførtArbeidUtenforNorge.utførtArbeidUtenforNorgeAntallPerioderOppgitt()
+            )
+        }
+    }
 }

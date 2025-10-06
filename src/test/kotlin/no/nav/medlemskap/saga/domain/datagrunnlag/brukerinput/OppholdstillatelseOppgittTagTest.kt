@@ -1,20 +1,16 @@
 package no.nav.medlemskap.saga.domain.datagrunnlag.brukerinput
 
 import no.nav.medlemskap.saga.domain.datagrunnlag.Periode
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class OppholdstillatelseOppgittTagTest {
 
     @Test
-    fun `skal ha tomme felter når det ikke finnes oppholdstillatelse`() {
-        val defaultOppholdstillatelse = OppholdstillatelseOppgitt()
-        val tag = OppholdstillatelseOppgittTag(defaultOppholdstillatelse)
+    fun `skal ikke utlede felter når det ikke finnes oppholdstillatelse`() {
+        val fra = OppholdstillatelseOppgittTag.fra(null)
 
-        Assertions.assertFalse(tag.oppholdstillatelseOppgitt)
-        Assertions.assertEquals("", tag.oppholdstillatelseOppgittFom)
-        Assertions.assertEquals("", tag.oppholdstillatelseOppgittTom)
-        Assertions.assertEquals(0, tag.oppholdstillatelseOppgittAntallPerioder)
+        assertEquals(fra, null)
     }
 
     @Test
@@ -26,11 +22,14 @@ class OppholdstillatelseOppgittTagTest {
                 Periode(fom = "2025-01-01", tom = "2025-12-31")
             )
         )
-        val tag = OppholdstillatelseOppgittTag(oppholdstillatelse)
+        val fra = OppholdstillatelseOppgittTag.fra(oppholdstillatelse)
+        val forventet = OppholdstillatelseOppgittTag(
+            oppholdstillatelseOppgitt = true,
+            oppholdstillatelseOppgittFom = "2024-01-01",
+            oppholdstillatelseOppgittTom = "2024-12-31",
+            oppholdstillatelseOppgittAntallPerioder = 2
+        )
 
-        Assertions.assertTrue(tag.oppholdstillatelseOppgitt)
-        Assertions.assertEquals("2024-01-01", tag.oppholdstillatelseOppgittFom)
-        Assertions.assertEquals("2024-12-31", tag.oppholdstillatelseOppgittTom)
-        Assertions.assertEquals(2, tag.oppholdstillatelseOppgittAntallPerioder)
+        assertEquals(fra, forventet)
     }
 }

@@ -9,6 +9,7 @@ import no.nav.medlemskap.saga.domain.datagrunnlag.brukerinput.UtfortArbeidUtenfo
 import no.nav.medlemskap.sykepenger.lytter.jakson.JacksonParser
 
 class UtledVurderingstagger {
+
     fun utled(jsonVurdering: String): VurderingForAnalyse {
 
         val vurdering = JacksonParser().parse(jsonVurdering)
@@ -36,10 +37,10 @@ class UtledVurderingstagger {
             datagrunnlag.pdlpersonhistorikk.finnAktiveStatsborgerskap(),
             konklusjon.enUtledetInformasjon().informasjon.tilKategori(),
             brukerinput.arbeidUtenforNorge,
-            UtfortArbeidUtenforNorgeTag(brukerinput.hentUtførtArbeidUtenforNorge()),
-            OppholdUtenforEOSTag(brukerinput.hentOppholdUtenforEØS()),
-            OppholdUtenforNorgeTag(brukerinput.hentOppholdUtenforNorge()),
-            OppholdstillatelseOppgittTag(brukerinput.hentOppholdstillatelseOppgitt()),
+            UtfortArbeidUtenforNorgeTag.fra(brukerinput.hentUtførtArbeidUtenforNorge()),
+            OppholdUtenforEOSTag.fra(brukerinput.hentOppholdUtenforEØS()),
+            OppholdUtenforNorgeTag.fra(brukerinput.hentOppholdUtenforNorge()),
+            OppholdstillatelseOppgittTag.fra(brukerinput.hentOppholdstillatelseOppgitt()),
             oppholdstillatelseUDI?.hentOppholdstillatelseUDIFom(),
             oppholdstillatelseUDI?.hentOppholdstillatelseUDITom(),
             oppholdstillatelseUDI?.hentOppholdstillatelseUDIType() ?: "",
