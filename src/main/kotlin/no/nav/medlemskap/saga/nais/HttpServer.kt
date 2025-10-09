@@ -30,6 +30,7 @@ import no.nav.medlemskap.saga.persistence.PostgresMedlemskapVurdertRepository
 import no.nav.medlemskap.saga.persistence.VurderingForAnalyseRepositoryImpl
 import no.nav.medlemskap.saga.rest.objectMapper
 import no.nav.medlemskap.saga.rest.sagaRoutes
+import no.nav.medlemskap.saga.rest.uttrekkRoute
 import no.nav.medlemskap.saga.service.SagaService
 import java.io.Writer
 
@@ -80,6 +81,7 @@ fun createHttpServer(consumeJob: Job) = embeddedServer(Netty, port = 8080) {
         routing {
             naisRoutes(consumeJob)
             sagaRoutes(service)
+            uttrekkRoute()
         }
     }
 
