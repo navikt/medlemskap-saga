@@ -1,5 +1,6 @@
 package no.nav.medlemskap.saga.utled_vurderingstagger
 
+import UttrekkAnalyse
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import no.nav.medlemskap.saga.persistence.VurderingForAnalyseRepository
 import no.nav.medlemskap.saga.domain.VurderingForAnalyse
@@ -43,5 +44,13 @@ class VurderingForAnalyseService(
             vurderingForAnalyse.oppholdstillatelseUDITom,
             vurderingForAnalyse.oppholdstillatelseUDIType
         )
+    }
+
+    fun hentVurderingerForAnalyse(aarMaanedParam: String): List<UttrekkAnalyse> {
+        // Får inn årmnd parameter -> må konverteres til fom og tom
+        // Kalle på metode i repo for å hente ut uttrekk og sende inn fom og tom
+        // Returner liste med uttrekk analyse
+        return emptyList()
+
     }
 }
