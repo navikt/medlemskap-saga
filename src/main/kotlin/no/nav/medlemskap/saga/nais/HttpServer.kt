@@ -32,6 +32,8 @@ import no.nav.medlemskap.saga.rest.objectMapper
 import no.nav.medlemskap.saga.rest.sagaRoutes
 import no.nav.medlemskap.saga.rest.uttrekkRoute
 import no.nav.medlemskap.saga.service.SagaService
+import no.nav.medlemskap.saga.utled_vurderingstagger.UtledVurderingstagger
+import no.nav.medlemskap.saga.utled_vurderingstagger.VurderingForAnalyseService
 import java.io.Writer
 
 import java.util.*
@@ -44,6 +46,9 @@ fun createHttpServer(consumeJob: Job) = embeddedServer(Netty, port = 8080) {
         PostgresMedlemskapVurdertRepository(DataSourceBuilder(System.getenv()).getDataSource()),
         VurderingForAnalyseRepositoryImpl(DataSourceBuilder(System.getenv()).getDataSource()),
     )
+
+    val uttrekkService = VurderingForAnalyseService(VurderingForAnalyseRepositoryImpl(DataSourceBuilder(System.getenv()).getDataSource()),
+        UtledVurderingstagger())
 
         install(CallId) {
             header(MDC_CALL_ID)
@@ -81,7 +86,7 @@ fun createHttpServer(consumeJob: Job) = embeddedServer(Netty, port = 8080) {
         routing {
             naisRoutes(consumeJob)
             sagaRoutes(service)
-            uttrekkRoute()
+            uttrekkRoute(uttrekkService)
         }
     }
 

@@ -6,6 +6,7 @@ import javax.sql.DataSource
 import kotliquery.queryOf
 import kotliquery.sessionOf
 import kotliquery.using
+import no.nav.medlemskap.saga.utled_vurderingstagger.UttrekkForPeriode
 import java.time.LocalDate
 import java.util.Date
 
@@ -36,6 +37,7 @@ interface VurderingForAnalyseRepository {
         oppholdstillatelse_udi_tom: LocalDate?,
         oppholdstillatelse_udi_type: String
     )
+    fun hentUttrekkForPeriode(førsteDag: LocalDate, sisteDag: LocalDate): List<UttrekkAnalyse>
 }
 
 class VurderingForAnalyseRepositoryImpl(val dataSource: DataSource) : VurderingForAnalyseRepository {
@@ -132,38 +134,49 @@ class VurderingForAnalyseRepositoryImpl(val dataSource: DataSource) : VurderingF
                 )
             }
 
-
-            val toAnalyseDao: (Row) -> UttrekkAnalyse = { row ->
-                UttrekkAnalyse(
-                    dato = row.localDate("dato"),
-                    ytelse = row.string("ytelse"),
-                    fom = row.localDate("fom"),
-                    tom = row.localDate("tom"),
-                    fnr = row.string("fnr"),
-                    foerste_dag_for_ytelse = row.localDate("foerste_dag_for_ytelse"),
-                    start_dato_for_ytelse = row.localDate("start_dato_fom"),
-                    svar = row.string("svar"),
-                    aarsaker = row.array("aarsaker"),
-                    konklusjon = row.string("konklusjon"),
-                    avklaringsliste = row.array("avklaringsliste"),
-                    nye_spoersmaal = row.boolean("nye_spoersmaal"),
-                    antall_dager_med_sykmelding = row.long("antall_dager_med_sykmelding"),
-                    statsborgerskap = row.array("statsborgerskap"),
-                    statsborgerskapskategori = row.string("statsborgerskapskategori"),
-                    arbeid_utenfor_norge = row.boolean("arbeid_utenfor_norge"),
-                    utfoert_arbeid_utenfor_norge = row.string("utfoert_arbeid_utenfor_norge"),
-                    opphold_utenfor_eos = row.string("opphold_utenfor_eos"),
-                    opphold_utenfor_norge = row.string("opphold_utenfor_norge"),
-                    oppholdstillatelse_oppgitt = row.string("oppholdstillatelse_oppgitt"),
-                    oppholdstillatelse_udi_fom = row.localDateOrNull("oppholdstillatelse_udi_fom"),
-                    oppholdstillatelse_udi_tom = row.localDateOrNull("oppholdstillatelse_udi_tom"),
-                    oppholdstillatelse_udi_type = row.string("oppholdstillatelse_udi_type")
-
-                )
-            }
-
-
         }
+    }
+
+    val toAnalyseDao: (Row) -> UttrekkAnalyse = { row ->
+        UttrekkAnalyse(
+            dato = row.localDate("dato"),
+            ytelse = row.string("ytelse"),
+            fom = row.localDate("fom"),
+            tom = row.localDate("tom"),
+            fnr = row.string("fnr"),
+            foerste_dag_for_ytelse = row.localDate("foerste_dag_for_ytelse"),
+            start_dato_for_ytelse = row.localDate("start_dato_fom"),
+            svar = row.string("svar"),
+            aarsaker = row.array("aarsaker"),
+            konklusjon = row.string("konklusjon"),
+            avklaringsliste = row.array("avklaringsliste"),
+            nye_spoersmaal = row.boolean("nye_spoersmaal"),
+            antall_dager_med_sykmelding = row.long("antall_dager_med_sykmelding"),
+            statsborgerskap = row.array("statsborgerskap"),
+            statsborgerskapskategori = row.string("statsborgerskapskategori"),
+            arbeid_utenfor_norge = row.boolean("arbeid_utenfor_norge"),
+            utfoert_arbeid_utenfor_norge = row.string("utfoert_arbeid_utenfor_norge"),
+            opphold_utenfor_eos = row.string("opphold_utenfor_eos"),
+            opphold_utenfor_norge = row.string("opphold_utenfor_norge"),
+            oppholdstillatelse_oppgitt = row.string("oppholdstillatelse_oppgitt"),
+            oppholdstillatelse_udi_fom = row.localDateOrNull("oppholdstillatelse_udi_fom"),
+            oppholdstillatelse_udi_tom = row.localDateOrNull("oppholdstillatelse_udi_tom"),
+            oppholdstillatelse_udi_type = row.string("oppholdstillatelse_udi_type")
+
+        )
+    }
+
+    val HENT_UTTREKK_FOR_PERIODE = "SELECT DISTINCT * FROM vurdering_analyse WHERE date BETWEEN ? AND ?"
+
+    override fun hentUttrekkForPeriode(førsteDag: LocalDate, sisteDag: LocalDate): List<UttrekkAnalyse> {
+        return using(sessionOf(dataSource)) {
+            it
+                .run(
+                    queryOf(HENT_UTTREKK_FOR_PERIODE, førsteDag, sisteDag)
+                        .map(toAnalyseDao).asList
+                )
+        }
+
     }
 
 

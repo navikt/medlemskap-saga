@@ -46,11 +46,13 @@ class VurderingForAnalyseService(
         )
     }
 
-    fun hentVurderingerForAnalyse(aarMaanedParam: String): List<UttrekkAnalyse> {
-        // Får inn årmnd parameter -> må konverteres til fom og tom
-        // Kalle på metode i repo for å hente ut uttrekk og sende inn fom og tom
-        // Returner liste med uttrekk analyse
-        return emptyList()
+    fun hentVurderingerForAnalyse(parameter: String): List<UttrekkAnalyse> {
+        val uttrekkForPeriode = UttrekkForPeriode(parameter)
+        val førsteDag = uttrekkForPeriode.førsteDag
+        val sisteDag = uttrekkForPeriode.sisteDag
+        val uttrekk = vurderingForAnalyseRepository.hentUttrekkForPeriode(førsteDag, sisteDag)
 
+
+        return uttrekk
     }
 }

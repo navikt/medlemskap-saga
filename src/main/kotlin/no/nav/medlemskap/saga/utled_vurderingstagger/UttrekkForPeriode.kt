@@ -4,17 +4,16 @@ import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
 
-class UttrekkForPeriode {
+class UttrekkForPeriode(parameter: String) {
 
-    data class Periode(val startDato: LocalDate, val sluttDato: LocalDate)
+    val førsteDag: LocalDate
+    val sisteDag: LocalDate
 
-    fun hentUttrekkForDato(yyyymm: String): Periode {
+    init {
         val formatter = DateTimeFormatter.ofPattern("yyyyMM")
-        val aarOgMaaned = YearMonth.parse(yyyymm, formatter)
-        val startDato = aarOgMaaned.atDay(1)
-        val sluttDato = aarOgMaaned.atEndOfMonth()
-
-        return Periode(startDato, sluttDato)
+        val årOgMåned = YearMonth.parse(parameter, formatter)
+        førsteDag = årOgMåned.atDay(1)
+        sisteDag = årOgMåned.atEndOfMonth()
     }
 }
 
