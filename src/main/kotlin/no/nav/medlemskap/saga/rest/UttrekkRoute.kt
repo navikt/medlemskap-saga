@@ -21,7 +21,7 @@ fun Routing.uttrekkRoute(service: VurderingForAnalyseService) {
                 val aarMaanedParam =call.parameters["aarMaaned"]!!
                 val uttrekk = service.hentVurderingerForAnalyse(aarMaanedParam)
                 val excelBytes = GenererExcelDokument().generer(uttrekk)
-                call.response.header(HttpHeaders.ContentDisposition, "attachment; filename=\"lovme.xlsx\"")
+                call.response.header(HttpHeaders.ContentDisposition, "attachment; filename=\"Lovme.xlsx\"")
                 call.respondBytes(excelBytes, ContentType.parse("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
             }
         }
