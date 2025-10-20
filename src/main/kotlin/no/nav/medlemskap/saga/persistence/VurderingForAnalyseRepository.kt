@@ -145,7 +145,7 @@ class VurderingForAnalyseRepositoryImpl(val dataSource: DataSource) : VurderingF
             tom = row.localDate("tom"),
             fnr = row.string("fnr"),
             foerste_dag_for_ytelse = row.localDate("foerste_dag_for_ytelse"),
-            start_dato_for_ytelse = row.localDate("start_dato_fom"),
+            start_dato_for_ytelse = row.localDate("start_dato_for_ytelse"),
             svar = row.string("svar"),
             aarsaker = row.array("aarsaker"),
             konklusjon = row.string("konklusjon"),
