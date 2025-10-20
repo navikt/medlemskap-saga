@@ -166,7 +166,7 @@ class VurderingForAnalyseRepositoryImpl(val dataSource: DataSource) : VurderingF
         )
     }
 
-    val HENT_UTTREKK_FOR_PERIODE = "SELECT DISTINCT * FROM vurdering_analyse WHERE date BETWEEN ? AND ?"
+    val HENT_UTTREKK_FOR_PERIODE = "SELECT DISTINCT * FROM vurdering_analyse WHERE dato BETWEEN ? AND ?"
 
     override fun hentUttrekkForPeriode(førsteDag: LocalDate, sisteDag: LocalDate): List<UttrekkAnalyse> {
         return using(sessionOf(dataSource)) {
