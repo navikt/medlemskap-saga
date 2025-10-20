@@ -1,18 +1,20 @@
-package no.nav.medlemskap.saga.utled_vurderingstagger
+package no.nav.medlemskap.saga.service
 
-import UttrekkAnalyse
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import no.nav.medlemskap.saga.persistence.VurderingForAnalyseRepository
 import no.nav.medlemskap.saga.domain.VurderingForAnalyse
+import no.nav.medlemskap.saga.domain.VurderingForAnalyseDAO
+import no.nav.medlemskap.saga.persistence.VurderingForAnalyseRepository
+import no.nav.medlemskap.saga.utled_vurderingstagger.UtledVurderingstagger
+import no.nav.medlemskap.saga.generer_uttrekk.UttrekkForPeriode
 import java.time.LocalDate
 
-class VurderingForAnalyseService(
+class UttrekkService(
     val vurderingForAnalyseRepository: VurderingForAnalyseRepository,
     val utledVurderingstagger: UtledVurderingstagger
 ) {
 
-    fun lagreTilVurderingForAnalyse(json: String) {
-        val vurderingForAnalyse = utledVurderingstagger.utled(json)
+    fun lagreTilVurderingForAnalyse(vurderingSomJson: String) {
+        val vurderingForAnalyse = utledVurderingstagger.utled(vurderingSomJson)
         lagreTilVurderingForAnalyse(vurderingForAnalyse)
     }
 
@@ -46,13 +48,11 @@ class VurderingForAnalyseService(
         )
     }
 
-    fun hentVurderingerForAnalyse(parameter: String): List<UttrekkAnalyse> {
+    fun hentVurderingerForAnalyse(parameter: String): List<VurderingForAnalyseDAO> {
         val uttrekkForPeriode = UttrekkForPeriode(parameter)
-        val førsteDag = uttrekkForPeriode.førsteDag
-        val sisteDag = uttrekkForPeriode.sisteDag
-        val uttrekk = vurderingForAnalyseRepository.hentUttrekkForPeriode(førsteDag, sisteDag)
-
-
-        return uttrekk
+        return vurderingForAnalyseRepository.hentVurderingerForAnalyse(
+            uttrekkForPeriode.førsteDag,
+            uttrekkForPeriode.sisteDag
+        )
     }
 }

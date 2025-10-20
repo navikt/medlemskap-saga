@@ -10,9 +10,9 @@ import no.nav.medlemskap.sykepenger.lytter.jakson.JacksonParser
 
 class UtledVurderingstagger {
 
-    fun utled(jsonVurdering: String): VurderingForAnalyse {
+    fun utled(vurderingSomJson: String): VurderingForAnalyse {
 
-        val vurdering = JacksonParser().parse(jsonVurdering)
+        val vurdering = JacksonParser().parse(vurderingSomJson)
         val vurderingFraJson: Vurdering = JacksonParser().toDomainObject(vurdering)
 
         val datagrunnlag = vurderingFraJson.datagrunnlag

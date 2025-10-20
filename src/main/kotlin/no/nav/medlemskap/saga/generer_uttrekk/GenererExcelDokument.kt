@@ -1,13 +1,13 @@
-package no.nav.medlemskap.saga.utled_vurderingstagger
+package no.nav.medlemskap.saga.generer_uttrekk
 
-import UttrekkAnalyse
+import no.nav.medlemskap.saga.domain.VurderingForAnalyseDAO
 import org.apache.commons.io.output.ByteArrayOutputStream
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 
 
 class GenererExcelDokument {
 
-    fun generer(vurdering: List<UttrekkAnalyse>): ByteArray {
+    fun generer(vurdering: List<VurderingForAnalyseDAO>): ByteArray {
         val workbook = XSSFWorkbook()
         val sheet = workbook.createSheet("Data Sheet")
 

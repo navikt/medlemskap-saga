@@ -9,7 +9,6 @@ import no.nav.medlemskap.saga.persistence.VurderingDao
 import no.nav.medlemskap.saga.persistence.VurderingForAnalyseRepository
 import no.nav.medlemskap.saga.rest.objectMapper
 import no.nav.medlemskap.saga.utled_vurderingstagger.UtledVurderingstagger
-import no.nav.medlemskap.saga.utled_vurderingstagger.VurderingForAnalyseService
 import no.nav.medlemskap.sykepenger.lytter.jakson.JacksonParser
 import org.slf4j.MarkerFactory
 import java.lang.Exception
@@ -22,7 +21,7 @@ class SagaService(
 
     private val log = KotlinLogging.logger { }
     private val teamLogs = MarkerFactory.getMarker("TEAM_LOGS")
-    private val vurderingForAnalyseService = VurderingForAnalyseService(vurderingForAnalyseRepository, UtledVurderingstagger())
+    private val uttrekkService = UttrekkService(vurderingForAnalyseRepository, UtledVurderingstagger())
 
     fun handle(record: medlemskapVurdertRecord) {
         log.info(
@@ -39,7 +38,8 @@ class SagaService(
                 val ytelse = kotlin.runCatching { objectMapper.readTree(record.json).get("datagrunnlag").get("ytelse").asText() }.getOrElse { "UKJENT" }
                 medlemskapVurdertRepository.lagreVurdering(record.key, Date(), record.json,ytelse)
 
-                vurderingForAnalyseService.lagreTilVurderingForAnalyse(record.json)
+                //Future: Vurdere å flytte denne prosessen til en egen kafka consumer
+                uttrekkService.lagreTilVurderingForAnalyse(record.json)
             }
             catch (e:Exception){
                 record.logLagringFeilet(e)

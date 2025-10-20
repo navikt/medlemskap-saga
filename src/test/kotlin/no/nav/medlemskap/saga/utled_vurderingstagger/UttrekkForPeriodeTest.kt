@@ -1,4 +1,4 @@
-import no.nav.medlemskap.saga.utled_vurderingstagger.UttrekkForPeriode
+import no.nav.medlemskap.saga.generer_uttrekk.UttrekkForPeriode
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import java.time.LocalDate
