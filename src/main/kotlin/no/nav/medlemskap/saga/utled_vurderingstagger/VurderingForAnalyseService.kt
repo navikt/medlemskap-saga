@@ -1,5 +1,6 @@
 package no.nav.medlemskap.saga.utled_vurderingstagger
 
+import UttrekkAnalyse
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import no.nav.medlemskap.saga.persistence.VurderingForAnalyseRepository
 import no.nav.medlemskap.saga.domain.VurderingForAnalyse
@@ -43,5 +44,15 @@ class VurderingForAnalyseService(
             vurderingForAnalyse.oppholdstillatelseUDITom,
             vurderingForAnalyse.oppholdstillatelseUDIType
         )
+    }
+
+    fun hentVurderingerForAnalyse(parameter: String): List<UttrekkAnalyse> {
+        val uttrekkForPeriode = UttrekkForPeriode(parameter)
+        val førsteDag = uttrekkForPeriode.førsteDag
+        val sisteDag = uttrekkForPeriode.sisteDag
+        val uttrekk = vurderingForAnalyseRepository.hentUttrekkForPeriode(førsteDag, sisteDag)
+
+
+        return uttrekk
     }
 }
