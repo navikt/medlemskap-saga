@@ -8,7 +8,6 @@ import no.nav.medlemskap.saga.persistence.MedlemskapVurdertRepository
 import no.nav.medlemskap.saga.persistence.VurderingDao
 import no.nav.medlemskap.saga.persistence.VurderingForAnalyseRepository
 import no.nav.medlemskap.saga.rest.objectMapper
-import no.nav.medlemskap.saga.utled_vurderingstagger.UtledVurderingstagger
 import no.nav.medlemskap.sykepenger.lytter.jakson.JacksonParser
 import org.slf4j.MarkerFactory
 import java.lang.Exception
@@ -21,7 +20,7 @@ class SagaService(
 
     private val log = KotlinLogging.logger { }
     private val teamLogs = MarkerFactory.getMarker("TEAM_LOGS")
-    private val uttrekkService = UttrekkService(vurderingForAnalyseRepository, UtledVurderingstagger())
+    private val uttrekkService = UttrekkService(vurderingForAnalyseRepository)
 
     fun handle(record: medlemskapVurdertRecord) {
         log.info(

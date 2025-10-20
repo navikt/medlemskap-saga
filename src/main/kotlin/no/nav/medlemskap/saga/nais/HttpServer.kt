@@ -30,7 +30,6 @@ import no.nav.medlemskap.saga.rest.objectMapper
 import no.nav.medlemskap.saga.rest.sagaRoutes
 import no.nav.medlemskap.saga.rest.uttrekkRoute
 import no.nav.medlemskap.saga.service.SagaService
-import no.nav.medlemskap.saga.utled_vurderingstagger.UtledVurderingstagger
 import no.nav.medlemskap.saga.service.UttrekkService
 import java.io.Writer
 
@@ -45,8 +44,7 @@ fun createHttpServer(consumeJob: Job) = embeddedServer(Netty, port = 8080) {
         VurderingForAnalyseRepositoryImpl(DataSourceBuilder(System.getenv()).getDataSource()),
     )
 
-    val uttrekkService = UttrekkService(VurderingForAnalyseRepositoryImpl(DataSourceBuilder(System.getenv()).getDataSource()),
-        UtledVurderingstagger())
+    val uttrekkService = UttrekkService(VurderingForAnalyseRepositoryImpl(DataSourceBuilder(System.getenv()).getDataSource()))
 
         install(CallId) {
             header(MDC_CALL_ID)

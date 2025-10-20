@@ -8,7 +8,7 @@ import no.nav.medlemskap.saga.domain.datagrunnlag.brukerinput.Oppholdstillatelse
 import no.nav.medlemskap.saga.domain.datagrunnlag.brukerinput.UtfortArbeidUtenforNorgeTag
 import no.nav.medlemskap.sykepenger.lytter.jakson.JacksonParser
 
-class UtledVurderingstagger {
+object UtledVurderingstagger {
 
     fun utled(vurderingSomJson: String): VurderingForAnalyse {
 
