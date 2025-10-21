@@ -96,8 +96,7 @@ class GenererExcelDokument {
             rad.createCell(17).setCellValue(vurdering.utførtArbeidUtenforNorgeTag?.utførtArbeidUtenforNorgeLand ?: "")
             rad.createCell(18).setCellValue(vurdering.utførtArbeidUtenforNorgeTag?.utførtArbeidUtenforNorgeFom ?: "")
             rad.createCell(19).setCellValue(vurdering.utførtArbeidUtenforNorgeTag?.utførtArbeidUtenforNorgeTom ?: "")
-            rad.createCell(20)
-                .setCellValue(vurdering.utførtArbeidUtenforNorgeTag?.utførtArbeidUtenforNorgeAntallPerioder.toString())
+            rad.createCell(20).setCellValue(formater(vurdering.utførtArbeidUtenforNorgeTag?.utførtArbeidUtenforNorgeAntallPerioder))
             rad.createCell(21).setCellValue(
                 if (vurdering.oppholdUtenforEOSTag == null) {
                     ""
@@ -108,7 +107,7 @@ class GenererExcelDokument {
             rad.createCell(22).setCellValue(vurdering.oppholdUtenforEOSTag?.oppholdUtenforEØSLand ?: "")
             rad.createCell(23).setCellValue(vurdering.oppholdUtenforEOSTag?.oppholdUtenforEØSFom ?: "")
             rad.createCell(24).setCellValue(vurdering.oppholdUtenforEOSTag?.oppholdUtenforEØSTom ?: "")
-            rad.createCell(25).setCellValue(vurdering.oppholdUtenforEOSTag?.oppholdUtenforEØSAntallPerioder?.toString() ?: "")
+            rad.createCell(25).setCellValue(formater(vurdering.oppholdUtenforEOSTag?.oppholdUtenforEØSAntallPerioder))
             rad.createCell(26).setCellValue(vurdering.oppholdUtenforEOSTag?.oppholdUtenforEØSGrunn)
             rad.createCell(27).setCellValue(
                 if (vurdering.oppholdUtenforNorgeTag == null) {
@@ -120,7 +119,7 @@ class GenererExcelDokument {
             rad.createCell(28).setCellValue(vurdering.oppholdUtenforNorgeTag?.oppholdUtenforNorgeLand ?: "")
             rad.createCell(29).setCellValue(vurdering.oppholdUtenforNorgeTag?.oppholdUtenforNorgeFom ?: "")
             rad.createCell(30).setCellValue(vurdering.oppholdUtenforNorgeTag?.oppholdUtenforNorgeTom ?: "")
-            rad.createCell(31).setCellValue(vurdering.oppholdUtenforNorgeTag?.oppholdUtenforNorgeAntallPerioder?.toString() ?: "")
+            rad.createCell(31).setCellValue(formater(vurdering.oppholdUtenforNorgeTag?.oppholdUtenforNorgeAntallPerioder))
             rad.createCell(32).setCellValue(vurdering.oppholdUtenforNorgeTag?.oppholdUtenforNorgeGrunn ?: "")
             rad.createCell(33).setCellValue(
                 if (vurdering.oppholdstillatelseOppgittTag == null) {
@@ -131,7 +130,7 @@ class GenererExcelDokument {
             )
             rad.createCell(34).setCellValue(vurdering.oppholdstillatelseOppgittTag?.oppholdstillatelseOppgittFom ?: "")
             rad.createCell(35).setCellValue(vurdering.oppholdstillatelseOppgittTag?.oppholdstillatelseOppgittTom ?: "")
-            rad.createCell(36).setCellValue(vurdering.oppholdstillatelseOppgittTag?.oppholdstillatelseOppgittAntallPerioder?.toString() ?: "")
+            rad.createCell(36).setCellValue(formater(vurdering.oppholdstillatelseOppgittTag?.oppholdstillatelseOppgittAntallPerioder))
             rad.createCell(37).setCellValue(vurdering.oppholdstillatelseUDIFom)
             rad.createCell(38).setCellValue(vurdering.oppholdstillatelseUDITom)
             rad.createCell(39).setCellValue(vurdering.oppholdstillatelseUDIType)
@@ -145,4 +144,9 @@ class GenererExcelDokument {
         val excelBytes = outputStream.toByteArray()
         return excelBytes
     }
+
+    fun formater(resultat: Int?) : String {
+        return resultat?.toString() ?: ""
+    }
+
 }
