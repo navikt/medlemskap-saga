@@ -9,6 +9,7 @@ import no.nav.medlemskap.saga.domain.konklusjon.Statsborgerskapskategori
 import java.time.LocalDate
 
 data class VurderingForAnalyse(
+    val dato: LocalDate? = null,
     val ytelse: Ytelse,
     val fom: LocalDate,
     val tom: LocalDate,

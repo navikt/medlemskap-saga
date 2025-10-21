@@ -1,13 +1,13 @@
 package no.nav.medlemskap.saga.generer_uttrekk
 
-import no.nav.medlemskap.saga.domain.VurderingForAnalyseDAO
+import no.nav.medlemskap.saga.domain.VurderingForAnalyse
 import org.apache.commons.io.output.ByteArrayOutputStream
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 
 
 class GenererExcelDokument {
 
-    fun generer(vurdering: List<VurderingForAnalyseDAO>): ByteArray {
+    fun generer(vurderinger: List<VurderingForAnalyse>): ByteArray {
         val workbook = XSSFWorkbook()
         val sheet = workbook.createSheet("Data Sheet")
 
@@ -29,46 +29,75 @@ class GenererExcelDokument {
         header.createCell(14).setCellValue("statsborgerskapskategori")
         header.createCell(15).setCellValue("arbeid_utenfor_norge")
         header.createCell(16).setCellValue("utfoert_arbeid_utenfor_norge")
-        header.createCell(17).setCellValue("opphold_utenfor_eos")
-        header.createCell(18).setCellValue("opphold_utenfor_norge")
-        header.createCell(19).setCellValue("oppholdstillatelse_oppgitt")
-        header.createCell(20).setCellValue("oppholdstillatelse_udi_fom")
-        header.createCell(21).setCellValue("oppholdstillatelse_udi_tom")
-        header.createCell(22).setCellValue("oppholdstillatelse_udi_type")
-/*
-        vurdering.forEachIndexed {
-            index, data ->
-            val rad = sheet.createRow(index + 1)
-            rad.createCell(0).setCellValue(data.dato)
-            rad.createCell(1).setCellValue(data.ytelse)
-            rad.createCell(2).setCellValue(data.fom)
-            rad.createCell(3).setCellValue(data.tom)
-            rad.createCell(4).setCellValue(data.fnr)
-            rad.createCell(5).setCellValue(data.foerste_dag_for_ytelse)
-            rad.createCell(6).setCellValue(data.start_dato_for_ytelse)
-            rad.createCell(7).setCellValue(data.svar)
-            rad.createCell(8).setCellValue(data.aarsaker.joinToString(", "))
-            rad.createCell(9).setCellValue(data.konklusjon)
-            rad.createCell(10).setCellValue(data.avklaringsliste.joinToString(", "))
-            rad.createCell(11).setCellValue(data.nye_spoersmaal)
-            rad.createCell(12).setCellValue(data.antall_dager_med_sykmelding.toString())
-            rad.createCell(13).setCellValue(data.statsborgerskap.joinToString(", "))
-            rad.createCell(14).setCellValue(data.statsborgerskapskategori)
-            rad.createCell(15).setCellValue(data.arbeid_utenfor_norge)
-            rad.createCell(16).setCellValue(data.utfoert_arbeid_utenfor_norge)
-            rad.createCell(17).setCellValue(data.dato)
-            rad.createCell(18).setCellValue(data.dato)
-            rad.createCell(19).setCellValue(data.dato)
-            rad.createCell(20).setCellValue(data.dato)
-            rad.createCell(21).setCellValue(data.dato)
-            rad.createCell(22).setCellValue(data.dato)
-        }
-*/
-        /*val dataRow1 = sheet.createRow(1)
-        dataRow1.createCell(0).setCellValue("Alice")
-        dataRow1.createCell(1).setCellValue(30)*/
+        header.createCell(17).setCellValue("utfoert_arbeid_utenfor_norge_land")
+        header.createCell(18).setCellValue("utfoert_arbeid_utenfor_norge_fom")
+        header.createCell(19).setCellValue("utfoert_arbeid_utenfor_norge_tom")
+        header.createCell(20).setCellValue("utfoert_arbeid_utenfor_norge_antall_perioder")
+        header.createCell(21).setCellValue("opphold_utenfor_eos")
+        header.createCell(22).setCellValue("opphold_utenfor_eos_land")
+        header.createCell(23).setCellValue("opphold_utenfor_eos_fom")
+        header.createCell(24).setCellValue("opphold_utenfor_eos_tom")
+        header.createCell(25).setCellValue("opphold_utenfor_eos_antall_perioder")
+        header.createCell(26).setCellValue("opphold_utenfor_eos_grunn")
+        header.createCell(27).setCellValue("opphold_utenfor_norge")
+        header.createCell(28).setCellValue("opphold_utenfor_norge_land")
+        header.createCell(29).setCellValue("opphold_utenfor_norge_fom")
+        header.createCell(30).setCellValue("opphold_utenfor_norge_tom")
+        header.createCell(31).setCellValue("opphold_utenfor_norge_antall_perioder")
+        header.createCell(32).setCellValue("opphold_utenfor_norge_grunn")
+        header.createCell(33).setCellValue("oppholdstillatelse_oppgitt")
+        header.createCell(34).setCellValue("oppholdstillatelse_oppgitt_fom")
+        header.createCell(35).setCellValue("oppholdstillatelse_oppgitt_tom")
+        header.createCell(36).setCellValue("oppholdstillatelse_oppgitt_antall_perioder")
+        header.createCell(37).setCellValue("oppholdstillatelse_udi_fom")
+        header.createCell(38).setCellValue("oppholdstillatelse_udi_tom")
+        header.createCell(39).setCellValue("oppholdstillatelse_udi_type")
 
-        // Write the workbook to a ByteArrayOutputStream
+        vurderinger.forEachIndexed { indeks, vurdering ->
+            val rad = sheet.createRow(indeks + 1)
+            rad.createCell(0).setCellValue(vurdering.dato)
+            rad.createCell(1).setCellValue(vurdering.ytelse.toString())
+            rad.createCell(2).setCellValue(vurdering.fom)
+            rad.createCell(3).setCellValue(vurdering.tom)
+            rad.createCell(4).setCellValue(vurdering.fnr)
+            rad.createCell(5).setCellValue(vurdering.førsteDagForYtelse)
+            rad.createCell(6).setCellValue(vurdering.startDatoForYtelse)
+            rad.createCell(7).setCellValue(vurdering.svar.toString())
+            rad.createCell(8).setCellValue(vurdering.årsaker.joinToString(", "))
+            rad.createCell(9).setCellValue(vurdering.konklusjon.toString())
+            rad.createCell(10).setCellValue(vurdering.avklaringsListe.joinToString(", "))
+            rad.createCell(11).setCellValue(vurdering.nyeSpørsmål)
+            rad.createCell(12).setCellValue(vurdering.antallDagerMedSykmelding.toString())
+            rad.createCell(13).setCellValue(vurdering.statsborgerskap.joinToString(", "))
+            rad.createCell(14).setCellValue(vurdering.statsborgerskapskategori.toString())
+            rad.createCell(15).setCellValue(vurdering.arbeidUtenforNorge)
+            rad.createCell(16).setCellValue(vurdering.utførtArbeidUtenforNorgeTag!!.utførtArbeidUtenforNorge)
+            rad.createCell(17).setCellValue(vurdering.utførtArbeidUtenforNorgeTag.utførtArbeidUtenforNorgeLand)
+            rad.createCell(18).setCellValue(vurdering.utførtArbeidUtenforNorgeTag.utførtArbeidUtenforNorgeFom)
+            rad.createCell(19).setCellValue(vurdering.utførtArbeidUtenforNorgeTag.utførtArbeidUtenforNorgeTom)
+            rad.createCell(20).setCellValue(vurdering.utførtArbeidUtenforNorgeTag.utførtArbeidUtenforNorgeAntallPerioder.toString())
+            rad.createCell(21).setCellValue(vurdering.oppholdUtenforEOSTag!!.oppholdUtenforEØS)
+            rad.createCell(22).setCellValue(vurdering.oppholdUtenforEOSTag.oppholdUtenforEØSLand)
+            rad.createCell(23).setCellValue(vurdering.oppholdUtenforEOSTag.oppholdUtenforEØSFom)
+            rad.createCell(24).setCellValue(vurdering.oppholdUtenforEOSTag.oppholdUtenforEØSTom)
+            rad.createCell(25).setCellValue(vurdering.oppholdUtenforEOSTag.oppholdUtenforEØSAntallPerioder.toString())
+            rad.createCell(26).setCellValue(vurdering.oppholdUtenforEOSTag.oppholdUtenforEØSGrunn)
+            rad.createCell(27).setCellValue(vurdering.oppholdUtenforNorgeTag!!.oppholdUtenforNorge)
+            rad.createCell(28).setCellValue(vurdering.oppholdUtenforNorgeTag.oppholdUtenforNorgeLand)
+            rad.createCell(29).setCellValue(vurdering.oppholdUtenforNorgeTag.oppholdUtenforNorgeFom)
+            rad.createCell(30).setCellValue(vurdering.oppholdUtenforNorgeTag.oppholdUtenforNorgeTom)
+            rad.createCell(31).setCellValue(vurdering.oppholdUtenforNorgeTag.oppholdUtenforNorgeAntallPerioder.toString())
+            rad.createCell(32).setCellValue(vurdering.oppholdUtenforNorgeTag.oppholdUtenforNorgeGrunn)
+            rad.createCell(33).setCellValue(vurdering.oppholdstillatelseOppgittTag!!.oppholdstillatelseOppgitt)
+            rad.createCell(34).setCellValue(vurdering.oppholdstillatelseOppgittTag.oppholdstillatelseOppgittFom)
+            rad.createCell(35).setCellValue(vurdering.oppholdstillatelseOppgittTag.oppholdstillatelseOppgittTom)
+            rad.createCell(36).setCellValue(vurdering.oppholdstillatelseOppgittTag.oppholdstillatelseOppgittAntallPerioder.toString())
+            rad.createCell(37).setCellValue(vurdering.oppholdstillatelseUDIFom)
+            rad.createCell(38).setCellValue(vurdering.oppholdstillatelseUDITom)
+            rad.createCell(39).setCellValue(vurdering.oppholdstillatelseUDIType)
+        }
+
+
         val outputStream = ByteArrayOutputStream()
         workbook.write(outputStream)
         workbook.close()

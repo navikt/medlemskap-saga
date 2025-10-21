@@ -6,7 +6,7 @@ import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.fasterxml.jackson.module.kotlin.treeToValue
 
 
-class JacksonParser {
+object JacksonParser {
     fun parse(jsonString: String): JsonNode {
         val mapper: ObjectMapper = ObjectMapper()
             .registerKotlinModule()
@@ -28,6 +28,12 @@ class JacksonParser {
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
             .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS, true)
         return mapper.treeToValue(jsonNode)
+    }
+
+
+    inline fun <reified T> fraJsonTilDomene(json: String): T {
+        val jsonNoden = parse(json)
+        return toDomainObject(jsonNoden)
     }
 
 }

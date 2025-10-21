@@ -63,7 +63,7 @@ class SagaService(
 
     private fun validateRecord(record: medlemskapVurdertRecord) :Boolean{
         try{
-            val node = JacksonParser().parse(record.json)
+            val node = JacksonParser.parse(record.json)
         }
         catch (e:Exception){
             return false

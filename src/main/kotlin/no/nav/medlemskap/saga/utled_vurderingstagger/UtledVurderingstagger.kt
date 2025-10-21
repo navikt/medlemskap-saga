@@ -12,8 +12,8 @@ object UtledVurderingstagger {
 
     fun utled(vurderingSomJson: String): VurderingForAnalyse {
 
-        val vurdering = JacksonParser().parse(vurderingSomJson)
-        val vurderingFraJson: Vurdering = JacksonParser().toDomainObject(vurdering)
+        val vurdering = JacksonParser.parse(vurderingSomJson)
+        val vurderingFraJson: Vurdering = JacksonParser.toDomainObject(vurdering)
 
         val datagrunnlag = vurderingFraJson.datagrunnlag
         val resultat = vurderingFraJson.resultat
@@ -22,28 +22,28 @@ object UtledVurderingstagger {
         val oppholdstillatelseUDI = vurderingFraJson.datagrunnlag.oppholdstillatelse
 
         return VurderingForAnalyse(
-            datagrunnlag.ytelse,
-            datagrunnlag.periode.fom,
-            datagrunnlag.periode.tom,
-            datagrunnlag.fnr,
-            datagrunnlag.førsteDagForYtelse,
-            datagrunnlag.startDatoForYtelse,
-            resultat.svar,
-            resultat.årsaker.map { it.regelId },
-            konklusjon.status,
-            konklusjon.avklaringsListe.map { it.regel_id },
-            brukerinput.utfortAarbeidUtenforNorge != null,
-            datagrunnlag.periode.antallDager(),
-            datagrunnlag.pdlpersonhistorikk.finnAktiveStatsborgerskap(),
-            konklusjon.enUtledetInformasjon().informasjon.tilKategori(),
-            brukerinput.arbeidUtenforNorge,
-            UtfortArbeidUtenforNorgeTag.fra(brukerinput.hentUtførtArbeidUtenforNorge()),
-            OppholdUtenforEOSTag.fra(brukerinput.hentOppholdUtenforEØS()),
-            OppholdUtenforNorgeTag.fra(brukerinput.hentOppholdUtenforNorge()),
-            OppholdstillatelseOppgittTag.fra(brukerinput.hentOppholdstillatelseOppgitt()),
-            oppholdstillatelseUDI?.hentOppholdstillatelseUDIFom(),
-            oppholdstillatelseUDI?.hentOppholdstillatelseUDITom(),
-            oppholdstillatelseUDI?.hentOppholdstillatelseUDIType() ?: "",
+            ytelse = datagrunnlag.ytelse,
+            fom = datagrunnlag.periode.fom,
+            tom = datagrunnlag.periode.tom,
+            fnr = datagrunnlag.fnr,
+            førsteDagForYtelse = datagrunnlag.førsteDagForYtelse,
+            startDatoForYtelse = datagrunnlag.startDatoForYtelse,
+            svar = resultat.svar,
+            årsaker = resultat.årsaker.map { it.regelId },
+            konklusjon = konklusjon.status,
+            avklaringsListe = konklusjon.avklaringsListe.map { it.regel_id },
+            nyeSpørsmål = brukerinput.utfortAarbeidUtenforNorge != null,
+            antallDagerMedSykmelding = datagrunnlag.periode.antallDager(),
+            statsborgerskap = datagrunnlag.pdlpersonhistorikk.finnAktiveStatsborgerskap(),
+            statsborgerskapskategori = konklusjon.enUtledetInformasjon().informasjon.tilKategori(),
+            arbeidUtenforNorge = brukerinput.arbeidUtenforNorge,
+            utførtArbeidUtenforNorgeTag = UtfortArbeidUtenforNorgeTag.fra(brukerinput.hentUtførtArbeidUtenforNorge()),
+            oppholdUtenforEOSTag = OppholdUtenforEOSTag.fra(brukerinput.hentOppholdUtenforEØS()),
+            oppholdUtenforNorgeTag = OppholdUtenforNorgeTag.fra(brukerinput.hentOppholdUtenforNorge()),
+            oppholdstillatelseOppgittTag = OppholdstillatelseOppgittTag.fra(brukerinput.hentOppholdstillatelseOppgitt()),
+            oppholdstillatelseUDIFom = oppholdstillatelseUDI?.hentOppholdstillatelseUDIFom(),
+            oppholdstillatelseUDITom = oppholdstillatelseUDI?.hentOppholdstillatelseUDITom(),
+            oppholdstillatelseUDIType = oppholdstillatelseUDI?.hentOppholdstillatelseUDIType() ?: ""
         )
     }
 }

@@ -6,6 +6,7 @@ import no.nav.medlemskap.saga.domain.VurderingForAnalyseDAO
 import no.nav.medlemskap.saga.generer_uttrekk.PeriodeForUttrekk
 import no.nav.medlemskap.saga.persistence.VurderingForAnalyseRepository
 import no.nav.medlemskap.saga.generer_uttrekk.UttrekkForPeriode
+import no.nav.medlemskap.saga.generer_uttrekk.VurderingMapper
 import no.nav.medlemskap.saga.utled_vurderingstagger.UtledVurderingstagger
 import java.time.LocalDate
 
@@ -48,8 +49,9 @@ class UttrekkService(
         )
     }
 
-    fun hentVurderingerForAnalyse(parameter: String): List<VurderingForAnalyseDAO> {
+    fun hentVurderingerForAnalyse(parameter: String): List<VurderingForAnalyse> {
         val (førsteDag, sisteDag) = PeriodeForUttrekk.finnPeriode(parameter)
-        return vurderingForAnalyseRepository.hentVurderingerForAnalyse(førsteDag, sisteDag)
-    }
+        val vurderingForAnalyseDAO = vurderingForAnalyseRepository.hentVurderingerForAnalyse(førsteDag, sisteDag)
+        return vurderingForAnalyseDAO
+            .map { VurderingMapper.tilVurderingForAnalyse(it) }}
 }

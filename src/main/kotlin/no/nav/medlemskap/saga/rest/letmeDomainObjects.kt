@@ -18,6 +18,6 @@ return VurderingRespons(
     dbId = vurdering.id,
     soknadId = vurdering.soknadId,
     vurderingsDato = vurdering.date,
-    vurdering = JacksonParser().parse(vurdering.json)
+    vurdering = JacksonParser.parse(vurdering.json)
 )
 }
