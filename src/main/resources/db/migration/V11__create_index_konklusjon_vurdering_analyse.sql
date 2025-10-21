@@ -1,0 +1,1 @@
+CREATE INDEX idx_vurdering_analyse_konklusjon ON public.vurdering_analyse (konklusjon);

@@ -1,0 +1,1 @@
+CREATE INDEX idx_vurdering_analyse_fnr ON public.vurdering_analyse (fnr);

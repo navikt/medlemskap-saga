@@ -1,0 +1,1 @@
+CREATE INDEX idx_vurdering_analyse_dato ON public.vurdering_analyse (dato);

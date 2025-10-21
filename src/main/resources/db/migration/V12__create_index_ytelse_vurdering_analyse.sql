@@ -1,0 +1,1 @@
+CREATE INDEX idx_vurdering_analyse_ytelse ON public.vurdering_analyse (ytelse);
