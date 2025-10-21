@@ -35,8 +35,38 @@ class GenererExcelDokument {
         header.createCell(20).setCellValue("oppholdstillatelse_udi_fom")
         header.createCell(21).setCellValue("oppholdstillatelse_udi_tom")
         header.createCell(22).setCellValue("oppholdstillatelse_udi_type")
-
-        // Create header row
+/*
+        vurdering.forEachIndexed {
+            index, data ->
+            val rad = sheet.createRow(index + 1)
+            rad.createCell(0).setCellValue(data.dato)
+            rad.createCell(1).setCellValue(data.ytelse)
+            rad.createCell(2).setCellValue(data.fom)
+            rad.createCell(3).setCellValue(data.tom)
+            rad.createCell(4).setCellValue(data.fnr)
+            rad.createCell(5).setCellValue(data.foerste_dag_for_ytelse)
+            rad.createCell(6).setCellValue(data.start_dato_for_ytelse)
+            rad.createCell(7).setCellValue(data.svar)
+            rad.createCell(8).setCellValue(data.aarsaker.joinToString(", "))
+            rad.createCell(9).setCellValue(data.konklusjon)
+            rad.createCell(10).setCellValue(data.avklaringsliste.joinToString(", "))
+            rad.createCell(11).setCellValue(data.nye_spoersmaal)
+            rad.createCell(12).setCellValue(data.antall_dager_med_sykmelding.toString())
+            rad.createCell(13).setCellValue(data.statsborgerskap.joinToString(", "))
+            rad.createCell(14).setCellValue(data.statsborgerskapskategori)
+            rad.createCell(15).setCellValue(data.arbeid_utenfor_norge)
+            rad.createCell(16).setCellValue(data.utfoert_arbeid_utenfor_norge)
+            rad.createCell(17).setCellValue(data.dato)
+            rad.createCell(18).setCellValue(data.dato)
+            rad.createCell(19).setCellValue(data.dato)
+            rad.createCell(20).setCellValue(data.dato)
+            rad.createCell(21).setCellValue(data.dato)
+            rad.createCell(22).setCellValue(data.dato)
+        }
+*/
+        /*val dataRow1 = sheet.createRow(1)
+        dataRow1.createCell(0).setCellValue("Alice")
+        dataRow1.createCell(1).setCellValue(30)*/
 
         // Write the workbook to a ByteArrayOutputStream
         val outputStream = ByteArrayOutputStream()
