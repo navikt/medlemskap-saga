@@ -38,7 +38,7 @@ object UtledVurderingstagger {
             statsborgerskapskategori = konklusjon.enUtledetInformasjon().informasjon.tilKategori(),
             arbeidUtenforNorge = brukerinput.arbeidUtenforNorge,
             utførtArbeidUtenforNorgeTag = UtfortArbeidUtenforNorgeTag.fra(brukerinput.hentUtførtArbeidUtenforNorge()),
-            oppholdUtenforEOSTag = OppholdUtenforEOSTag.fra(brukerinput.hentOppholdUtenforEØS()),
+            oppholdUtenforEØSTag = OppholdUtenforEOSTag.fra(brukerinput.hentOppholdUtenforEØS()),
             oppholdUtenforNorgeTag = OppholdUtenforNorgeTag.fra(brukerinput.hentOppholdUtenforNorge()),
             oppholdstillatelseOppgittTag = OppholdstillatelseOppgittTag.fra(brukerinput.hentOppholdstillatelseOppgitt()),
             oppholdstillatelseUDIFom = oppholdstillatelseUDI?.hentOppholdstillatelseUDIFom(),

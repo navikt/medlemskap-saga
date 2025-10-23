@@ -42,7 +42,7 @@ object VurderingMapper {
             statsborgerskapskategori = Statsborgerskapskategori.valueOf(vurderingForAnalyseDAO.statsborgerskapskategori),
             arbeidUtenforNorge = vurderingForAnalyseDAO.arbeid_utenfor_norge,
             utførtArbeidUtenforNorgeTag = utførtArbeidUtenforNorge,
-            oppholdUtenforEOSTag = oppholdUtenforEØS,
+            oppholdUtenforEØSTag = oppholdUtenforEØS,
             oppholdUtenforNorgeTag = oppholdUtenforNorge,
             oppholdstillatelseOppgittTag = oppholdstillatelseOppgitt,
             oppholdstillatelseUDIFom = vurderingForAnalyseDAO.oppholdstillatelse_udi_fom,

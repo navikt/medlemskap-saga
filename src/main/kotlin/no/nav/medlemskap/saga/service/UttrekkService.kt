@@ -2,10 +2,8 @@ package no.nav.medlemskap.saga.service
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import no.nav.medlemskap.saga.domain.VurderingForAnalyse
-import no.nav.medlemskap.saga.domain.VurderingForAnalyseDAO
 import no.nav.medlemskap.saga.generer_uttrekk.PeriodeForUttrekk
 import no.nav.medlemskap.saga.persistence.VurderingForAnalyseRepository
-import no.nav.medlemskap.saga.generer_uttrekk.UttrekkForPeriode
 import no.nav.medlemskap.saga.generer_uttrekk.VurderingMapper
 import no.nav.medlemskap.saga.utled_vurderingstagger.UtledVurderingstagger
 import java.time.LocalDate
@@ -40,7 +38,7 @@ class UttrekkService(
             vurderingForAnalyse.statsborgerskapskategori.name,
             vurderingForAnalyse.arbeidUtenforNorge,
             mapper.writeValueAsString(vurderingForAnalyse.utførtArbeidUtenforNorgeTag),
-            mapper.writeValueAsString(vurderingForAnalyse.oppholdUtenforEOSTag),
+            mapper.writeValueAsString(vurderingForAnalyse.oppholdUtenforEØSTag),
             mapper.writeValueAsString(vurderingForAnalyse.oppholdUtenforNorgeTag),
             mapper.writeValueAsString(vurderingForAnalyse.oppholdstillatelseOppgittTag),
             vurderingForAnalyse.oppholdstillatelseUDIFom,

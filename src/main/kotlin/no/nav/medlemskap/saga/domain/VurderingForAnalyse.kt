@@ -26,7 +26,7 @@ data class VurderingForAnalyse(
     val statsborgerskapskategori: Statsborgerskapskategori,
     val arbeidUtenforNorge: Boolean,
     val utførtArbeidUtenforNorgeTag: UtfortArbeidUtenforNorgeTag?,
-    val oppholdUtenforEOSTag: OppholdUtenforEOSTag?,
+    val oppholdUtenforEØSTag: OppholdUtenforEOSTag?,
     val oppholdUtenforNorgeTag: OppholdUtenforNorgeTag?,
     val oppholdstillatelseOppgittTag: OppholdstillatelseOppgittTag?,
     val oppholdstillatelseUDIFom: LocalDate?,

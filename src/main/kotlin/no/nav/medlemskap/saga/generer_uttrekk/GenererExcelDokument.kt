@@ -66,9 +66,9 @@ class GenererExcelDokument {
             rad.createCell(5).setCellValue(vurdering.førsteDagForYtelse.format(formatter))
             rad.createCell(6).setCellValue(vurdering.startDatoForYtelse.format(formatter))
             rad.createCell(7).setCellValue(vurdering.svar.toString())
-            rad.createCell(8).setCellValue(vurdering.årsaker.joinToString(", "))
+            rad.createCell(8).setCellValue(vurdering.årsaker.formater())
             rad.createCell(9).setCellValue(vurdering.konklusjon.toString())
-            rad.createCell(10).setCellValue(vurdering.avklaringsListe.joinToString(", "))
+            rad.createCell(10).setCellValue(vurdering.avklaringsListe.formater())
             rad.createCell(11).setCellValue(
                 when(vurdering.nyeSpørsmål) {
                     true -> "true"
@@ -77,7 +77,7 @@ class GenererExcelDokument {
                 }
             )
             rad.createCell(12).setCellValue(vurdering.antallDagerMedSykmelding.toString())
-            rad.createCell(13).setCellValue(vurdering.statsborgerskap.joinToString(", "))
+            rad.createCell(13).setCellValue(vurdering.statsborgerskap.formater())
             rad.createCell(14).setCellValue(vurdering.statsborgerskapskategori.toString())
             rad.createCell(15).setCellValue(
                 when(vurdering.arbeidUtenforNorge) {
@@ -98,17 +98,17 @@ class GenererExcelDokument {
             rad.createCell(19).setCellValue(vurdering.utførtArbeidUtenforNorgeTag?.utførtArbeidUtenforNorgeTom ?: "")
             rad.createCell(20).setCellValue(formater(vurdering.utførtArbeidUtenforNorgeTag?.utførtArbeidUtenforNorgeAntallPerioder))
             rad.createCell(21).setCellValue(
-                if (vurdering.oppholdUtenforEOSTag == null) {
+                if (vurdering.oppholdUtenforEØSTag == null) {
                     ""
                 } else {
-                    vurdering.oppholdUtenforEOSTag.oppholdUtenforEØS.toString()
+                    vurdering.oppholdUtenforEØSTag.oppholdUtenforEØS.toString()
                 }
             )
-            rad.createCell(22).setCellValue(vurdering.oppholdUtenforEOSTag?.oppholdUtenforEØSLand ?: "")
-            rad.createCell(23).setCellValue(vurdering.oppholdUtenforEOSTag?.oppholdUtenforEØSFom ?: "")
-            rad.createCell(24).setCellValue(vurdering.oppholdUtenforEOSTag?.oppholdUtenforEØSTom ?: "")
-            rad.createCell(25).setCellValue(formater(vurdering.oppholdUtenforEOSTag?.oppholdUtenforEØSAntallPerioder))
-            rad.createCell(26).setCellValue(vurdering.oppholdUtenforEOSTag?.oppholdUtenforEØSGrunn)
+            rad.createCell(22).setCellValue(vurdering.oppholdUtenforEØSTag?.oppholdUtenforEØSLand ?: "")
+            rad.createCell(23).setCellValue(vurdering.oppholdUtenforEØSTag?.oppholdUtenforEØSFom ?: "")
+            rad.createCell(24).setCellValue(vurdering.oppholdUtenforEØSTag?.oppholdUtenforEØSTom ?: "")
+            rad.createCell(25).setCellValue(formater(vurdering.oppholdUtenforEØSTag?.oppholdUtenforEØSAntallPerioder))
+            rad.createCell(26).setCellValue(vurdering.oppholdUtenforEØSTag?.oppholdUtenforEØSGrunn)
             rad.createCell(27).setCellValue(
                 if (vurdering.oppholdUtenforNorgeTag == null) {
                     ""
@@ -146,7 +146,11 @@ class GenererExcelDokument {
     }
 
     fun formater(resultat: Int?) : String {
-        return resultat?.toString() ?: ""
+        return if (resultat == null || resultat == 0) "" else resultat.toString()
+    }
+
+    fun List<String>.formater() : String {
+        return joinToString(", ")
     }
 
 }
