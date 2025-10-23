@@ -1,18 +1,19 @@
-package no.nav.medlemskap.saga.utled_vurderingstagger
+package no.nav.medlemskap.saga.service
 
-import UttrekkAnalyse
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import no.nav.medlemskap.saga.persistence.VurderingForAnalyseRepository
 import no.nav.medlemskap.saga.domain.VurderingForAnalyse
+import no.nav.medlemskap.saga.generer_uttrekk.PeriodeForUttrekk
+import no.nav.medlemskap.saga.persistence.VurderingForAnalyseRepository
+import no.nav.medlemskap.saga.generer_uttrekk.VurderingMapper
+import no.nav.medlemskap.saga.utled_vurderingstagger.UtledVurderingstagger
 import java.time.LocalDate
 
-class VurderingForAnalyseService(
-    val vurderingForAnalyseRepository: VurderingForAnalyseRepository,
-    val utledVurderingstagger: UtledVurderingstagger
+class UttrekkService(
+    val vurderingForAnalyseRepository: VurderingForAnalyseRepository
 ) {
 
-    fun lagreTilVurderingForAnalyse(json: String) {
-        val vurderingForAnalyse = utledVurderingstagger.utled(json)
+    fun lagreTilVurderingForAnalyse(vurderingSomJson: String) {
+        val vurderingForAnalyse = UtledVurderingstagger.utled(vurderingSomJson)
         lagreTilVurderingForAnalyse(vurderingForAnalyse)
     }
 
@@ -37,7 +38,7 @@ class VurderingForAnalyseService(
             vurderingForAnalyse.statsborgerskapskategori.name,
             vurderingForAnalyse.arbeidUtenforNorge,
             mapper.writeValueAsString(vurderingForAnalyse.utførtArbeidUtenforNorgeTag),
-            mapper.writeValueAsString(vurderingForAnalyse.oppholdUtenforEOSTag),
+            mapper.writeValueAsString(vurderingForAnalyse.oppholdUtenforEØSTag),
             mapper.writeValueAsString(vurderingForAnalyse.oppholdUtenforNorgeTag),
             mapper.writeValueAsString(vurderingForAnalyse.oppholdstillatelseOppgittTag),
             vurderingForAnalyse.oppholdstillatelseUDIFom,
@@ -46,13 +47,9 @@ class VurderingForAnalyseService(
         )
     }
 
-    fun hentVurderingerForAnalyse(parameter: String): List<UttrekkAnalyse> {
-        val uttrekkForPeriode = UttrekkForPeriode(parameter)
-        val førsteDag = uttrekkForPeriode.førsteDag
-        val sisteDag = uttrekkForPeriode.sisteDag
-        val uttrekk = vurderingForAnalyseRepository.hentUttrekkForPeriode(førsteDag, sisteDag)
-
-
-        return uttrekk
-    }
+    fun hentVurderingerForAnalyse(parameter: String): List<VurderingForAnalyse> {
+        val (førsteDag, sisteDag) = PeriodeForUttrekk.finnPeriode(parameter)
+        val vurderingForAnalyseDAO = vurderingForAnalyseRepository.hentVurderingerForAnalyse(førsteDag, sisteDag)
+        return vurderingForAnalyseDAO
+            .map { VurderingMapper.tilVurderingForAnalyse(it) }}
 }

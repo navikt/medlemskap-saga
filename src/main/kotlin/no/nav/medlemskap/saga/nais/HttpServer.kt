@@ -1,6 +1,4 @@
 package no.nav.medlemskap.saga.nais
-import io.ktor.client.*
-import io.ktor.client.engine.apache.*
 import io.ktor.http.*
 import io.ktor.serialization.jackson.*
 import io.ktor.server.application.*
@@ -32,8 +30,7 @@ import no.nav.medlemskap.saga.rest.objectMapper
 import no.nav.medlemskap.saga.rest.sagaRoutes
 import no.nav.medlemskap.saga.rest.uttrekkRoute
 import no.nav.medlemskap.saga.service.SagaService
-import no.nav.medlemskap.saga.utled_vurderingstagger.UtledVurderingstagger
-import no.nav.medlemskap.saga.utled_vurderingstagger.VurderingForAnalyseService
+import no.nav.medlemskap.saga.service.UttrekkService
 import java.io.Writer
 
 import java.util.*
@@ -42,13 +39,12 @@ fun createHttpServer(consumeJob: Job) = embeddedServer(Netty, port = 8080) {
     val useAuthentication: Boolean = true
     val configuration: Configuration = Configuration()
     val azureAdOpenIdConfiguration: AzureAdOpenIdConfiguration = getAadConfig(configuration.azureAd)
-    val service: SagaService = SagaService(
+    val service = SagaService(
         PostgresMedlemskapVurdertRepository(DataSourceBuilder(System.getenv()).getDataSource()),
         VurderingForAnalyseRepositoryImpl(DataSourceBuilder(System.getenv()).getDataSource()),
     )
 
-    val uttrekkService = VurderingForAnalyseService(VurderingForAnalyseRepositoryImpl(DataSourceBuilder(System.getenv()).getDataSource()),
-        UtledVurderingstagger())
+    val uttrekkService = UttrekkService(VurderingForAnalyseRepositoryImpl(DataSourceBuilder(System.getenv()).getDataSource()))
 
         install(CallId) {
             header(MDC_CALL_ID)

@@ -179,7 +179,7 @@ fun Routing.sagaRoutes(service: SagaService) {
 
 
 fun mapToFlexVurderingsRespons(match: VurderingDao): FlexVurderingRespons {
-    val jsonNode:JsonNode = JacksonParser().parse(match.json)
+    val jsonNode:JsonNode = JacksonParser.parse(match.json)
     return FlexVurderingRespons(
         sykepengesoknad_id = match.soknadId,
         vurdering_id = match.id,

@@ -15,7 +15,7 @@ class JaksonParserTest {
         val fileContent = this::class.java.classLoader.getResource("sampleVurdering.json").readText(Charsets.UTF_8)
         val ytelse = kotlin.runCatching { objectMapper.readTree(fileContent).get("datagrunnlag").get("ytelse").asText() }.getOrElse { "UKJENT" }
         assertEquals("SYKEPENGER", ytelse, "")
-        val jsonNode = JacksonParser().parse(fileContent)
+        val jsonNode = JacksonParser.parse(fileContent)
         assertNotNull(jsonNode)
     }
 

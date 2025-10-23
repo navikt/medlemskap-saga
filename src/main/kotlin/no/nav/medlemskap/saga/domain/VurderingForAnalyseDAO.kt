@@ -1,6 +1,8 @@
+package no.nav.medlemskap.saga.domain
+
 import java.time.LocalDate
 
-data class UttrekkAnalyse(
+data class VurderingForAnalyseDAO(
     val dato: LocalDate,
     val ytelse: String,
     val fom: LocalDate,

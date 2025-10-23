@@ -1,14 +1,12 @@
 package no.nav.medlemskap.saga.persistence
 
-import UttrekkAnalyse
+import no.nav.medlemskap.saga.domain.VurderingForAnalyseDAO
 import kotliquery.Row
 import javax.sql.DataSource
 import kotliquery.queryOf
 import kotliquery.sessionOf
 import kotliquery.using
-import no.nav.medlemskap.saga.utled_vurderingstagger.UttrekkForPeriode
 import java.time.LocalDate
-import java.util.Date
 
 interface VurderingForAnalyseRepository {
 
@@ -37,7 +35,8 @@ interface VurderingForAnalyseRepository {
         oppholdstillatelse_udi_tom: LocalDate?,
         oppholdstillatelse_udi_type: String
     )
-    fun hentUttrekkForPeriode(førsteDag: LocalDate, sisteDag: LocalDate): List<UttrekkAnalyse>
+    fun hentVurderingerForAnalyse(førsteDag: LocalDate, sisteDag: LocalDate): List<VurderingForAnalyseDAO>
+
 }
 
 class VurderingForAnalyseRepositoryImpl(val dataSource: DataSource) : VurderingForAnalyseRepository {
@@ -137,8 +136,8 @@ class VurderingForAnalyseRepositoryImpl(val dataSource: DataSource) : VurderingF
         }
     }
 
-    val toAnalyseDao: (Row) -> UttrekkAnalyse = { row ->
-        UttrekkAnalyse(
+    val tilVurderingForAnalyseDAO: (Row) -> VurderingForAnalyseDAO = { row ->
+        VurderingForAnalyseDAO(
             dato = row.localDate("dato"),
             ytelse = row.string("ytelse"),
             fom = row.localDate("fom"),
@@ -166,18 +165,16 @@ class VurderingForAnalyseRepositoryImpl(val dataSource: DataSource) : VurderingF
         )
     }
 
-    val HENT_UTTREKK_FOR_PERIODE = "SELECT DISTINCT * FROM vurdering_analyse WHERE dato BETWEEN ? AND ?"
+    val HENT_VURDERINGER_FOR_ANALYSE_FOR_PERIODE = "SELECT DISTINCT * FROM vurdering_analyse WHERE dato BETWEEN ? AND ?"
 
-    override fun hentUttrekkForPeriode(førsteDag: LocalDate, sisteDag: LocalDate): List<UttrekkAnalyse> {
+    override fun hentVurderingerForAnalyse(førsteDag: LocalDate, sisteDag: LocalDate): List<VurderingForAnalyseDAO> {
         return using(sessionOf(dataSource)) {
             it
                 .run(
-                    queryOf(HENT_UTTREKK_FOR_PERIODE, førsteDag, sisteDag)
-                        .map(toAnalyseDao).asList
+                    queryOf(HENT_VURDERINGER_FOR_ANALYSE_FOR_PERIODE, førsteDag, sisteDag)
+                        .map(tilVurderingForAnalyseDAO)
+                        .asList
                 )
         }
-
     }
-
-
 }
