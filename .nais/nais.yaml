@@ -63,6 +63,7 @@ spec:
       rules:
         - application: medlemskap-sykepenger-listener
         - application: letme-lovme
+        - application: medlemskap-analyse
           namespace: medlemskap
           cluster: dev-gcp
         - application: sparkel-medlemskap
