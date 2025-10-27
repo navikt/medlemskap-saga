@@ -68,8 +68,6 @@ spec:
         - application: medlemskap-sykepenger-listener
         - application: letme-lovme
         - application: medlemskap-analyse
-          namespace: medlemskap
-          cluster: dev-gcp
         - application: sparkel-medlemskap
           namespace: tbd
           cluster: dev-fss
