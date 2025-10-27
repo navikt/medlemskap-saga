@@ -1,0 +1,1 @@
+CREATE INDEX idx_vurdering_analyse_nav_call_id ON public.vurdering_analyse (nav_call_id);
