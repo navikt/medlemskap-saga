@@ -35,6 +35,10 @@ spec:
         extra:
           - "NAVident"
           - "azp_name"
+    preAuthorizedApplications:
+      - application: medlemskap-analyse
+        namespace: medlemskap
+        cluster: dev-gcp
   image: {{image}}
   liveness:
     path: "/isAlive"
