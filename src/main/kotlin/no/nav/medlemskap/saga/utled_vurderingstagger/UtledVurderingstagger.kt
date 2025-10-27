@@ -10,7 +10,7 @@ import no.nav.medlemskap.sykepenger.lytter.jakson.JacksonParser
 
 object UtledVurderingstagger {
 
-    fun utled(vurderingSomJson: String): VurderingForAnalyse {
+    fun utled(vurderingSomJson: String, callId: String): VurderingForAnalyse {
 
         val vurdering = JacksonParser.parse(vurderingSomJson)
         val vurderingFraJson: Vurdering = JacksonParser.toDomainObject(vurdering)
@@ -43,7 +43,9 @@ object UtledVurderingstagger {
             oppholdstillatelseOppgittTag = OppholdstillatelseOppgittTag.fra(brukerinput.hentOppholdstillatelseOppgitt()),
             oppholdstillatelseUDIFom = oppholdstillatelseUDI?.hentOppholdstillatelseUDIFom(),
             oppholdstillatelseUDITom = oppholdstillatelseUDI?.hentOppholdstillatelseUDITom(),
-            oppholdstillatelseUDIType = oppholdstillatelseUDI?.hentOppholdstillatelseUDIType() ?: ""
+            oppholdstillatelseUDIType = oppholdstillatelseUDI?.hentOppholdstillatelseUDIType() ?: "",
+            kilde = vurderingFraJson.kanal,
+            navCallId = callId
         )
     }
 }

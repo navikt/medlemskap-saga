@@ -38,7 +38,7 @@ class SagaService(
                 medlemskapVurdertRepository.lagreVurdering(record.key, Date(), record.json,ytelse)
 
                 //Future: Vurdere å flytte denne prosessen til en egen kafka consumer
-                uttrekkService.lagreTilVurderingForAnalyse(record.json)
+                uttrekkService.lagreTilVurderingForAnalyse(record.json, record.key)
             }
             catch (e:Exception){
                 record.logLagringFeilet(e)

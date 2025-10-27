@@ -33,7 +33,9 @@ interface VurderingForAnalyseRepository {
         oppholdstillatelse_oppgitt: String,
         oppholdstillatelse_udi_fom: LocalDate?,
         oppholdstillatelse_udi_tom: LocalDate?,
-        oppholdstillatelse_udi_type: String
+        oppholdstillatelse_udi_type: String,
+        kilde: String,
+        nav_call_id: String
     )
     fun hentVurderingerForAnalyse(førsteDag: LocalDate, sisteDag: LocalDate): List<VurderingForAnalyseDAO>
 
@@ -65,12 +67,14 @@ class VurderingForAnalyseRepositoryImpl(val dataSource: DataSource) : VurderingF
             "oppholdstillatelse_udi_fom, " +
             "oppholdstillatelse_udi_tom, " +
             "oppholdstillatelse_udi_type" +
+            "kilde" +
+            "nav_call_id" +
             ") " +
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, " +
             "(to_json(?::json)), " +
             "(to_json(?::json)), " +
             "(to_json(?::json)), " +
-            "(to_json(?::json)), ?, ?, ?" +
+            "(to_json(?::json)), ?, ?, ?, ?, ?" +
             ");"
 
 
@@ -97,7 +101,9 @@ class VurderingForAnalyseRepositoryImpl(val dataSource: DataSource) : VurderingF
         oppholdstillatelse_oppgitt: String,
         oppholdstillatelse_udi_fom: LocalDate?,
         oppholdstillatelse_udi_tom: LocalDate?,
-        oppholdstillatelse_udi_type: String
+        oppholdstillatelse_udi_type: String,
+        kilde: String,
+        nav_call_id: String
     ) {
 
         using(sessionOf(dataSource)) { session ->

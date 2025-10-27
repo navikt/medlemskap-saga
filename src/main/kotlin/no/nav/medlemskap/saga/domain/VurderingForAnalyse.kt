@@ -7,6 +7,7 @@ import no.nav.medlemskap.saga.domain.datagrunnlag.brukerinput.UtfortArbeidUtenfo
 import no.nav.medlemskap.saga.domain.datagrunnlag.Ytelse
 import no.nav.medlemskap.saga.domain.konklusjon.Statsborgerskapskategori
 import java.time.LocalDate
+import java.util.UUID
 
 data class VurderingForAnalyse(
     val dato: LocalDate? = null,
@@ -32,4 +33,6 @@ data class VurderingForAnalyse(
     val oppholdstillatelseUDIFom: LocalDate?,
     val oppholdstillatelseUDITom: LocalDate?,
     val oppholdstillatelseUDIType: String,
+    val kilde: String = "",
+    val navCallId: String = ""
 )
