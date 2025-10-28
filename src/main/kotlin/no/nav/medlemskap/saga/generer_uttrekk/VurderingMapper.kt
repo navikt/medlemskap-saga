@@ -47,7 +47,8 @@ object VurderingMapper {
             oppholdstillatelseOppgittTag = oppholdstillatelseOppgitt,
             oppholdstillatelseUDIFom = vurderingForAnalyseDAO.oppholdstillatelse_udi_fom,
             oppholdstillatelseUDITom = vurderingForAnalyseDAO.oppholdstillatelse_udi_tom,
-            oppholdstillatelseUDIType = vurderingForAnalyseDAO.oppholdstillatelse_udi_type
+            oppholdstillatelseUDIType = vurderingForAnalyseDAO.oppholdstillatelse_udi_type,
+            kilde = vurderingForAnalyseDAO.kilde
         )
     }
 }

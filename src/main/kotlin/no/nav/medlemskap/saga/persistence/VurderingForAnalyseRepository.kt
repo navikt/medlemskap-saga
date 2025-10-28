@@ -168,8 +168,8 @@ class VurderingForAnalyseRepositoryImpl(val dataSource: DataSource) : VurderingF
             oppholdstillatelse_oppgitt = row.string("oppholdstillatelse_oppgitt"),
             oppholdstillatelse_udi_fom = row.localDateOrNull("oppholdstillatelse_udi_fom"),
             oppholdstillatelse_udi_tom = row.localDateOrNull("oppholdstillatelse_udi_tom"),
-            oppholdstillatelse_udi_type = row.string("oppholdstillatelse_udi_type")
-
+            oppholdstillatelse_udi_type = row.string("oppholdstillatelse_udi_type"),
+            kilde = row.string("kilde")
         )
     }
 

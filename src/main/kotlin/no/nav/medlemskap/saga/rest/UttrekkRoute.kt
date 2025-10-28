@@ -17,8 +17,8 @@ fun Routing.uttrekkRoute(service: UttrekkService) {
         authenticate("azureAuth") {
             get("/{aarMaaned}") {
                 val aarMaanedParam =call.parameters["aarMaaned"]!!
-                val uttrekk = service.hentVurderingerForAnalyse(aarMaanedParam)
-                val excelBytes = GenererExcelDokument().generer(uttrekk)
+                val uttrekksdata = service.hentVurderingerForAnalyse(aarMaanedParam)
+                val excelBytes = GenererExcelDokument.generer(uttrekksdata)
                 call.response.header(HttpHeaders.ContentDisposition, "attachment; filename=\"Lovme.xlsx\"")
                 call.respondBytes(excelBytes, ContentType.parse("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
             }

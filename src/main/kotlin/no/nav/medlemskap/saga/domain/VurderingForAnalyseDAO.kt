@@ -25,5 +25,6 @@ data class VurderingForAnalyseDAO(
     val oppholdstillatelse_oppgitt: String,
     val oppholdstillatelse_udi_fom: LocalDate?,
     val oppholdstillatelse_udi_tom: LocalDate?,
-    val oppholdstillatelse_udi_type: String
+    val oppholdstillatelse_udi_type: String,
+    val kilde: String
 )
