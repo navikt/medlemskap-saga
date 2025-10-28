@@ -1,25 +1,42 @@
 # medlemskap-saga
+
 Medlemskap Saga komponent som lagrer/oppdaterer status på medlemskap
 
+## Avhengigheter
 
-#Avhengigheter
-
-* Database (Postgres)
+* Postgres database
+    * Tabeller:
+        - vurdering
+        - vurdering_analyse
 * Kafka
-# Rest endepunkter
+
+# API-er i medlemskap-saga
+
+medlemskap-saga tilbyr 2 API-er.
+
+1. SagaRoute - for lagring av vurderinger og vurderinger for analyse
+2. AnalyseRoute - for henting av vurderinger for analyse til excel uttrekk
+
+## SagaRoute - Lagring av vurderinger
+
 https://medlemskap-vurdering.intern.nav.no/findVureringerByFnr
-## Eksempel på kall
+
+### Eksempel på kall
 
 Kallet er en POST mot url definert over
+
 ```
 {
 "fnr":"12345678912",
 }
 ```
+
 https://medlemskap-vurdering.intern.nav.no/vurdering
-## Eksempel på kall
+
+### Eksempel på kall
 
 Kallet er en POST mot url definert over
+
 ```
 {
   "fnr" : "03118041401",
@@ -32,10 +49,31 @@ Kallet er en POST mot url definert over
 }
 ```
 
+## AnalyseRoute - Henting av vurderinger for analyse
+
+| Endepunkt                                                                               | Konsument          |
+|-----------------------------------------------------------------------------------------|--------------------|
+| GET https://medlemskap-vurdering.intern.nav.no/analyse/hentUttrekk/{aarMaanedParam}     | medlemskap-analyse |
+| GET https://medlemskap-vurdering.intern.dev.nav.no/analyse/hentUttrekk/{aarMaanedParam} | medlemskap-analyse |
+
+### Eksempel på kall
+
+curl -X GET  https://medlemskap-vurdering.intern.dev.nav.no/analyse/hentUttrekk/202510 \
+-H "Authorization: Bearer DITT_TOKEN_HER"
+
+Respons OK
+
+* Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+* Filformat: .xlsx
+* Inneholder: vurderinger for analyse fra tabellen ```vurdering_analyse```
+
+Respons 204 - Ingen innhold
+
+* Ingen vurderinger funnet for angitt aarMaanedParam
 
 # Testing
-Tester bruker test containers for å verifisere lagring til database.
 
+Tester bruker test containers for å verifisere lagring til database.
 
 Det er ikke satt opp tester som tester kafka integrasjonen
 
@@ -45,7 +83,6 @@ komponenten kan kjøres lokalt, men vær klar over at det vil (potensielt) medf�
 lagret i lokal database (se egen seksjon for det) mens dokumenter vil bli lagret i JOARK.
 
 Dette vil selvsagt kun skje dersom man leser fra Kafka på Aiven som også andre microtjenetser lytter på.
-
 
 ##sett opp miljø variable i windows eller lokalt på mac
 
@@ -61,10 +98,8 @@ DB_USERNAME:medlemskap-saga
 
 ## start docker image for postgres
 
-docker run --name lovme_postgres -e POSTGRES_USER=medlemskap-saga -e POSTGRES_PASSWORD=-vRp4enzQSByToEPG-_iBhnF1EPqo7lHzUfXaAJIGTY -e POSTGRES_DB=medlemskap -v postgres_data:/var/lib/postgresql/data -p 5432:5432 -d postgres:12
-
-
-
+docker run --name lovme_postgres -e POSTGRES_USER=medlemskap-saga -e POSTGRES_PASSWORD=-vRp4enzQSByToEPG-_
+iBhnF1EPqo7lHzUfXaAJIGTY -e POSTGRES_DB=medlemskap -v postgres_data:/var/lib/postgresql/data -p 5432:5432 -d postgres:12
 
 #start kafka instans lokalt
 lag følgende docker-compose.yaml fil
@@ -97,9 +132,11 @@ KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 ```
 
 kjør så kommando
+
 ```
 docker-compose up -d 
 ```
+
 Filen kan ligge hvor som helst
 
 #sletting av docker volumer etter kjøring

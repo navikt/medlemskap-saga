@@ -6,7 +6,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.time.format.DateTimeFormatter
 
 
-class GenererExcelDokument {
+object GenererExcelDokument {
 
     fun generer(vurderinger: List<VurderingForAnalyse>): ByteArray {
         val workbook = XSSFWorkbook()
@@ -53,6 +53,7 @@ class GenererExcelDokument {
         header.createCell(37).setCellValue("oppholdstillatelse_udi_fom")
         header.createCell(38).setCellValue("oppholdstillatelse_udi_tom")
         header.createCell(39).setCellValue("oppholdstillatelse_udi_type")
+        header.createCell(40).setCellValue("kilde")
 
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
@@ -134,6 +135,7 @@ class GenererExcelDokument {
             rad.createCell(37).setCellValue(vurdering.oppholdstillatelseUDIFom)
             rad.createCell(38).setCellValue(vurdering.oppholdstillatelseUDITom)
             rad.createCell(39).setCellValue(vurdering.oppholdstillatelseUDIType)
+            rad.createCell(40).setCellValue(vurdering.kilde)
         }
 
 

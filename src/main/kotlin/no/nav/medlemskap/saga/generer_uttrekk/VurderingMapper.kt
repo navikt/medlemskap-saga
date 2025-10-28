@@ -9,7 +9,7 @@ import no.nav.medlemskap.saga.domain.datagrunnlag.brukerinput.OppholdUtenforNorg
 import no.nav.medlemskap.saga.domain.datagrunnlag.brukerinput.OppholdstillatelseOppgittTag
 import no.nav.medlemskap.saga.domain.datagrunnlag.brukerinput.UtfortArbeidUtenforNorgeTag
 import no.nav.medlemskap.saga.domain.konklusjon.Statsborgerskapskategori
-import no.nav.medlemskap.sykepenger.lytter.jakson.JacksonParser
+import no.nav.medlemskap.saga.jackson.JacksonParser
 
 object VurderingMapper {
 
@@ -47,7 +47,8 @@ object VurderingMapper {
             oppholdstillatelseOppgittTag = oppholdstillatelseOppgitt,
             oppholdstillatelseUDIFom = vurderingForAnalyseDAO.oppholdstillatelse_udi_fom,
             oppholdstillatelseUDITom = vurderingForAnalyseDAO.oppholdstillatelse_udi_tom,
-            oppholdstillatelseUDIType = vurderingForAnalyseDAO.oppholdstillatelse_udi_type
+            oppholdstillatelseUDIType = vurderingForAnalyseDAO.oppholdstillatelse_udi_type,
+            kilde = vurderingForAnalyseDAO.kilde
         )
     }
 }

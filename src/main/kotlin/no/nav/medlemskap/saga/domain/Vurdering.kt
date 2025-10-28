@@ -7,6 +7,7 @@ import java.time.LocalDateTime
 
 data class Vurdering(
     val tidspunkt : LocalDateTime,
+    val kanal: String,
     val datagrunnlag: Datagrunnlag,
     val resultat: ResultatFraMedlemskapOppslag,
     val konklusjon: List<KonklusjonFraSP6000>

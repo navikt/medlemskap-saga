@@ -15,7 +15,8 @@ class UtledVurderingstaggerITTest {
     fun `skal mappe json til vurdering med riktige verdier`() {
         val path = Paths.get("src/test/resources/vurdering.json")
         val vurdering = Files.readString(path)
-        val vurderingForAnalyse = UtledVurderingstagger.utled(vurdering)
+        val NAV_CALL_ID = "test-nav-call-id-123"
+        val vurderingForAnalyse = UtledVurderingstagger.utled(vurdering, NAV_CALL_ID)
 
         val YTELSE = Ytelse.SYKEPENGER
         val FOM = LocalDate.parse("2025-09-10")
@@ -36,5 +37,6 @@ class UtledVurderingstaggerITTest {
         assertEquals(AVKLARINGSLISTE, vurderingForAnalyse.avklaringsListe)
         assertEquals(ANTALL_DAGER_MED_SYKMELDING, vurderingForAnalyse.antallDagerMedSykmelding)
         assertEquals(STATSBORGERSKAPSKATEGORI, vurderingForAnalyse.statsborgerskapskategori)
+        assertEquals(NAV_CALL_ID, vurderingForAnalyse.navCallId)
     }
 }

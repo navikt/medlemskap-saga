@@ -32,4 +32,6 @@ data class VurderingForAnalyse(
     val oppholdstillatelseUDIFom: LocalDate?,
     val oppholdstillatelseUDITom: LocalDate?,
     val oppholdstillatelseUDIType: String,
+    val kilde: String = "",
+    val navCallId: String = ""
 )

@@ -1,6 +1,7 @@
 package no.nav.medlemskap.sykepenger.lytter.jakson
 
 
+import no.nav.medlemskap.saga.jackson.JacksonParser
 import no.nav.medlemskap.saga.persistence.Periode
 import no.nav.medlemskap.saga.rest.*
 import org.junit.jupiter.api.Assertions.assertEquals
