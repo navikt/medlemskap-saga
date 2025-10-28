@@ -9,7 +9,7 @@ import no.nav.medlemskap.saga.domain.datagrunnlag.brukerinput.OppholdUtenforNorg
 import no.nav.medlemskap.saga.domain.datagrunnlag.brukerinput.OppholdstillatelseOppgittTag
 import no.nav.medlemskap.saga.domain.datagrunnlag.brukerinput.UtfortArbeidUtenforNorgeTag
 import no.nav.medlemskap.saga.domain.konklusjon.Statsborgerskapskategori
-import no.nav.medlemskap.sykepenger.lytter.jakson.JacksonParser
+import no.nav.medlemskap.saga.jackson.JacksonParser
 
 object VurderingMapper {
 

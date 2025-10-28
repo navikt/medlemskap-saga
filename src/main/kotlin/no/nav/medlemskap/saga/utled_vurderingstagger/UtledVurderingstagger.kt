@@ -6,7 +6,7 @@ import no.nav.medlemskap.saga.domain.datagrunnlag.brukerinput.OppholdUtenforEOST
 import no.nav.medlemskap.saga.domain.datagrunnlag.brukerinput.OppholdUtenforNorgeTag
 import no.nav.medlemskap.saga.domain.datagrunnlag.brukerinput.OppholdstillatelseOppgittTag
 import no.nav.medlemskap.saga.domain.datagrunnlag.brukerinput.UtfortArbeidUtenforNorgeTag
-import no.nav.medlemskap.sykepenger.lytter.jakson.JacksonParser
+import no.nav.medlemskap.saga.jackson.JacksonParser
 
 object UtledVurderingstagger {
 
@@ -44,7 +44,7 @@ object UtledVurderingstagger {
             oppholdstillatelseUDIFom = oppholdstillatelseUDI?.hentOppholdstillatelseUDIFom(),
             oppholdstillatelseUDITom = oppholdstillatelseUDI?.hentOppholdstillatelseUDITom(),
             oppholdstillatelseUDIType = oppholdstillatelseUDI?.hentOppholdstillatelseUDIType() ?: "",
-            kilde = vurderingFraJson.kanal,
+            kilde = UtledKilde.utledFra(vurderingFraJson.kanal),
             navCallId = callId
         )
     }

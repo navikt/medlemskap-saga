@@ -1,4 +1,4 @@
-package no.nav.medlemskap.sykepenger.lytter.jakson
+package no.nav.medlemskap.saga.jackson
 
 import com.fasterxml.jackson.databind.*
 import com.fasterxml.jackson.module.kotlin.readValue

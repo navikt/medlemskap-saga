@@ -8,7 +8,7 @@ import no.nav.medlemskap.saga.persistence.MedlemskapVurdertRepository
 import no.nav.medlemskap.saga.persistence.VurderingDao
 import no.nav.medlemskap.saga.persistence.VurderingForAnalyseRepository
 import no.nav.medlemskap.saga.rest.objectMapper
-import no.nav.medlemskap.sykepenger.lytter.jakson.JacksonParser
+import no.nav.medlemskap.saga.jackson.JacksonParser
 import org.slf4j.MarkerFactory
 import java.lang.Exception
 import java.util.*
