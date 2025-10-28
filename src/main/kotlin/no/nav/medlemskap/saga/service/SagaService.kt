@@ -20,7 +20,7 @@ class SagaService(
 
     private val log = KotlinLogging.logger { }
     private val teamLogs = MarkerFactory.getMarker("TEAM_LOGS")
-    private val uttrekkService = UttrekkService(vurderingForAnalyseRepository)
+    private val analyseService = AnalyseService(vurderingForAnalyseRepository)
 
     fun handle(record: medlemskapVurdertRecord) {
         log.info(
@@ -38,7 +38,7 @@ class SagaService(
                 medlemskapVurdertRepository.lagreVurdering(record.key, Date(), record.json,ytelse)
 
                 //Future: Vurdere å flytte denne prosessen til en egen kafka consumer
-                uttrekkService.lagreTilVurderingForAnalyse(record.json, record.key)
+                analyseService.lagreTilVurderingForAnalyse(record.json, record.key)
             }
             catch (e:Exception){
                 record.logLagringFeilet(e)

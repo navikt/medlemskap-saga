@@ -8,7 +8,7 @@ import no.nav.medlemskap.saga.persistence.VurderingForAnalyseRepository
 import no.nav.medlemskap.saga.utled_vurderingstagger.UtledVurderingstagger
 import java.time.LocalDate
 
-class UttrekkService(
+class AnalyseService(
     val vurderingForAnalyseRepository: VurderingForAnalyseRepository
 ) {
 
