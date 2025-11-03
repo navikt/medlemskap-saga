@@ -150,7 +150,6 @@ class VurderingForAnalyseRepositoryImpl(val dataSource: DataSource) : VurderingF
             ytelse = row.string("ytelse"),
             fom = row.localDate("fom"),
             tom = row.localDate("tom"),
-            fnr = row.string("fnr"),
             foerste_dag_for_ytelse = row.localDate("foerste_dag_for_ytelse"),
             start_dato_for_ytelse = row.localDate("start_dato_for_ytelse"),
             svar = row.string("svar"),

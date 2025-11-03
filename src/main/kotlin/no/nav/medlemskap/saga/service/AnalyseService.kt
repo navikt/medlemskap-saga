@@ -2,6 +2,7 @@ package no.nav.medlemskap.saga.service
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import no.nav.medlemskap.saga.domain.VurderingForAnalyse
+import no.nav.medlemskap.saga.domain.VurderingForAnalyseUttrekk
 import no.nav.medlemskap.saga.generer_uttrekk.PeriodeForUttrekk
 import no.nav.medlemskap.saga.generer_uttrekk.VurderingMapper
 import no.nav.medlemskap.saga.persistence.VurderingForAnalyseRepository
@@ -49,10 +50,10 @@ class AnalyseService(
         )
     }
 
-    fun hentVurderingerForAnalyse(parameter: String): List<VurderingForAnalyse> {
+    fun hentVurderingerForAnalyse(parameter: String): List<VurderingForAnalyseUttrekk> {
         val (førsteDag, sisteDag) = PeriodeForUttrekk.finnPeriode(parameter)
         val vurderingForAnalyseDAO = vurderingForAnalyseRepository.hentVurderingerForAnalyse(førsteDag, sisteDag)
         return vurderingForAnalyseDAO
-            .map { VurderingMapper.tilVurderingForAnalyse(it) }
+            .map { VurderingMapper.tilVurderingForAnalyseUttrekk(it) }
     }
 }

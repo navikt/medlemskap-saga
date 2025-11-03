@@ -24,3 +24,8 @@ data class OppholdUtenforNorgeTag(
         }
     }
 }
+
+fun OppholdUtenforNorgeTag?.formater(): String {
+    if (this == null) return ""
+    return this.oppholdUtenforNorge.toString()
+}

@@ -7,7 +7,6 @@ data class VurderingForAnalyseDAO(
     val ytelse: String,
     val fom: LocalDate,
     val tom: LocalDate,
-    val fnr: String,
     val foerste_dag_for_ytelse: LocalDate,
     val start_dato_for_ytelse: LocalDate,
     val svar: String,
