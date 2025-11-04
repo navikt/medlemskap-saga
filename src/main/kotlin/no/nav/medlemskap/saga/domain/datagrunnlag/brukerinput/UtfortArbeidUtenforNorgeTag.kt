@@ -22,3 +22,8 @@ data class UtfortArbeidUtenforNorgeTag(
         }
     }
 }
+
+fun UtfortArbeidUtenforNorgeTag?.formater(): String {
+    if (this == null) return ""
+    return this.utførtArbeidUtenforNorge.toString()
+}

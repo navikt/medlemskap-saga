@@ -20,3 +20,8 @@ data class OppholdstillatelseOppgittTag(
 
     }
 }
+
+fun OppholdstillatelseOppgittTag?.formater(): String {
+    if (this == null) return ""
+    return this.oppholdstillatelseOppgitt.toString()
+}

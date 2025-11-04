@@ -23,3 +23,8 @@ data class OppholdUtenforEOSTag(
         }
     }
 }
+
+fun OppholdUtenforEOSTag?.formater(): String {
+    if (this == null) return ""
+    return this.oppholdUtenforEØS.toString()
+}
