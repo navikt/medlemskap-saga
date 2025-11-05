@@ -32,8 +32,14 @@ spec:
             value: "on"
           - name: pgaudit.log
             value: "write,ddl,role"
-          - name: "pgaudit.log_parameter"
+          - name: pgaudit.log_parameter
             value: "on"
+          - name: log_destination
+            value: "stderr"
+          - name: logging_collector
+            value: "on"
+          - name: log_statement
+            value: "none"
   azure:
     application:
       enabled: true
