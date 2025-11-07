@@ -1,6 +1,7 @@
 package no.nav.medlemskap.saga.service
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import mu.KotlinLogging
 import no.nav.medlemskap.saga.domain.VurderingForAnalyse
 import no.nav.medlemskap.saga.domain.VurderingForAnalyseUttrekk
 import no.nav.medlemskap.saga.generer_uttrekk.PeriodeForUttrekk
@@ -11,7 +12,7 @@ import java.time.LocalDate
 
 class AnalyseService(val vurderingForAnalyseRepository: VurderingForAnalyseRepository) {
 
-    val logger = mu.KotlinLogging.logger("AnalyseService")
+    val logger = KotlinLogging.logger("AnalyseService")
 
     fun lagreTilVurderingForAnalyse(vurderingSomJson: String, callId: String) {
         val vurderingForAnalyse = UtledVurderingstagger.utled(vurderingSomJson, callId)
@@ -60,7 +61,16 @@ class AnalyseService(val vurderingForAnalyseRepository: VurderingForAnalyseRepos
         } else {
             logger.info { "${vurderingForAnalyseDAO.size} vurderinger funnet for perioden $førsteDag - $sisteDag" }
         }
-        return vurderingForAnalyseDAO
-            .map { VurderingMapper.tilVurderingForAnalyseUttrekk(it) }
+
+        var formaterteVurderinger: List<VurderingForAnalyseUttrekk>
+        try {
+            formaterteVurderinger = vurderingForAnalyseDAO
+                .map { VurderingMapper.tilVurderingForAnalyseUttrekk(it) }
+        } catch (exception: Exception) {
+            logger.error(exception) { "Feil ved mapping av vurderinger" }
+            throw exception
+        }
+
+        return formaterteVurderinger
     }
 }
