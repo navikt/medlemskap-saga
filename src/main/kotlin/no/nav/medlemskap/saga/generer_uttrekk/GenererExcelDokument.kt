@@ -7,6 +7,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook
 
 object GenererExcelDokument {
 
+    val logger = mu.KotlinLogging.logger("GenererExcelDokument")
+
     fun generer(vurderinger: List<VurderingForAnalyseUttrekk>): ByteArray {
         val workbook = XSSFWorkbook()
         val sheet = workbook.createSheet("Data Sheet")
@@ -74,6 +76,8 @@ object GenererExcelDokument {
         workbook.close()
 
         val excelBytes = outputStream.toByteArray()
+
+        logger.info { "Excel-dokument generert" }
         return excelBytes
     }
 }

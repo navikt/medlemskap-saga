@@ -9,9 +9,9 @@ import no.nav.medlemskap.saga.persistence.VurderingForAnalyseRepository
 import no.nav.medlemskap.saga.utled_vurderingstagger.UtledVurderingstagger
 import java.time.LocalDate
 
-class AnalyseService(
-    val vurderingForAnalyseRepository: VurderingForAnalyseRepository
-) {
+class AnalyseService(val vurderingForAnalyseRepository: VurderingForAnalyseRepository) {
+
+    val logger = mu.KotlinLogging.logger("AnalyseService")
 
     fun lagreTilVurderingForAnalyse(vurderingSomJson: String, callId: String) {
         val vurderingForAnalyse = UtledVurderingstagger.utled(vurderingSomJson, callId)
@@ -52,7 +52,14 @@ class AnalyseService(
 
     fun hentVurderingerForAnalyse(parameter: String): List<VurderingForAnalyseUttrekk> {
         val (førsteDag, sisteDag) = PeriodeForUttrekk.finnPeriode(parameter)
+
         val vurderingForAnalyseDAO = vurderingForAnalyseRepository.hentVurderingerForAnalyse(førsteDag, sisteDag)
+
+        if (vurderingForAnalyseDAO.isEmpty()) {
+            logger.info { "Ingen vurderinger funnet for perioden $førsteDag - $sisteDag" }
+        } else {
+            logger.info { "${vurderingForAnalyseDAO.size} vurderinger funnet for perioden $førsteDag - $sisteDag" }
+        }
         return vurderingForAnalyseDAO
             .map { VurderingMapper.tilVurderingForAnalyseUttrekk(it) }
     }
