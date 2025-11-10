@@ -16,12 +16,17 @@ import no.nav.medlemskap.saga.service.AnalyseService
 
 fun Routing.analyseRoute(service: AnalyseService) {
 
+    val logger = mu.KotlinLogging.logger("AnalyseRoute")
+
     route("/analyse") {
 
         route("/hentUttrekk") {
             authenticate("azureAuth") {
                 get("/{aarMaaned}") {
                     val årMånedParam =call.parameters["aarMaaned"]!!
+
+                    logger.info("Mottatt forespørsel om uttrekk for periode: $årMånedParam")
+
                     val uttrekksdata = service.hentVurderingerForAnalyse(årMånedParam)
 
                     if (uttrekksdata.isEmpty()) {
