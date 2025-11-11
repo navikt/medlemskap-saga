@@ -6,6 +6,15 @@ import javax.sql.DataSource
 import kotliquery.queryOf
 import kotliquery.sessionOf
 import kotliquery.using
+import no.nav.medlemskap.saga.domain.tilListe
+import no.nav.medlemskap.saga.generer_uttrekk.GenererCsv
+import no.nav.medlemskap.saga.generer_uttrekk.VurderingMapper
+import java.io.BufferedWriter
+import java.io.ByteArrayOutputStream
+import java.io.OutputStream
+import java.io.OutputStreamWriter
+import java.nio.charset.StandardCharsets
+import java.sql.ResultSet
 import java.time.LocalDate
 
 interface VurderingForAnalyseRepository {
@@ -38,6 +47,7 @@ interface VurderingForAnalyseRepository {
         nav_call_id: String
     )
     fun hentVurderingerForAnalyse(førsteDag: LocalDate, sisteDag: LocalDate): List<VurderingForAnalyseDAO>
+    fun hentOgSkrivVurderinger(førsteDag: LocalDate, sisteDag: LocalDate, outputStream: OutputStream)
 
 }
 
@@ -172,6 +182,34 @@ class VurderingForAnalyseRepositoryImpl(val dataSource: DataSource) : VurderingF
         )
     }
 
+    val tilVurderingForAnalyseJDBC: (ResultSet) -> VurderingForAnalyseDAO = { rs ->
+        VurderingForAnalyseDAO(
+            dato = rs.getObject("dato", LocalDate::class.java),
+            ytelse = rs.getString("ytelse"),
+            fom = rs.getObject("fom", LocalDate::class.java),
+            tom = rs.getObject("tom", LocalDate::class.java),
+            foerste_dag_for_ytelse = rs.getObject("foerste_dag_for_ytelse", LocalDate::class.java),
+            start_dato_for_ytelse = rs.getObject("start_dato_for_ytelse", LocalDate::class.java),
+            svar = rs.getString("svar"),
+            aarsaker = rs.getArray("aarsaker")?.array as? Array<String> ?: emptyArray(),
+            konklusjon = rs.getString("konklusjon"),
+            avklaringsliste = rs.getArray("avklaringsliste")?.array as? Array<String> ?: emptyArray(),
+            nye_spoersmaal = rs.getBoolean("nye_spoersmaal"),
+            antall_dager_med_sykmelding = rs.getLong("antall_dager_med_sykmelding"),
+            statsborgerskap = rs.getArray("statsborgerskap")?.array as? Array<String> ?: emptyArray(),
+            statsborgerskapskategori = rs.getString("statsborgerskapskategori"),
+            arbeid_utenfor_norge = rs.getBoolean("arbeid_utenfor_norge"),
+            utfoert_arbeid_utenfor_norge = rs.getString("utfoert_arbeid_utenfor_norge"),
+            opphold_utenfor_eos = rs.getString("opphold_utenfor_eos"),
+            opphold_utenfor_norge = rs.getString("opphold_utenfor_norge"),
+            oppholdstillatelse_oppgitt = rs.getString("oppholdstillatelse_oppgitt"),
+            oppholdstillatelse_udi_fom = rs.getObject("oppholdstillatelse_udi_fom")?.let { (it as java.sql.Date).toLocalDate() },
+            oppholdstillatelse_udi_tom = rs.getObject("oppholdstillatelse_udi_tom")?.let { (it as java.sql.Date).toLocalDate() },
+            oppholdstillatelse_udi_type = rs.getString("oppholdstillatelse_udi_type"),
+            kilde = rs.getString("kilde") ?: ""
+        )
+    }
+
     val HENT_VURDERINGER_FOR_ANALYSE_FOR_PERIODE = "SELECT DISTINCT * FROM vurdering_analyse WHERE dato BETWEEN ? AND ?"
 
     override fun hentVurderingerForAnalyse(førsteDag: LocalDate, sisteDag: LocalDate): List<VurderingForAnalyseDAO> {
@@ -182,6 +220,32 @@ class VurderingForAnalyseRepositoryImpl(val dataSource: DataSource) : VurderingF
                         .map(tilVurderingForAnalyseDAO)
                         .asList
                 )
+        }
+    }
+
+
+    override fun hentOgSkrivVurderinger(førsteDag: LocalDate, sisteDag: LocalDate, outputStream: OutputStream) {
+        dataSource.connection.use { connection ->
+            connection.prepareStatement(HENT_VURDERINGER_FOR_ANALYSE_FOR_PERIODE).use { statement ->
+                statement.setObject(1, førsteDag)
+                statement.setObject(2, sisteDag)
+                statement.fetchSize = 1000
+
+                val rs = statement.executeQuery()
+
+                val writer = BufferedWriter(OutputStreamWriter(outputStream, StandardCharsets.UTF_8))
+
+                writer.appendLine(GenererCsv.CSV_HEADER.joinToString(","))
+
+                while (rs.next()) {
+                    val dao = tilVurderingForAnalyseJDBC(rs)
+                    val uttrekk = VurderingMapper.tilVurderingForAnalyseUttrekk(dao)
+                    val row = uttrekk.tilListe().joinToString(",") { GenererCsv.escapeCsv(it) }
+                    writer.appendLine(row)
+                }
+
+                writer.flush()
+            }
         }
     }
 }
