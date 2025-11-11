@@ -1,21 +1,22 @@
 package no.nav.medlemskap.saga.generer_uttrekk
 
+import mu.KotlinLogging
 import no.nav.medlemskap.saga.domain.VurderingForAnalyseUttrekk
 import no.nav.medlemskap.saga.domain.tilListe
-import org.apache.commons.io.output.ByteArrayOutputStream
-import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import java.io.ByteArrayOutputStream
+import java.io.OutputStreamWriter
+import java.nio.charset.StandardCharsets
 
-object GenererExcelDokument {
+object GenererCsvDokument {
 
-    val logger = mu.KotlinLogging.logger("GenererExcelDokument")
+    private val logger = KotlinLogging.logger("GenererCsvDokument")
 
     fun generer(vurderinger: List<VurderingForAnalyseUttrekk>): ByteArray {
 
-        logger.info("Starter generering av Excel-dokument for ${vurderinger.size} vurderinger")
+        logger.info("Starter generering av CSV-dokument for ${vurderinger.size} vurderinger")
 
-        val workbook = XSSFWorkbook()
-        val sheet = workbook.createSheet("Data Sheet")
 
+        // Header
         val headers = listOf(
             "dato",
             "ytelse",
@@ -59,28 +60,29 @@ object GenererExcelDokument {
             "kilde"
         )
 
-        val headerRad = sheet.createRow(0)
-
-        //Oppretter header-rad
-        headers.forEachIndexed { kolonneNummer, headerNavn ->
-            headerRad.createCell(kolonneNummer).setCellValue(headerNavn)
-        }
-
-        //Oppretter rader og fyller inn data
-        vurderinger.forEachIndexed { radIndeks, vurdering ->
-            val rad = sheet.createRow(radIndeks + 1)
-            vurdering.tilListe().forEachIndexed { kolonneIndeks, kolonneVerdi ->
-                rad.createCell(kolonneIndeks).setCellValue(kolonneVerdi)
-            }
-        }
-
         val outputStream = ByteArrayOutputStream()
-        workbook.write(outputStream)
-        workbook.close()
+        val writer = OutputStreamWriter(outputStream, StandardCharsets.UTF_8)
 
-        val excelBytes = outputStream.toByteArray()
+        writer.appendLine(headers.joinToString(","))
 
-        logger.info { "Excel-dokument generert" }
-        return excelBytes
+        vurderinger.forEach { vurdering ->
+            val row = vurdering.tilListe().joinToString(",") { escapeCsv(it) }
+            writer.appendLine(row)
+        }
+
+        writer.flush()
+        val csvBytes = outputStream.toByteArray()
+
+        logger.info { "CSV-dokument generert" }
+
+        return csvBytes
+    }
+
+    private fun escapeCsv(value: String): String {
+        return if (value.contains(",") || value.contains("\"") || value.contains("\n")) {
+            "\"" + value.replace("\"", "\"\"") + "\""
+        } else {
+            value
+        }
     }
 }

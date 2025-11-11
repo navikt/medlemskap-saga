@@ -11,7 +11,7 @@ import io.ktor.server.response.respondBytes
 import io.ktor.server.routing.Routing
 import io.ktor.server.routing.get
 import io.ktor.server.routing.route
-import no.nav.medlemskap.saga.generer_uttrekk.GenererExcelDokument
+import no.nav.medlemskap.saga.generer_uttrekk.GenererCsvDokument
 import no.nav.medlemskap.saga.service.AnalyseService
 
 fun Routing.analyseRoute(service: AnalyseService) {
@@ -34,13 +34,15 @@ fun Routing.analyseRoute(service: AnalyseService) {
                         return@get
                     }
 
-                    val excelBytes = GenererExcelDokument.generer(uttrekksdata)
+                    val csvBytes = GenererCsvDokument.generer(uttrekksdata)
 
-                    call.response.header(HttpHeaders.ContentDisposition, "attachment; filename=\"uttrekk-${årMånedParam}.xlsx\"")
-                    call.respondBytes(excelBytes, ContentType.parse("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                    call.response.header(
+                        HttpHeaders.ContentDisposition,
+                        "attachment; filename=\"uttrekk-${årMånedParam}.csv\""
+                    )
+                    call.respondBytes(csvBytes, ContentType.Text.CSV)
                 }
             }
         }
     }
-
 }
