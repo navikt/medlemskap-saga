@@ -8,6 +8,8 @@ import no.nav.medlemskap.saga.generer_uttrekk.PeriodeForUttrekk
 import no.nav.medlemskap.saga.generer_uttrekk.VurderingMapper
 import no.nav.medlemskap.saga.persistence.VurderingForAnalyseRepository
 import no.nav.medlemskap.saga.utled_vurderingstagger.UtledVurderingstagger
+import java.io.ByteArrayOutputStream
+import java.io.OutputStream
 import java.time.LocalDate
 
 class AnalyseService(val vurderingForAnalyseRepository: VurderingForAnalyseRepository) {
@@ -72,5 +74,12 @@ class AnalyseService(val vurderingForAnalyseRepository: VurderingForAnalyseRepos
         }
 
         return formaterteVurderinger
+    }
+
+    fun hentOgSkrivFilTilCsv(parameter: String, outputStream: OutputStream) {
+        val (førsteDag, sisteDag) = PeriodeForUttrekk.finnPeriode(parameter)
+
+        logger.info { "Starter generering av CSV for $førsteDag til $sisteDag" }
+        vurderingForAnalyseRepository.hentOgSkrivVurderinger(førsteDag, sisteDag, outputStream)
     }
 }
