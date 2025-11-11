@@ -226,6 +226,9 @@ class VurderingForAnalyseRepositoryImpl(val dataSource: DataSource) : VurderingF
 
     override fun hentOgSkrivVurderinger(førsteDag: LocalDate, sisteDag: LocalDate, outputStream: OutputStream) {
         dataSource.connection.use { connection ->
+
+            connection.autoCommit = false
+
             connection.prepareStatement(HENT_VURDERINGER_FOR_ANALYSE_FOR_PERIODE).use { statement ->
                 statement.setObject(1, førsteDag)
                 statement.setObject(2, sisteDag)
