@@ -245,6 +245,7 @@ class VurderingForAnalyseRepositoryImpl(val dataSource: DataSource) : VurderingF
                     OutputStreamWriter(outputStream, StandardCharsets.UTF_8).buffered().use { writer ->
 
                         writer.appendLine(GenererCsv.CSV_HEADER.joinToString(","))
+                        writer.flush()
 
                         val batchSize = statement.fetchSize
                         var rowCount = 0
