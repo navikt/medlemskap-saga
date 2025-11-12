@@ -6,6 +6,7 @@ import javax.sql.DataSource
 import kotliquery.queryOf
 import kotliquery.sessionOf
 import kotliquery.using
+import mu.KotlinLogging
 import no.nav.medlemskap.saga.domain.tilListe
 import no.nav.medlemskap.saga.generer_uttrekk.GenererCsv
 import no.nav.medlemskap.saga.generer_uttrekk.VurderingMapper
@@ -52,6 +53,8 @@ interface VurderingForAnalyseRepository {
 }
 
 class VurderingForAnalyseRepositoryImpl(val dataSource: DataSource) : VurderingForAnalyseRepository {
+
+    val logger = KotlinLogging.logger("VurderingForAnalyseRepository")
 
     val INSERT_VURDERING_ANALYSE = "INSERT INTO vurdering_analyse(" +
             "dato, " +
@@ -229,25 +232,52 @@ class VurderingForAnalyseRepositoryImpl(val dataSource: DataSource) : VurderingF
 
             connection.autoCommit = false
 
-            connection.prepareStatement(HENT_VURDERINGER_FOR_ANALYSE_FOR_PERIODE).use { statement ->
+            connection.prepareStatement(
+                HENT_VURDERINGER_FOR_ANALYSE_FOR_PERIODE,
+                ResultSet.TYPE_FORWARD_ONLY,
+                ResultSet.CONCUR_READ_ONLY
+            ).use { statement ->
                 statement.setObject(1, førsteDag)
                 statement.setObject(2, sisteDag)
                 statement.fetchSize = 1000
 
-                val rs = statement.executeQuery()
+                statement.executeQuery().use { rs ->
+                    OutputStreamWriter(outputStream, StandardCharsets.UTF_8).buffered().use { writer ->
 
-                val writer = BufferedWriter(OutputStreamWriter(outputStream, StandardCharsets.UTF_8))
+                        writer.appendLine(GenererCsv.CSV_HEADER.joinToString(","))
 
-                writer.appendLine(GenererCsv.CSV_HEADER.joinToString(","))
+                        val batchSize = statement.fetchSize
+                        var rowCount = 0
+                        var batchCount = 0
 
-                while (rs.next()) {
-                    val dao = tilVurderingForAnalyseJDBC(rs)
-                    val uttrekk = VurderingMapper.tilVurderingForAnalyseUttrekk(dao)
-                    val row = uttrekk.tilListe().joinToString(",") { GenererCsv.escapeCsv(it) }
-                    writer.appendLine(row)
+                        while (rs.next()) {
+                            if (rowCount % batchSize == 0) {
+                                batchCount++
+                                logger.info("Starter batch #$batchCount (fra rad $rowCount)")
+                            }
+
+                            val dao = tilVurderingForAnalyseJDBC(rs)
+                            val uttrekk = VurderingMapper.tilVurderingForAnalyseUttrekk(dao)
+                            val row = uttrekk.tilListe().joinToString(",") { GenererCsv.escapeCsv(it) }
+                            writer.appendLine(row)
+
+                            rowCount++
+
+                            if (rowCount % batchSize == 0) {
+                                writer.flush() // skyv data ut med jevne mellomrom
+                                logger.info("Batch #$batchCount ferdig (totalt $rowCount rader skrevet)")
+                            }
+                        }
+
+                        // Siste ufullstendige batch
+                        if (rowCount % batchSize != 0) {
+                            writer.flush()
+                            logger.info("Siste batch (#${batchCount + 1}) ferdig (totalt $rowCount rader skrevet)")
+                        }
+
+                        logger.info("Ferdig streaming av $rowCount rader i $batchCount batcher")
+                    }
                 }
-
-                writer.flush()
             }
         }
     }

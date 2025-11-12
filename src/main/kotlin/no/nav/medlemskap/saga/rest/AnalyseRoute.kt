@@ -33,18 +33,16 @@ fun Routing.analyseRoute(service: AnalyseService) {
                     logger.info("Mottatt forespørsel om uttrekk for periode: $årMånedParam")
 
                     try {
-                        val file = File("/tmp/uttrekk-$årMånedParam.csv")
-
-                        FileOutputStream(file).use { outputStream ->
-                            service.hentOgSkrivFilTilCsv(årMånedParam, outputStream)
-                        }
-
                         call.response.header(
                             HttpHeaders.ContentDisposition,
                             "attachment; filename=\"uttrekk-${årMånedParam}.csv\""
                         )
-                        call.respondFile(file)
+                        call.response.header(HttpHeaders.ContentType, "text/csv; charset=UTF-8")
 
+                        call.respondOutputStream(contentType = ContentType.Text.CSV) {
+                            service.hentOgSkrivFilTilCsv(årMånedParam, this)
+                        }
+                        logger.info("Uttrekk for $årMånedParam sendt til klient")
                     } catch (e: Exception) {
                         logger.error(e) { "Feil ved generering av CSV for $årMånedParam" }
                         call.respond(HttpStatusCode.InternalServerError, "Feil ved generering av CSV")
