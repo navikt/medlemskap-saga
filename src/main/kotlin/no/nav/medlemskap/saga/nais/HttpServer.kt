@@ -1,4 +1,5 @@
 package no.nav.medlemskap.saga.nais
+import com.google.cloud.storage.StorageOptions
 import io.ktor.http.*
 import io.ktor.serialization.jackson.*
 import io.ktor.server.application.*
@@ -45,6 +46,7 @@ fun createHttpServer(consumeJob: Job) = embeddedServer(Netty, port = 8080) {
     )
 
     val analyseService = AnalyseService(VurderingForAnalyseRepositoryImpl(DataSourceBuilder(System.getenv()).getDataSource()))
+    val storage = StorageOptions.getDefaultInstance().service
 
         install(CallId) {
             header(MDC_CALL_ID)
@@ -82,7 +84,7 @@ fun createHttpServer(consumeJob: Job) = embeddedServer(Netty, port = 8080) {
         routing {
             naisRoutes(consumeJob)
             sagaRoutes(service)
-            analyseRoute(analyseService)
+            analyseRoute(analyseService, storage)
         }
     }
 
