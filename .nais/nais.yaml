@@ -34,6 +34,8 @@ spec:
             value: "write,ddl,role"
           - name: "pgaudit.log_parameter"
             value: "on"
+    buckets:
+      - name: medlemskap-saga-vurderinger
   azure:
     application:
       enabled: true
