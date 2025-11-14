@@ -27,6 +27,8 @@ spec:
         databases:
           - name: medlemskap
             envVarPrefix: DB
+    buckets:
+      - name: medlemskap-saga-vurderinger
   azure:
     application:
       enabled: true
