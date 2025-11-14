@@ -6,6 +6,7 @@ import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import no.nav.medlemskap.saga.generer_uttrekk.ValiderParameter
 import no.nav.medlemskap.saga.service.AnalyseService
 import java.io.File
 import java.io.FileOutputStream
@@ -20,11 +21,13 @@ fun Routing.analyseRoute(service: AnalyseService, storage: Storage) {
             authenticate("azureAuth") {
                 post("/{aarMaaned}") {
                     val årMånedParam = call.parameters["aarMaaned"]!!
+                    ValiderParameter.validerParameter(årMånedParam)
 
                     logger.info("Mottatt forespørsel om uttrekk for periode: $årMånedParam")
 
                     val bucketNavn = "medlemskap-saga-vurderinger"
-                    val år = årMånedParam.substringBefore("-")
+                    val år = årMånedParam.take(4)
+
                     val objectName = "$år/uttrekk-$årMånedParam.csv"
 
                     // Opprett midlertidig fil
