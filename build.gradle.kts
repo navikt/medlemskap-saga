@@ -80,6 +80,10 @@ dependencies {
     implementation("org.apache.poi:poi:5.2.5")
     implementation("org.apache.poi:poi-ooxml:5.2.5")
 
+    //google
+    implementation(platform("com.google.cloud:libraries-bom:26.46.0"))
+    implementation("com.google.cloud:google-cloud-storage")
+    implementation("com.google.auth:google-auth-library-oauth2-http")
 }
 kotlin {
     jvmToolchain(21)
