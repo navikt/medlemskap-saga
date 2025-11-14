@@ -1,25 +1,15 @@
 package no.nav.medlemskap.saga.rest
 
-import io.ktor.http.ContentType
-import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpStatusCode
-
-import io.ktor.server.auth.authenticate
-import io.ktor.server.response.header
-import io.ktor.server.response.respond
-import io.ktor.server.response.respondBytes
-import io.ktor.server.response.respondFile
-import io.ktor.server.response.respondOutputStream
-import io.ktor.server.routing.Routing
-import io.ktor.server.routing.get
-import io.ktor.server.routing.route
-import no.nav.medlemskap.saga.generer_uttrekk.GenererCsvDokument
+import com.google.cloud.storage.BlobInfo
+import com.google.cloud.storage.Storage
+import io.ktor.http.*
+import io.ktor.server.auth.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 import no.nav.medlemskap.saga.service.AnalyseService
-import java.io.File
-import java.io.FileOutputStream
 import java.io.OutputStream
 
-fun Routing.analyseRoute(service: AnalyseService) {
+fun Routing.analyseRoute(service: AnalyseService, storage: Storage) {
 
     val logger = mu.KotlinLogging.logger("AnalyseRoute")
 
@@ -27,22 +17,31 @@ fun Routing.analyseRoute(service: AnalyseService) {
 
         route("/hentUttrekk") {
             authenticate("azureAuth") {
-                get("/{aarMaaned}") {
+                post("/{aarMaaned}") {
                     val årMånedParam = call.parameters["aarMaaned"]!!
 
                     logger.info("Mottatt forespørsel om uttrekk for periode: $årMånedParam")
 
                     try {
-                        call.response.header(
-                            HttpHeaders.ContentDisposition,
-                            "attachment; filename=\"uttrekk-${årMånedParam}.csv\""
-                        )
-                        call.response.header(HttpHeaders.ContentType, "text/csv; charset=UTF-8")
+                        val år = årMånedParam.substringBefore("-")
 
-                        call.respondOutputStream(contentType = ContentType.Text.CSV) {
-                            service.hentOgSkrivFilTilCsv(årMånedParam, this)
+                        val bucketNavn = "medlemskap-saga-vurderinger"
+                        val objectName = "$år/uttrekk-$årMånedParam.csv"
+
+                        val blobInfo = BlobInfo.newBuilder(bucketNavn, objectName)
+                            .setContentType("text/csv; charset=utf-8")
+                            .build()
+
+                        storage.writer(blobInfo).use { writer ->
+                            service.hentOgSkrivFilTilCsv(årMånedParam, writer as OutputStream)
                         }
-                        logger.info("Uttrekk for $årMånedParam sendt til klient")
+
+                        logger.info("Uttrekk lagret i GCS: gs://$bucketNavn/$objectName")
+
+                        call.respond(
+                            HttpStatusCode.OK,
+                            "Uttrekk lagret i GCS med navn $objectName"
+                        )
                     } catch (e: Exception) {
                         logger.error(e) { "Feil ved generering av CSV for $årMånedParam" }
                         call.respond(HttpStatusCode.InternalServerError, "Feil ved generering av CSV")
@@ -51,5 +50,4 @@ fun Routing.analyseRoute(service: AnalyseService) {
             }
         }
     }
-
 }
