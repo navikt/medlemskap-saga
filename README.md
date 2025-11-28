@@ -90,7 +90,7 @@ DB_DATABASE:medlemskap
 
 DB_HOST:127.0.0.1
 
-DB_PASSWORD:-vRp4enzQSByToEPG-_iBhnF1EPqo7lHzUfXaAJIGTY
+DB_PASSWORD: <db_password>
 
 DB_PORT: 5432
 
@@ -98,8 +98,7 @@ DB_USERNAME:medlemskap-saga
 
 ## start docker image for postgres
 
-docker run --name lovme_postgres -e POSTGRES_USER=medlemskap-saga -e POSTGRES_PASSWORD=-vRp4enzQSByToEPG-_
-iBhnF1EPqo7lHzUfXaAJIGTY -e POSTGRES_DB=medlemskap -v postgres_data:/var/lib/postgresql/data -p 5432:5432 -d postgres:12
+docker run --name lovme_postgres -e POSTGRES_USER=medlemskap-saga -e POSTGRES_PASSWORD=-<db_password> -e POSTGRES_DB=medlemskap -v postgres_data:/var/lib/postgresql/data -p 5432:5432 -d postgres:12
 
 #start kafka instans lokalt
 lag følgende docker-compose.yaml fil
