@@ -37,8 +37,14 @@ class SagaService(
                 val ytelse = kotlin.runCatching { objectMapper.readTree(record.json).get("datagrunnlag").get("ytelse").asText() }.getOrElse { "UKJENT" }
                 medlemskapVurdertRepository.lagreVurdering(record.key, Date(), record.json,ytelse)
 
-                //Future: Vurdere å flytte denne prosessen til en egen kafka consumer
-                analyseService.lagreTilVurderingForAnalyse(record.json, record.key)
+                try {
+                    //Future: Vurdere å flytte denne prosessen til en egen kafka consumer
+                    analyseService.lagreTilVurderingForAnalyse(record.json, record.key)
+
+                } catch (e: Exception) {
+                    log.error("Feil ved lagring av vurdering til analyse database for callId: ${record.key}", e)
+                }
+
             }
             catch (e:Exception){
                 record.logLagringFeilet(e)

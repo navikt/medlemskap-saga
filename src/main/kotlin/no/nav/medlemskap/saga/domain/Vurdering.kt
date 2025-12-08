@@ -10,5 +10,5 @@ data class Vurdering(
     val kanal: String,
     val datagrunnlag: Datagrunnlag,
     val resultat: ResultatFraMedlemskapOppslag,
-    val konklusjon: List<KonklusjonFraSP6000>
+    val konklusjon: List<KonklusjonFraSP6000> = emptyList()
 )
