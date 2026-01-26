@@ -39,4 +39,35 @@ class UtledVurderingstaggerITTest {
         assertEquals(STATSBORGERSKAPSKATEGORI, vurderingForAnalyse.statsborgerskapskategori)
         assertEquals(NAV_CALL_ID, vurderingForAnalyse.navCallId)
     }
+
+
+    @Test
+    fun `skal mappe json til vurdering med riktige når konklusjon mangler`() {
+        val path = Paths.get("src/test/resources/vurdering_uten_konklusjon.json")
+        val vurdering = Files.readString(path)
+        val NAV_CALL_ID = "test-nav-call-id-123"
+        val vurderingForAnalyse = UtledVurderingstagger.utled(vurdering, NAV_CALL_ID)
+
+        val YTELSE = Ytelse.SYKEPENGER
+        val FOM = LocalDate.parse("2025-09-10")
+        val TOM = LocalDate.parse("2025-09-17")
+        val SVAR = Svar.UAVKLART
+        val ÅRSAKER = listOf("REGEL_10", "REGEL_3", "REGEL_25")
+        val ANTALL_DAGER_MED_SYKMELDING = 8L
+        //Disse feltene er tomme når konklusjon mangler
+        val AVKLARINGSLISTE = emptyList<String>()
+        val KONKLUSJON = null
+        val STATSBORGERSKAPSKATEGORI =  null
+
+        assertEquals(YTELSE, vurderingForAnalyse.ytelse)
+        assertEquals(FOM, vurderingForAnalyse.fom)
+        assertEquals(TOM, vurderingForAnalyse.tom)
+        assertEquals(SVAR, vurderingForAnalyse.svar)
+        assertEquals(ÅRSAKER, vurderingForAnalyse.årsaker)
+        assertEquals(KONKLUSJON, vurderingForAnalyse.konklusjon)
+        assertEquals(AVKLARINGSLISTE, vurderingForAnalyse.avklaringsListe)
+        assertEquals(ANTALL_DAGER_MED_SYKMELDING, vurderingForAnalyse.antallDagerMedSykmelding)
+        assertEquals(STATSBORGERSKAPSKATEGORI, vurderingForAnalyse.statsborgerskapskategori)
+        assertEquals(NAV_CALL_ID, vurderingForAnalyse.navCallId)
+    }
 }

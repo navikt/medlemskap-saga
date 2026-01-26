@@ -1,7 +1,5 @@
 package no.nav.medlemskap.saga.domain.konklusjon
 
-import no.nav.medlemskap.saga.domain.konklusjon.Statsborgerskapskategori
-
 enum class Informasjon() {
     TREDJELANDSBORGER,
     EØS_BORGER,

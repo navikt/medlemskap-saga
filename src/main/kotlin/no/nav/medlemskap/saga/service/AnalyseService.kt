@@ -34,12 +34,12 @@ class AnalyseService(val vurderingForAnalyseRepository: VurderingForAnalyseRepos
             start_dato_for_ytelse = vurderingForAnalyse.startDatoForYtelse,
             svar = vurderingForAnalyse.svar.name,
             aarsaker = vurderingForAnalyse.årsaker.toTypedArray(),
-            konklusjon = vurderingForAnalyse.konklusjon.name,
+            konklusjon = vurderingForAnalyse.konklusjon?.name ?: "",
             avklaringsliste = vurderingForAnalyse.avklaringsListe.toTypedArray(),
             nye_spoersmaal = vurderingForAnalyse.nyeSpørsmål,
             antall_dager_med_sykmelding = vurderingForAnalyse.antallDagerMedSykmelding,
             statsborgerskap = vurderingForAnalyse.statsborgerskap.toTypedArray(),
-            statsborgerskapskategori = vurderingForAnalyse.statsborgerskapskategori.name,
+            statsborgerskapskategori = vurderingForAnalyse.statsborgerskapskategori?.name ?: "",
             arbeid_utenfor_norge = vurderingForAnalyse.arbeidUtenforNorge,
             utfoert_arbeid_utenfor_norge = mapper.writeValueAsString(vurderingForAnalyse.utførtArbeidUtenforNorgeTag),
             opphold_utenfor_eos = mapper.writeValueAsString(vurderingForAnalyse.oppholdUtenforEØSTag),
@@ -53,33 +53,10 @@ class AnalyseService(val vurderingForAnalyseRepository: VurderingForAnalyseRepos
         )
     }
 
-    fun hentVurderingerForAnalyse(parameter: String): List<VurderingForAnalyseUttrekk> {
-        val (førsteDag, sisteDag) = PeriodeForUttrekk.finnPeriode(parameter)
-
-        val vurderingForAnalyseDAO = vurderingForAnalyseRepository.hentVurderingerForAnalyse(førsteDag, sisteDag)
-
-        if (vurderingForAnalyseDAO.isEmpty()) {
-            logger.info { "Ingen vurderinger funnet for perioden $førsteDag - $sisteDag" }
-        } else {
-            logger.info { "${vurderingForAnalyseDAO.size} vurderinger funnet for perioden $førsteDag - $sisteDag" }
-        }
-
-        var formaterteVurderinger: List<VurderingForAnalyseUttrekk>
-        try {
-            formaterteVurderinger = vurderingForAnalyseDAO
-                .map { VurderingMapper.tilVurderingForAnalyseUttrekk(it) }
-        } catch (exception: Exception) {
-            logger.error(exception) { "Feil ved mapping av vurderinger" }
-            throw exception
-        }
-
-        return formaterteVurderinger
-    }
-
     fun hentOgSkrivFilTilCsv(parameter: String, outputStream: OutputStream) {
         val (førsteDag, sisteDag) = PeriodeForUttrekk.finnPeriode(parameter)
 
-        logger.info { "Starter generering av CSV for $førsteDag til $sisteDag" }
+        logger.info("Starter generering av CSV for $førsteDag til $sisteDag")
         vurderingForAnalyseRepository.hentOgSkrivVurderinger(førsteDag, sisteDag, outputStream)
     }
 }

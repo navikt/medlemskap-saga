@@ -6,6 +6,7 @@ import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.medlemskap.saga.generer_uttrekk.ValiderParameter
 import no.nav.medlemskap.saga.service.AnalyseService
 import java.io.File
@@ -54,7 +55,9 @@ fun Routing.analyseRoute(service: AnalyseService, storage: Storage) {
                             "Uttrekk lagret i GCS med navn $objectName"
                         )
                     } catch (e: Exception) {
-                        logger.error(e) { "Feil ved generering av CSV for $årMånedParam" }
+                        logger.error( "Feil ved generering av CSV for $årMånedParam",
+                            kv("feilmelding", e)
+                        )
                         call.respond(HttpStatusCode.InternalServerError, "Feil ved generering av CSV")
                     } finally {
                         // Slett midlertidig fil
