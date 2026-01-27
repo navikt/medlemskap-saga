@@ -35,7 +35,7 @@ spec:
           - name: "pgaudit.log_parameter"
             value: "on"
     buckets:
-      - name: medlemskap-saga-vurderinger
+      - name: medlemskap-saga-vurderinger-prod
   azure:
     application:
       enabled: true
@@ -90,3 +90,5 @@ spec:
       value: https://api-gw.oera.no/sts/SecurityTokenServiceProvider/
     - name: SECURITY_TOKEN_SERVICE_REST_URL
       value: https://api-gw.oera.no/security-token-service
+    - name: GCP_BUCKET_NAME
+      value: medlemskap-saga-vurderinger-prod

@@ -99,3 +99,5 @@ spec:
       value: https://api-gw-q1.oera.no/sts/SecurityTokenServiceProvider/
     - name: SECURITY_TOKEN_SERVICE_REST_URL
       value: https://api-gw-q1.oera.no/security-token-service
+    - name: GCP_BUCKET_NAME
+      value: medlemskap-saga-vurderinger
