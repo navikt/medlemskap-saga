@@ -26,7 +26,7 @@ fun Routing.analyseRoute(service: AnalyseService, storage: Storage) {
 
                     logger.info("Mottatt forespørsel om uttrekk for periode: $årMånedParam")
 
-                    val bucketNavn = "medlemskap-saga-vurderinger"
+                    val bucketNavn = System.getenv("GCP_BUCKET_NAME")
                     val år = årMånedParam.take(4)
 
                     val objectName = "$år/uttrekk-$årMånedParam.csv"
