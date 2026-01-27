@@ -1,25 +1,18 @@
 package no.nav.medlemskap.saga.rest
 
-import io.ktor.http.ContentType
-import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpStatusCode
-
-import io.ktor.server.auth.authenticate
-import io.ktor.server.response.header
-import io.ktor.server.response.respond
-import io.ktor.server.response.respondBytes
-import io.ktor.server.response.respondFile
-import io.ktor.server.response.respondOutputStream
-import io.ktor.server.routing.Routing
-import io.ktor.server.routing.get
-import io.ktor.server.routing.route
-import no.nav.medlemskap.saga.generer_uttrekk.GenererCsvDokument
+import com.google.cloud.storage.BlobInfo
+import com.google.cloud.storage.Storage
+import io.ktor.http.*
+import io.ktor.server.auth.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
+import net.logstash.logback.argument.StructuredArguments.kv
+import no.nav.medlemskap.saga.generer_uttrekk.ValiderParameter
 import no.nav.medlemskap.saga.service.AnalyseService
 import java.io.File
 import java.io.FileOutputStream
-import java.io.OutputStream
 
-fun Routing.analyseRoute(service: AnalyseService) {
+fun Routing.analyseRoute(service: AnalyseService, storage: Storage) {
 
     val logger = mu.KotlinLogging.logger("AnalyseRoute")
 
@@ -27,29 +20,51 @@ fun Routing.analyseRoute(service: AnalyseService) {
 
         route("/hentUttrekk") {
             authenticate("azureAuth") {
-                get("/{aarMaaned}") {
+                post("/{aarMaaned}") {
                     val årMånedParam = call.parameters["aarMaaned"]!!
+                    ValiderParameter.validerParameter(årMånedParam)
 
                     logger.info("Mottatt forespørsel om uttrekk for periode: $årMånedParam")
 
-                    try {
-                        call.response.header(
-                            HttpHeaders.ContentDisposition,
-                            "attachment; filename=\"uttrekk-${årMånedParam}.csv\""
-                        )
-                        call.response.header(HttpHeaders.ContentType, "text/csv; charset=UTF-8")
+                    val bucketNavn = "medlemskap-saga-vurderinger"
+                    val år = årMånedParam.take(4)
 
-                        call.respondOutputStream(contentType = ContentType.Text.CSV) {
-                            service.hentOgSkrivFilTilCsv(årMånedParam, this)
+                    val objectName = "$år/uttrekk-$årMånedParam.csv"
+
+                    // Opprett midlertidig fil
+                    val tempFile = File.createTempFile("uttrekk-$årMånedParam", ".csv")
+
+                    try {
+                        // Generer CSV direkte til fil
+                        FileOutputStream(tempFile).use { fos ->
+                            service.hentOgSkrivFilTilCsv(årMånedParam, fos)
                         }
-                        logger.info("Uttrekk for $årMånedParam sendt til klient")
+
+                        // Lag BlobInfo
+                        val blobInfo = BlobInfo.newBuilder(bucketNavn, objectName)
+                            .setContentType("text/csv; charset=utf-8")
+                            .build()
+
+                        // Last opp fil til GCS
+                        storage.create(blobInfo, tempFile.readBytes())
+
+                        logger.info("Uttrekk lagret i GCS: gs://$bucketNavn/$objectName")
+
+                        call.respond(
+                            HttpStatusCode.OK,
+                            "Uttrekk lagret i GCS med navn $objectName"
+                        )
                     } catch (e: Exception) {
-                        logger.error(e) { "Feil ved generering av CSV for $årMånedParam" }
+                        logger.error( "Feil ved generering av CSV for $årMånedParam",
+                            kv("feilmelding", e)
+                        )
                         call.respond(HttpStatusCode.InternalServerError, "Feil ved generering av CSV")
+                    } finally {
+                        // Slett midlertidig fil
+                        tempFile.delete()
                     }
                 }
             }
         }
     }
-
 }

@@ -17,7 +17,7 @@ object UtledVurderingstagger {
 
         val datagrunnlag = vurderingFraJson.datagrunnlag
         val resultat = vurderingFraJson.resultat
-        val konklusjon = vurderingFraJson.konklusjon.first()
+        val konklusjon = vurderingFraJson.konklusjon.firstOrNull()
         val brukerinput = vurderingFraJson.datagrunnlag.brukerinput
         val oppholdstillatelseUDI = vurderingFraJson.datagrunnlag.oppholdstillatelse
 
@@ -30,12 +30,12 @@ object UtledVurderingstagger {
             startDatoForYtelse = datagrunnlag.startDatoForYtelse,
             svar = resultat.svar,
             årsaker = resultat.årsaker.map { it.regelId },
-            konklusjon = konklusjon.status,
-            avklaringsListe = konklusjon.avklaringsListe.map { it.regel_id },
+            konklusjon = konklusjon?.status,
+            avklaringsListe = konklusjon?.avklaringsListe?.map { it.regel_id } ?: emptyList(),
             nyeSpørsmål = brukerinput.utfortAarbeidUtenforNorge != null,
             antallDagerMedSykmelding = datagrunnlag.periode.antallDager(),
             statsborgerskap = datagrunnlag.pdlpersonhistorikk.finnAktiveStatsborgerskap(),
-            statsborgerskapskategori = konklusjon.enUtledetInformasjon().informasjon.tilKategori(),
+            statsborgerskapskategori = konklusjon?.enUtledetInformasjon()?.informasjon?.tilKategori(),
             arbeidUtenforNorge = brukerinput.arbeidUtenforNorge,
             utførtArbeidUtenforNorgeTag = UtfortArbeidUtenforNorgeTag.fra(brukerinput.hentUtførtArbeidUtenforNorge()),
             oppholdUtenforEØSTag = OppholdUtenforEOSTag.fra(brukerinput.hentOppholdUtenforEØS()),
