@@ -15,7 +15,7 @@ Medlemskap Saga komponent som lagrer/oppdaterer status på medlemskap
 medlemskap-saga tilbyr 2 API-er.
 
 1. SagaRoute - for lagring av vurderinger og vurderinger for analyse
-2. AnalyseRoute - for henting av vurderinger for analyse til excel uttrekk
+2. AnalyseRoute - for henting av vurderinger og lagre til CSV-fil i Google Cloud Storage (GCS)
 
 ## SagaRoute - Lagring av vurderinger
 
@@ -49,27 +49,27 @@ Kallet er en POST mot url definert over
 }
 ```
 
-## AnalyseRoute - Henting av vurderinger for analyse
+## AnalyseRoute - Generere uttrekksfil for vurderinger til analyse og lagre til GCS
 
-| Endepunkt                                                                               | Konsument          |
-|-----------------------------------------------------------------------------------------|--------------------|
-| GET https://medlemskap-vurdering.intern.nav.no/analyse/hentUttrekk/{aarMaanedParam}     | medlemskap-analyse |
-| GET https://medlemskap-vurdering.intern.dev.nav.no/analyse/hentUttrekk/{aarMaanedParam} | medlemskap-analyse |
+| Endepunkt                                                                            | Konsument          | Miljø    |
+|--------------------------------------------------------------------------------------|--------------------|----------|
+| POST https://medlemskap-vurdering.intern.nav.no/analyse/hentUttrekk/{aarMaanedParam} | medlemskap-analyse | prod-gcp |
+| POST https://medlemskap-vurdering.intern.dev.nav.no/analyse/hentUttrekk/{aarMaanedParam} | medlemskap-analyse | dev-gcp  |
+
+### Formål
+Formålet med API-et er å generere CSV-fil med vurderinger for gitt år og måned, og lagre denne filen i en spesifikk
+Google Cloud Storage (GCS) bøtte for videre analyse. Filer vil være nedlastbare fra Buckets i Google Cloud etter
+at de er opprettet.
+
+I produksjon er det kun mulig å generere uttrekks-filer gjennom medlemskap-analyse komponenten for å sikre begrenset tilgang.
+I test kan endepunktet kalles direkte for å generere fil, forutsatt at Bearer-tokenet har korrekt scope. medlemskap-analyse 
+kan også benyttes i test ved å konfigurere en Trygdeetaten-bruker som brukes til innlogging.
+
 
 ### Eksempel på kall
 
-curl -X GET  https://medlemskap-vurdering.intern.dev.nav.no/analyse/hentUttrekk/202510 \
+curl -X POST  https://medlemskap-vurdering.intern.dev.nav.no/analyse/hentUttrekk/202510 \
 -H "Authorization: Bearer DITT_TOKEN_HER"
-
-Respons OK
-
-* Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
-* Filformat: .xlsx
-* Inneholder: vurderinger for analyse fra tabellen ```vurdering_analyse```
-
-Respons 204 - Ingen innhold
-
-* Ingen vurderinger funnet for angitt aarMaanedParam
 
 # Testing
 
