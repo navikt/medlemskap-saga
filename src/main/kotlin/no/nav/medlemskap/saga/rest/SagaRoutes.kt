@@ -25,6 +25,7 @@ fun Routing.sagaRoutes(service: SagaService) {
     route("/findVureringerByFnr") {
         authenticate("azureAuth") {
             post{
+                logger.info(teamLogs, "Dette er en testlogg")
                 logger.info("kall autentisert, url : /findVureringerByFnr")
 
                 val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
