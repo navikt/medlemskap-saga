@@ -11,6 +11,7 @@ val hikariVersion = "3.4.5"
 val kotliqueryVersion = "1.3.1"
 val httpClientVersion = "4.5.13"
 val mainClass = "no.nav.medlemskap.saga.ApplicationKt"
+val testcontainerVersion = "1.21.4"
 
 plugins {
     kotlin("jvm") version "2.1.0"
@@ -68,9 +69,9 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("io.mockk:mockk:1.11.0")
     testImplementation("io.ktor:ktor-client-mock:$ktorVersion")
-    testImplementation("org.testcontainers:kafka:1.17.6")
-    testImplementation ("org.testcontainers:postgresql:1.16.0")
-    testImplementation ("org.testcontainers:junit-jupiter:1.16.0")
+    testImplementation("org.testcontainers:kafka:$testcontainerVersion")
+    testImplementation ("org.testcontainers:$testcontainerVersion")
+    testImplementation ("org.testcontainers:junit-jupiter:$testcontainerVersion")
     //Database
     implementation("org.postgresql:postgresql:42.5.1")
     implementation("org.flywaydb:flyway-core:$flywayVersion")
