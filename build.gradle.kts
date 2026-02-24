@@ -70,7 +70,7 @@ dependencies {
     testImplementation("io.mockk:mockk:1.11.0")
     testImplementation("io.ktor:ktor-client-mock:$ktorVersion")
     testImplementation("org.testcontainers:kafka:$testcontainerVersion")
-    testImplementation ("org.testcontainers:$testcontainerVersion")
+    testImplementation ("org.testcontainers:postgresql:$testcontainerVersion")
     testImplementation ("org.testcontainers:junit-jupiter:$testcontainerVersion")
     //Database
     implementation("org.postgresql:postgresql:42.5.1")
