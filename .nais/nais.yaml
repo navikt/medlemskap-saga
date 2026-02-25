@@ -57,6 +57,8 @@ spec:
     timeout: 60
   ingresses:
     - https://medlemskap-vurdering.intern.dev.nav.no
+  envFrom:
+        - secret: medlemskap-saga-secret
   replicas:
     min: 2
     max: 2
