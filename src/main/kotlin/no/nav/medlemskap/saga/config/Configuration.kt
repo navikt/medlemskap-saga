@@ -18,6 +18,7 @@ private val defaultProperties = ConfigurationMap(
         "NAIS_CLUSTER_NAME" to "",
         "NAIS_APP_IMAGE" to "",
         "AZURE_APP_CLIENT_ID" to "",
+        "AZURE_APP_CLIENT_SECRET" to "",
         "KAFKA_BROKERS" to "nav-dev-kafka-nav-dev.aivencloud.com:26484",
         "KAFKA_TRUSTSTORE_PATH" to "c:\\dev\\secrets\\client.truststore.jks",
         "KAFKA_CREDSTORE_PASSWORD" to "changeme",
@@ -55,7 +56,7 @@ data class Configuration(
 ) {
 
     data class AzureAd(
-        val clientId: String = "AZURE_APP_CLIENT_ID".configProperty(),
+        val clientId: String = "NAIS_APP_NAME".configProperty(),
         val clientSecret: String = "AZURE_APP_CLIENT_SECRET".configProperty(),
         val jwtAudience: String = "AZURE_APP_CLIENT_ID".configProperty(),
         val tenant: String = "AZURE_APP_TENANT_ID".configProperty(),
