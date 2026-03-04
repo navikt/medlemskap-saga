@@ -40,7 +40,7 @@ data class OppholdsTillatelse(
             status.uavklart != null ->
                 "uavklart"
             status.ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum != null ->
-                "ikke_opphold"
+                "ikke_oppholdstillatelse"
             else -> ""
         }
     }

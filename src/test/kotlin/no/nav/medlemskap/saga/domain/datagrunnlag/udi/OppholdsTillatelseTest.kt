@@ -85,6 +85,6 @@ class OppholdsTillatelseTest {
 
         assertNull(oppholdsTillatelse.hentOppholdstillatelseUDIFom())
         assertNull(oppholdsTillatelse.hentOppholdstillatelseUDITom())
-        assertEquals("ikke_opphold", oppholdsTillatelse.hentOppholdstillatelseUDIType())
+        assertEquals("ikke_oppholdstillatelse", oppholdsTillatelse.hentOppholdstillatelseUDIType())
     }
 }
