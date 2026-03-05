@@ -39,9 +39,9 @@ object GenererCsv {
         "oppholdstillatelse_oppgitt_fom",
         "oppholdstillatelse_oppgitt_tom",
         "oppholdstillatelse_oppgitt_antall_perioder",
-        "oppholdstillatelse_udi_fom",
-        "oppholdstillatelse_udi_tom",
-        "oppholdstillatelse_udi_type",
+        "udi_oppholdstillatelse_fom",
+        "udi_oppholdstillatelse_tom",
+        "udi_oppholdstillatelse_type",
         "kilde"
     )
 
