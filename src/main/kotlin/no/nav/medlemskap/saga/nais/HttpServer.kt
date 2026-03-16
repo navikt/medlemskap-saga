@@ -30,6 +30,7 @@ import no.nav.medlemskap.saga.persistence.VurderingForAnalyseRepositoryImpl
 import no.nav.medlemskap.saga.rest.objectMapper
 import no.nav.medlemskap.saga.rest.sagaRoutes
 import no.nav.medlemskap.saga.rest.analyseRoute
+import no.nav.medlemskap.saga.rest.nullstillTestdataTestRoute
 import no.nav.medlemskap.saga.service.SagaService
 import no.nav.medlemskap.saga.service.AnalyseService
 import java.io.Writer
@@ -47,6 +48,7 @@ fun createHttpServer(consumeJob: Job) = embeddedServer(Netty, port = 8080) {
 
     val analyseService = AnalyseService(VurderingForAnalyseRepositoryImpl(DataSourceBuilder(System.getenv()).getDataSource()))
     val storage = StorageOptions.getDefaultInstance().service
+    val isDevGcp = configuration.cluster == "dev-gcp"
 
         install(CallId) {
             header(MDC_CALL_ID)
@@ -85,6 +87,12 @@ fun createHttpServer(consumeJob: Job) = embeddedServer(Netty, port = 8080) {
             naisRoutes(consumeJob)
             sagaRoutes(service)
             analyseRoute(analyseService, storage)
+            if (isDevGcp) {
+                nullstillTestdataTestRoute(
+                    PostgresMedlemskapVurdertRepository(DataSourceBuilder(System.getenv()).getDataSource()),
+                    VurderingForAnalyseRepositoryImpl(DataSourceBuilder(System.getenv()).getDataSource())
+                )
+            }
         }
     }
 
