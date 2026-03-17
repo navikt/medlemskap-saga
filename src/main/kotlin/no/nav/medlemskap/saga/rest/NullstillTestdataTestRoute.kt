@@ -19,7 +19,7 @@ fun Routing.nullstillTestdataTestRoute(
     medlemskapVurdertRepository: MedlemskapVurdertRepository,
     vurderingForAnalyseRepository: VurderingForAnalyseRepository
 ) {
-    route("/testdata") {
+    route("/test") {
         authenticate("azureAuth") {
             post("/slett-vurdering") {
                 val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
