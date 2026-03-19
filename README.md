@@ -16,6 +16,7 @@ medlemskap-saga tilbyr 2 API-er.
 
 1. SagaRoute - for lagring av vurderinger og vurderinger for analyse
 2. AnalyseRoute - for henting av vurderinger og lagre til CSV-fil i Google Cloud Storage (GCS)
+3. NullstillTestdataTestRoute - for sletting av testdata (kun tilgjengelig i dev-gcp)
 
 ## SagaRoute - Lagring av vurderinger
 
@@ -70,6 +71,37 @@ kan også benyttes i test ved å konfigurere en Trygdeetaten-bruker som brukes t
 
 curl -X POST  https://medlemskap-vurdering.intern.dev.nav.no/analyse/hentUttrekk/202510 \
 -H "Authorization: Bearer DITT_TOKEN_HER"
+
+## NullstillTestdataTestRoute - Sletting av testdata (kun dev-gcp)
+
+| Endepunkt                                                                   | Miljø   |
+|-----------------------------------------------------------------------------|---------|
+| POST https://medlemskap-vurdering.intern.dev.nav.no/test/slett-vurdering    | dev-gcp |
+
+### Formål
+Endepunktet sletter alle vurderinger og analyse-rader for et gitt fødselsnummer fra begge tabellene (`vurdering` og `vurdering_analyse`). 
+Kun tilgjengelig i dev-gcp for nullstilling av testdata.
+
+### Eksempel på kall
+
+Kallet er en POST mot url definert over
+
+```
+curl -X POST https://medlemskap-vurdering.intern.dev.nav.no/test/slett-vurdering \
+  -H "Authorization: Bearer DITT_TOKEN_HER" \
+  -H "Content-Type: application/json" \
+  -d '{"fnr": "12345678912"}'
+```
+
+### Eksempel på respons
+
+```json
+{
+  "fnr": "12345678912",
+  "slettetVurderinger": 3,
+  "slettetVurderingAnalyse": 3
+}
+```
 
 # Testing
 
