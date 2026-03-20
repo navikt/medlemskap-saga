@@ -12,6 +12,7 @@ interface MedlemskapVurdertRepository {
 
     fun lagreVurdering(id: String, eventDate: Date, json: String,ytelse:String)
     fun finnVurderingMedFnr(fnr: String): List<VurderingDao>
+    fun slettVurderingerForFnr(fnr: String): Int
 }
 
 class PostgresMedlemskapVurdertRepository(val dataSource: DataSource) : MedlemskapVurdertRepository {
@@ -19,6 +20,7 @@ class PostgresMedlemskapVurdertRepository(val dataSource: DataSource) : Medlemsk
     val SELECT_ALL = "select * from vurdering"
     val FIND_BY_SOKNAD_ID = "select * from vurdering where soknadId = ?"
     val FIND_BY_FNR = "select * from vurdering where json->'datagrunnlag'->>'fnr' =?"
+    val DELETE_BY_FNR = "DELETE FROM vurdering WHERE json->'datagrunnlag'->>'fnr' = ?"
 
     override fun finnVurdering(soknadId: String): List<VurderingDao> {
 
@@ -49,6 +51,12 @@ class PostgresMedlemskapVurdertRepository(val dataSource: DataSource) : Medlemsk
                 it.run(queryOf(INSERT_VURDERING, id, eventDate, json,ytelse).asExecute)
             }
 
+        }
+    }
+
+    override fun slettVurderingerForFnr(fnr: String): Int {
+        return using(sessionOf(dataSource)) { session ->
+            session.run(queryOf(DELETE_BY_FNR, fnr).asUpdate)
         }
     }
 

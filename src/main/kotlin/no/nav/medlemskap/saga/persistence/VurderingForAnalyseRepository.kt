@@ -49,6 +49,7 @@ interface VurderingForAnalyseRepository {
     )
     fun hentVurderingerForAnalyse(førsteDag: LocalDate, sisteDag: LocalDate): List<VurderingForAnalyseDAO>
     fun hentOgSkrivVurderinger(førsteDag: LocalDate, sisteDag: LocalDate, outputStream: OutputStream)
+    fun slettVurderingerForAnalyseForFnr(fnr: String): Int
 
 }
 
@@ -214,6 +215,7 @@ class VurderingForAnalyseRepositoryImpl(val dataSource: DataSource) : VurderingF
     }
 
     val HENT_VURDERINGER_FOR_ANALYSE_FOR_PERIODE = "SELECT DISTINCT * FROM vurdering_analyse WHERE dato BETWEEN ? AND ?"
+    val DELETE_ANALYSE_BY_FNR = "DELETE FROM vurdering_analyse WHERE fnr = ?"
 
     override fun hentVurderingerForAnalyse(førsteDag: LocalDate, sisteDag: LocalDate): List<VurderingForAnalyseDAO> {
         return using(sessionOf(dataSource)) {
@@ -223,6 +225,12 @@ class VurderingForAnalyseRepositoryImpl(val dataSource: DataSource) : VurderingF
                         .map(tilVurderingForAnalyseDAO)
                         .asList
                 )
+        }
+    }
+
+    override fun slettVurderingerForAnalyseForFnr(fnr: String): Int {
+        return using(sessionOf(dataSource)) { session ->
+            session.run(queryOf(DELETE_ANALYSE_BY_FNR, fnr).asUpdate)
         }
     }
 
