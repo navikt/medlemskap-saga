@@ -175,3 +175,64 @@ Filen kan ligge hvor som helst
 merk! kommandor sletter alt ! : docker system prune -a --volumes
 
 
+# Database
+medlemskap-saga har en database som heter `medlemskap` som inneholder tabellene `vurdering`
+og `vurdering_analyse`. Databasen er tilgjengelig i både dev-gcp og prod-gcp, og det benyttes Flyway for migrering av databasen.
+
+
+## Steg 0: Få personlig tilgang (gjøres kun 1 gang ⚠️)
+Gir brukeren din tilgang til databasen. Dette steget trengs kun å gjøres en gang. Dersom brukeren din
+allerede har tilgang, kan du hoppe over dette steget og gå videre til steg 1.
+```bash
+nais postgres grant --team medlemskap --environment dev-gcp medlemskap-saga
+```
+
+## Steg 1: Velg riktig tilgangsnivå
+
+Velg **én** av følgende basert på behov:
+
+### Steg 1a – Lesetilgang (standard)
+Brukes for feilsøking og innsikt i data:
+
+```bash
+nais postgres prepare --team medlemskap --environment dev-gcp medlemskap-saga
+```
+
+### Steg 1b – Skrivetilgang (kun ved behov ⚠️)
+
+Brukes kun når det er nødvendig å endre data:
+```bash
+nais postgres prepare --team medlemskap --environment dev-gcp medlemskap-saga --all-privileges
+```
+
+## Steg 3: Koble til databasen
+```bash
+nais postgres proxy --team medlemskap --environment dev-gcp --reason "debugging issues" medlemskap-saga
+```
+
+## Steg 4: Rydd opp etter deg ⚠️
+Når du er ferdig skal du fjerne tilgangsnivået du fikk tildelt i Steg 1.
+```bash
+nais postgres revoke --team medlemskap --environment dev-gcp medlemskap-saga
+```
+
+**Er du usikker på hvilken tilgang du har?**
+
+Du kan sjekke hvilke rettigheter som din bruker har ved å kjøre følgende SQL-spørring i databasen:
+
+```bash
+SELECT
+    has_table_privilege(current_user, 'vurdering', 'SELECT') AS can_select,
+    has_table_privilege(current_user, 'vurdering', 'INSERT') AS can_insert,
+    has_table_privilege(current_user, 'vurdering', 'UPDATE') AS can_update,
+    has_table_privilege(current_user, 'vurdering', 'DELETE') AS can_delete;
+```
+
+**Teamets ansvar ved skrivetilgang ⚠️**
+
+I teamet skal du ikke ha behov for å gi deg selv skrivetilgang til _prod-gcp_. Hvis du har behov for det, skal
+teamet informeres og tilgangen skal loggføres i [adgangsoversikten](http://confluence.adeo.no/spaces/TLM/pages/800081767/Loggf%C3%B8ring+av+skrivetilgang+til+databaser+i+produksjon) med dato og tjenestelig formål.
+
+
+
+
