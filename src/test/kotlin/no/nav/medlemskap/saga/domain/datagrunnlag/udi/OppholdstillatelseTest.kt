@@ -4,11 +4,11 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
-class OppholdsTillatelseTest {
+class OppholdstillatelseTest {
 
     @Test
     fun `oppholdstillatelsePaSammeVilkar - returnerer fom, tom og type`() {
-        val oppholdsTillatelse = OppholdsTillatelse(
+        val oppholdsTillatelse = Oppholdstillatelse(
             gjeldendeOppholdsstatus = GjeldendeOppholdsstatus(
                 oppholdstillatelsePaSammeVilkar = OppholdstillatelsePaSammeVilkar(
                     periode = UdiPeriode(
@@ -30,13 +30,13 @@ class OppholdsTillatelseTest {
 
     @Test
     fun `eosellerEFTAOpphold - returnerer fom, tom og type`() {
-        val oppholdsTillatelse = OppholdsTillatelse(
+        val oppholdsTillatelse = Oppholdstillatelse(
             gjeldendeOppholdsstatus = GjeldendeOppholdsstatus(
                 oppholdstillatelsePaSammeVilkar = null,
                 eosellerEFTAOpphold = EOSellerEFTAOpphold(
-                    periode = Periode(
-                        fom = "2024-03-01",
-                        tom = "2024-09-30"
+                    periode = UdiPeriode(
+                        fom = LocalDate.of(2024, 3, 1),
+                        tom = LocalDate.of(2024, 9, 30)
                     ),
                     eosellerEFTAOppholdType = EOSellerEFTAOppholdType.EOS_ELLER_EFTA_BESLUTNING_OM_OPPHOLDSRETT,
                     eosellerEFTAGrunnlagskategoriOppholdsrettType = null,
@@ -54,7 +54,7 @@ class OppholdsTillatelseTest {
 
     @Test
     fun `uavklart - returnerer null for fom og tom, og uavklart som type`() {
-        val oppholdsTillatelse = OppholdsTillatelse(
+        val oppholdsTillatelse = Oppholdstillatelse(
             gjeldendeOppholdsstatus = GjeldendeOppholdsstatus(
                 oppholdstillatelsePaSammeVilkar = null,
                 eosellerEFTAOpphold = null,
@@ -70,7 +70,7 @@ class OppholdsTillatelseTest {
 
     @Test
     fun `ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum - returnerer null for fom og tom, og ikke_opphold som type`() {
-        val oppholdsTillatelse = OppholdsTillatelse(
+        val oppholdsTillatelse = Oppholdstillatelse(
             gjeldendeOppholdsstatus = GjeldendeOppholdsstatus(
                 oppholdstillatelsePaSammeVilkar = null,
                 eosellerEFTAOpphold = null,
