@@ -83,11 +83,10 @@ class SagaService(
             "Søknad ikke  lagret til lovme basert på validering ${key}, offsett: $offset, partiotion: $partition, topic: $topic",
             kv("callId", key),
         )
-    private fun medlemskapVurdertRecord.logLagringFeilet(cause:Throwable) =
-        log.error(
-            "Lagring av medlemskapsvurdering feilet pga teknisk feil. Årsak  : ${cause.message}",
-            kv("callId", key),
-        )
+    private fun medlemskapVurdertRecord.logLagringFeilet(cause: Exception) =
+        log.error(cause) {
+            "Lagring av medlemskapsvurdering feilet pga teknisk feil, callId=$key"
+        }
 
     private fun medlemskapVurdertRecord.logSLagret() =
         log.info(
