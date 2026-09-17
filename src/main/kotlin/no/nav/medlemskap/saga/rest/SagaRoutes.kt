@@ -30,14 +30,20 @@ fun Routing.sagaRoutes(service: SagaService) {
                 val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
                 val azp = callerPrincipal.payload.getClaim("azp").asString()
                 logger.info(teamLogs, "EvalueringRoute: azp-claim i principal-token: {}", azp)
-                try{
+                val callId = call.callId ?: UUID.randomUUID().toString()
+                try {
                     val request = call.receive<FnrRequest>()
                     val vurderinger = service.finnAlleVurderingerForFnr(request.fnr)
                     call.respond(vurderinger.map { mapToFnrResponse(it) })
                 }
-                catch (t:Throwable){
-                    call.respond(t.stackTrace)
-
+                catch (e: Exception) {
+                    logger.error(e) {
+                        "Feil ved behandling av /findVureringerByFnr, callId=$callId"
+                    }
+                    call.respond(
+                        HttpStatusCode.InternalServerError,
+                        "En intern feil oppstod. Referanse: $callId"
+                    )
                 }
             }
         }
@@ -90,8 +96,14 @@ fun Routing.sagaRoutes(service: SagaService) {
                         )
                         call.respond(HttpStatusCode.OK, mapToFlexVurderingsRespons(response))
                     }
-                } catch (t: Throwable) {
-                    call.respond(t.stackTrace)
+                } catch (e: Exception) {
+                    logger.error(e) {
+                        "Feil ved behandling av /flexvurdering, callId=$callId"
+                    }
+                    call.respond(
+                        HttpStatusCode.InternalServerError,
+                        "Det oppstod en teknisk feil ved behandling av forespørselen. Referanse: $callId"
+                    )
                 }
             }
         }
@@ -168,8 +180,14 @@ fun Routing.sagaRoutes(service: SagaService) {
                         )
                         call.respond(HttpStatusCode.OK, response.json)
                     }
-                } catch (t: Throwable) {
-                    call.respond(t.stackTrace)
+                } catch (e: Exception) {
+                    logger.error(e) {
+                        "Feil ved behandling av /vurdering, callId=$callId"
+                    }
+                    call.respond(
+                        HttpStatusCode.InternalServerError,
+                        "Det oppstod en teknisk feil ved behandling av forespørselen. Referanse: $callId"
+                    )
                 }
             }
         }

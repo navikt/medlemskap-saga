@@ -3,6 +3,7 @@ package no.nav.medlemskap.saga.rest
 import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
+import io.ktor.server.plugins.callid.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -11,6 +12,7 @@ import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.medlemskap.saga.persistence.MedlemskapVurdertRepository
 import no.nav.medlemskap.saga.persistence.VurderingForAnalyseRepository
 import org.slf4j.MarkerFactory
+import java.util.*
 
 private val logger = KotlinLogging.logger { }
 private val teamLogs = MarkerFactory.getMarker("TEAM_LOGS")
@@ -25,6 +27,7 @@ fun Routing.nullstillTestdataTestRoute(
                 val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
                 val azp = callerPrincipal.payload.getClaim("azp").asString()
                 logger.info(teamLogs, "NullstillTestdataTestRoute: azp-claim i principal-token: {}", azp)
+                val callId = call.callId ?: UUID.randomUUID().toString()
 
                 try {
                     val request = call.receive<FnrRequest>()
@@ -51,9 +54,14 @@ fun Routing.nullstillTestdataTestRoute(
                             "slettetVurderingAnalyse" to slettetAnalyse
                         )
                     )
-                } catch (t: Throwable) {
-                    logger.error("Feil ved sletting av testdata", t)
-                    call.respond(HttpStatusCode.InternalServerError, "Feil ved nullstilling av testdata: ${t.message}")
+                } catch (e: Exception) {
+                    logger.error(e) {
+                        "Feil ved sletting av testdata, callId=$callId"
+                    }
+                    call.respond(
+                        HttpStatusCode.InternalServerError,
+                        "En intern feil oppstod. Referanse: $callId"
+                    )
                 }
             }
         }
