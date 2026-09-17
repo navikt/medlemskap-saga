@@ -102,7 +102,7 @@ fun Routing.sagaRoutes(service: SagaService) {
                     }
                     call.respond(
                         HttpStatusCode.InternalServerError,
-                        "En intern feil oppstod. Referanse: $callId"
+                        "Det oppstod en teknisk feil ved behandling av forespørselen. Referanse: $callId"
                     )
                 }
             }
@@ -186,7 +186,7 @@ fun Routing.sagaRoutes(service: SagaService) {
                     }
                     call.respond(
                         HttpStatusCode.InternalServerError,
-                        "En intern feil oppstod. Referanse: $callId"
+                        "Det oppstod en teknisk feil ved behandling av forespørselen. Referanse: $callId"
                     )
                 }
             }
