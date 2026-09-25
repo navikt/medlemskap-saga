@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <configuration>
     <appender name="team-logs" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
         <destination>team-logs.nais-system:5170</destination>
@@ -29,14 +28,12 @@
         </filter>
     </appender>
 
-    <logger name="team-logs-logger" level="INFO" additivity="false">
-        <appender-ref ref="team-logs" />
-    </logger>
-
-    <logger name="no.nav" level="INFO"/>
-
     <root level="INFO">
         <appender-ref ref="default-json" />
         <appender-ref ref="team-logs" />
     </root>
+
+    <logger name="team-logs-logger" level="INFO" additivity="false">
+        <appender-ref ref="team-logs" />
+    </logger>
 </configuration>
