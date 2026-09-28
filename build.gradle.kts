@@ -1,22 +1,22 @@
-val ktorVersion = "3.0.3"
-val kafkaVersion = "3.3.1"
-val jacksonVersion = "2.14.0"
+val ktorVersion = "3.6.0"
+val kafkaVersion = "3.9.2"
+val jacksonVersion = "2.22"
 val konfigVersion = "1.6.10.0"
-val kotlinLoggerVersion = "1.8.3"
-val resilience4jVersion = "1.5.0"
-val logstashVersion = "7.2"
-val logbackVersion = "1.3.14"
-val flywayVersion = "9.5.1"
+val kotlinLoggerVersion = "1.12.5"
+val resilience4jVersion = "1.7.1"
+val logstashVersion = "7.4"
+val logbackVersion = "1.6.4"
+val flywayVersion = "9.22.3"
 val hikariVersion = "3.4.5"
-val kotliqueryVersion = "1.3.1"
+val kotliqueryVersion = "1.9.1"
 val httpClientVersion = "4.5.13"
 val mainClass = "no.nav.medlemskap.saga.ApplicationKt"
 val testcontainerVersion = "1.21.4"
 
 plugins {
-    kotlin("jvm") version "2.1.0"
+    kotlin("jvm") version "2.4.20"
     application
-    id("com.github.johnrengelman.shadow") version "7.0.0"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 group = "no.nav.medlemskap"
@@ -57,7 +57,7 @@ dependencies {
     implementation("io.ktor:ktor-client-json:$ktorVersion")
 
 
-    implementation("io.micrometer:micrometer-registry-prometheus:1.7.0")
+    implementation("io.micrometer:micrometer-registry-prometheus:1.17.1")
     implementation("io.ktor:ktor-server-metrics-micrometer-jvm:$ktorVersion")
     implementation("com.natpryce:konfig:$konfigVersion")
     implementation("io.github.microutils:kotlin-logging:$kotlinLoggerVersion")
@@ -65,24 +65,24 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     // 2.8.0 er tilgjengelig, burde kanskje oppdatere
     implementation("org.apache.kafka:kafka-clients:$kafkaVersion")
-    testImplementation(platform("org.junit:junit-bom:5.7.1"))
+    testImplementation(platform("org.junit:junit-bom:5.14.4"))
     testImplementation("org.junit.jupiter:junit-jupiter")
-    testImplementation("io.mockk:mockk:1.11.0")
+    testImplementation("io.mockk:mockk:1.14.11")
     testImplementation("io.ktor:ktor-client-mock:$ktorVersion")
     testImplementation("org.testcontainers:kafka:$testcontainerVersion")
     testImplementation ("org.testcontainers:postgresql:$testcontainerVersion")
     testImplementation ("org.testcontainers:junit-jupiter:$testcontainerVersion")
     //Database
-    implementation("org.postgresql:postgresql:42.5.1")
+    implementation("org.postgresql:postgresql:42.7.13")
     implementation("org.flywaydb:flyway-core:$flywayVersion")
     implementation("com.zaxxer:HikariCP:$hikariVersion")
     implementation("com.github.seratch:kotliquery:$kotliqueryVersion")
     //excel
-    implementation("org.apache.poi:poi:5.2.5")
-    implementation("org.apache.poi:poi-ooxml:5.2.5")
+    implementation("org.apache.poi:poi:5.5.1")
+    implementation("org.apache.poi:poi-ooxml:5.5.1")
 
     //google
-    implementation(platform("com.google.cloud:libraries-bom:26.46.0"))
+    implementation(platform("com.google.cloud:libraries-bom:26.89.0"))
     implementation("com.google.cloud:google-cloud-storage")
     implementation("com.google.auth:google-auth-library-oauth2-http")
 }
