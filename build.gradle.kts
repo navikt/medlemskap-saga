@@ -9,12 +9,11 @@ val logbackVersion = "1.6.4"
 val flywayVersion = "9.22.3"
 val hikariVersion = "3.4.5"
 val kotliqueryVersion = "1.9.1"
-val httpClientVersion = "4.5.13"
 val mainClass = "no.nav.medlemskap.saga.ApplicationKt"
 val testcontainerVersion = "1.21.4"
 
 plugins {
-    kotlin("jvm") version "2.4.20"
+    kotlin("jvm") version "2.3.21"
     application
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
@@ -53,7 +52,7 @@ dependencies {
     implementation("io.ktor:ktor-server-auth-jwt:$ktorVersion")
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
-    implementation("io.ktor:ktor-client-apache:$ktorVersion")
+    implementation("io.ktor:ktor-client-apache5:$ktorVersion")
     implementation("io.ktor:ktor-client-json:$ktorVersion")
 
 

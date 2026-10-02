@@ -1,19 +1,21 @@
 package no.nav.medlemskap.saga.rest
 
 import com.fasterxml.jackson.databind.*
+import com.fasterxml.jackson.databind.json.JsonMapper
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import no.nav.medlemskap.saga.persistence.*
 import java.util.*
 
-val objectMapper: ObjectMapper = ObjectMapper()
-    .registerKotlinModule()
-    .registerModule(JavaTimeModule())
-    .configure(SerializationFeature.INDENT_OUTPUT, true)
-    .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
-    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-    .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS, true)
+val objectMapper: ObjectMapper = JsonMapper.builder()
+    .addModule(KotlinModule.Builder().build())
+    .addModule(JavaTimeModule())
+    .enable(SerializationFeature.INDENT_OUTPUT)
+    .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+    .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+    .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)
+    .build()
 
 fun mapToFnrResponse(dao: VurderingDao) :FnrResponse{
     val jsonNode = objectMapper.readTree(dao.json)
