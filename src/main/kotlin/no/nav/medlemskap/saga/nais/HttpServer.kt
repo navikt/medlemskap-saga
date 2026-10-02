@@ -15,11 +15,7 @@ import org.slf4j.event.Level
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.calllogging.CallLogging
-import io.micrometer.prometheus.PrometheusMeterRegistry
-import io.prometheus.client.exporter.common.TextFormat
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.withContext
 import no.nav.medlemskap.saga.MDC_CALL_ID
 import no.nav.medlemskap.saga.config.*
 import no.nav.medlemskap.saga.config.JwtConfig.Companion.REALM
@@ -33,8 +29,6 @@ import no.nav.medlemskap.saga.rest.analyseRoute
 import no.nav.medlemskap.saga.rest.nullstillTestdataTestRoute
 import no.nav.medlemskap.saga.service.SagaService
 import no.nav.medlemskap.saga.service.AnalyseService
-import java.io.Writer
-
 import java.util.*
 
 fun createHttpServer(consumeJob: Job) = embeddedServer(Netty, port = 8080) {
@@ -84,7 +78,7 @@ fun createHttpServer(consumeJob: Job) = embeddedServer(Netty, port = 8080) {
         }
 
         routing {
-            naisRoutes(consumeJob)
+            naisRoutes { consumeJob.isActive }
             sagaRoutes(service)
             analyseRoute(analyseService, storage)
             if (isDevGcp) {
@@ -95,14 +89,3 @@ fun createHttpServer(consumeJob: Job) = embeddedServer(Netty, port = 8080) {
             }
         }
     }
-
-
-suspend fun writeMetrics004(writer: Writer, registry: PrometheusMeterRegistry) {
-    withContext(Dispatchers.IO) {
-        kotlin.runCatching {
-            TextFormat.write004(writer, registry.prometheusRegistry.metricFamilySamples())
-        }
-    }
-}
-
-

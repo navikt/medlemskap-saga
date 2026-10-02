@@ -67,6 +67,7 @@ dependencies {
     implementation("org.apache.kafka:kafka-clients:$kafkaVersion")
     testImplementation(platform("org.junit:junit-bom:5.14.4"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("io.mockk:mockk:1.14.11")
     testImplementation("io.ktor:ktor-client-mock:$ktorVersion")
     testImplementation("org.testcontainers:kafka:$testcontainerVersion")
@@ -88,6 +89,10 @@ dependencies {
 }
 kotlin {
     jvmToolchain(21)
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
+        freeCompilerArgs.add("-Xopt-in=kotlin.RequiresOptIn")
+    }
 }
 
 tasks.withType<Test> {
@@ -98,16 +103,7 @@ tasks.withType<Test> {
 tasks.withType<Wrapper> {
     gradleVersion = "8.12"
 }
-tasks.compileTestKotlin {
-    kotlinOptions {
-        jvmTarget = "21" // Set JVM target for Kotlin code to 21
-    }
-}
 tasks {
-    compileKotlin {
-        kotlinOptions.jvmTarget = "21"
-        kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
-    }
     shadowJar {
         archiveBaseName.set("app")
         archiveClassifier.set("")
