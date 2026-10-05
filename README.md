@@ -109,6 +109,11 @@ Tester bruker test containers for å verifisere lagring til database.
 
 Det er ikke satt opp tester som tester kafka integrasjonen
 
+`JacksonParser` registrerer `KotlinModule` og `JavaTimeModule` eksplisitt, siden automatisk
+moduloppdagelse kan miste moduler ved pakking med Shadow. `JacksonShadowJarTest` tester
+deserialisering og utledning av vurderingstagger med bare produksjons-JAR-en på classpath.
+`./gradlew test` bygger derfor også `shadowJar`.
+
 # kjøring lokalt
 
 komponenten kan kjøres lokalt, men vær klar over at det vil (potensielt) medføre at dokumenter kan være
@@ -232,7 +237,6 @@ SELECT
 
 I teamet skal du ikke ha behov for å gi deg selv skrivetilgang til _prod-gcp_. Hvis du har behov for det, skal
 teamet informeres og tilgangen skal loggføres i [adgangsoversikten](http://confluence.adeo.no/spaces/TLM/pages/800081767/Loggf%C3%B8ring+av+skrivetilgang+til+databaser+i+produksjon) med dato og tjenestelig formål.
-
 
 
 
