@@ -80,7 +80,6 @@ private fun Boolean.formater(): String {
     return when (this) {
         true -> "true"
         false -> "false"
-        else -> ""
     }
 }
 

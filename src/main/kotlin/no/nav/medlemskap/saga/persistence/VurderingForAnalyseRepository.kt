@@ -16,6 +16,7 @@ import java.io.OutputStream
 import java.io.OutputStreamWriter
 import java.nio.charset.StandardCharsets
 import java.sql.ResultSet
+import java.sql.SQLException
 import java.time.LocalDate
 
 interface VurderingForAnalyseRepository {
@@ -195,12 +196,12 @@ class VurderingForAnalyseRepositoryImpl(val dataSource: DataSource) : VurderingF
             foerste_dag_for_ytelse = rs.getObject("foerste_dag_for_ytelse", LocalDate::class.java),
             start_dato_for_ytelse = rs.getObject("start_dato_for_ytelse", LocalDate::class.java),
             svar = rs.getString("svar"),
-            aarsaker = rs.getArray("aarsaker")?.array as? Array<String> ?: emptyArray(),
+            aarsaker = rs.getStringArray("aarsaker"),
             konklusjon = rs.getString("konklusjon"),
-            avklaringsliste = rs.getArray("avklaringsliste")?.array as? Array<String> ?: emptyArray(),
+            avklaringsliste = rs.getStringArray("avklaringsliste"),
             nye_spoersmaal = rs.getBoolean("nye_spoersmaal"),
             antall_dager_med_sykmelding = rs.getLong("antall_dager_med_sykmelding"),
-            statsborgerskap = rs.getArray("statsborgerskap")?.array as? Array<String> ?: emptyArray(),
+            statsborgerskap = rs.getStringArray("statsborgerskap"),
             statsborgerskapskategori = rs.getString("statsborgerskapskategori"),
             arbeid_utenfor_norge = rs.getBoolean("arbeid_utenfor_norge"),
             utfoert_arbeid_utenfor_norge = rs.getString("utfoert_arbeid_utenfor_norge"),
@@ -212,6 +213,20 @@ class VurderingForAnalyseRepositoryImpl(val dataSource: DataSource) : VurderingF
             oppholdstillatelse_udi_type = rs.getString("oppholdstillatelse_udi_type"),
             kilde = rs.getString("kilde") ?: ""
         )
+    }
+
+    private fun ResultSet.getStringArray(columnName: String): Array<String> {
+        val sqlArray = getArray(columnName) ?: return emptyArray()
+        return try {
+            val values = sqlArray.array as? Array<*>
+                ?: throw SQLException("Expected an array for column $columnName")
+            Array(values.size) { index ->
+                values[index] as? String
+                    ?: throw SQLException("Expected string values in column $columnName")
+            }
+        } finally {
+            sqlArray.free()
+        }
     }
 
     val HENT_VURDERINGER_FOR_ANALYSE_FOR_PERIODE = "SELECT DISTINCT * FROM vurdering_analyse WHERE dato BETWEEN ? AND ?"
