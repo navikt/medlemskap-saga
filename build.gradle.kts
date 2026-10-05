@@ -121,6 +121,8 @@ tasks {
 
     }
     test {
+        dependsOn(shadowJar)
+        systemProperty("saga.shadowJar", shadowJar.get().archiveFile.get().asFile.absolutePath)
         useJUnitPlatform()
         jvmArgs = listOf("-Dnet.bytebuddy.experimental=true")
         java.targetCompatibility = JavaVersion.VERSION_21
