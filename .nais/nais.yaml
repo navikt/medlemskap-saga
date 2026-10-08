@@ -47,7 +47,6 @@ spec:
         extra:
           - "NAVident"
           - "azp_name"
-  image: {{image}}
   liveness:
     path: "/isAlive"
     port: 8080

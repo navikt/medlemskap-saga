@@ -10,6 +10,14 @@ Medlemskap Saga komponent som lagrer/oppdaterer status på medlemskap
         - vurdering_analyse
 * Kafka
 
+## Deploy
+
+Workflows i `.github/workflows/master.yml` og `.github/workflows/pull-requests.yml` bygger Docker-image
+og deployer med `nais/setup@v1` og `nais apply`. Applikasjonsmanifestene ligger i `.nais/`.
+Image sendes med `--set spec.image`, ikke via templating i manifestet, og `--wait` venter til appen er klar.
+Deploy bruker OIDC (`id-token: write`) i stedet for deploy-API-nøkler.
+Pull requests deployer til dev-gcp; push til `main` deployer til både dev-gcp og prod-gcp.
+
 # API-er i medlemskap-saga
 
 medlemskap-saga tilbyr 2 API-er.
@@ -237,6 +245,4 @@ SELECT
 
 I teamet skal du ikke ha behov for å gi deg selv skrivetilgang til _prod-gcp_. Hvis du har behov for det, skal
 teamet informeres og tilgangen skal loggføres i [adgangsoversikten](http://confluence.adeo.no/spaces/TLM/pages/800081767/Loggf%C3%B8ring+av+skrivetilgang+til+databaser+i+produksjon) med dato og tjenestelig formål.
-
-
 
