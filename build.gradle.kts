@@ -5,7 +5,7 @@ val konfigVersion = "1.6.10.0"
 val kotlinLoggerVersion = "1.12.5"
 val resilience4jVersion = "1.7.1"
 val logstashVersion = "7.4"
-val logbackVersion = "1.6.4"
+val logbackVersion = "1.6.5"
 val flywayVersion = "9.22.3"
 val hikariVersion = "3.4.5"
 val kotliqueryVersion = "1.9.1"
@@ -13,7 +13,7 @@ val mainClass = "no.nav.medlemskap.saga.ApplicationKt"
 val testcontainerVersion = "1.21.4"
 
 plugins {
-    kotlin("jvm") version "2.3.21"
+    kotlin("jvm") version "2.4.21"
     application
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
@@ -73,7 +73,7 @@ dependencies {
     testImplementation ("org.testcontainers:postgresql:$testcontainerVersion")
     testImplementation ("org.testcontainers:junit-jupiter:$testcontainerVersion")
     //Database
-    implementation("org.postgresql:postgresql:42.7.13")
+    implementation("org.postgresql:postgresql:42.7.14")
     implementation("org.flywaydb:flyway-core:$flywayVersion")
     implementation("com.zaxxer:HikariCP:$hikariVersion")
     implementation("com.github.seratch:kotliquery:$kotliqueryVersion")
@@ -82,7 +82,7 @@ dependencies {
     implementation("org.apache.poi:poi-ooxml:5.5.1")
 
     //google
-    implementation(platform("com.google.cloud:libraries-bom:26.89.0"))
+    implementation(platform("com.google.cloud:libraries-bom:26.90.0"))
     implementation("com.google.cloud:google-cloud-storage")
     implementation("com.google.auth:google-auth-library-oauth2-http")
 }
