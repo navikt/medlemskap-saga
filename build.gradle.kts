@@ -6,7 +6,7 @@ val kotlinLoggerVersion = "1.12.5"
 val resilience4jVersion = "1.7.1"
 val logstashVersion = "7.4"
 val logbackVersion = "1.6.5"
-val flywayVersion = "9.22.3"
+val flywayVersion = "10.22.0"
 val hikariVersion = "3.4.5"
 val kotliqueryVersion = "1.9.1"
 val mainClass = "no.nav.medlemskap.saga.ApplicationKt"
@@ -75,6 +75,7 @@ dependencies {
     //Database
     implementation("org.postgresql:postgresql:42.7.14")
     implementation("org.flywaydb:flyway-core:$flywayVersion")
+    implementation("org.flywaydb:flyway-database-postgresql:$flywayVersion")
     implementation("com.zaxxer:HikariCP:$hikariVersion")
     implementation("com.github.seratch:kotliquery:$kotliqueryVersion")
     //excel
