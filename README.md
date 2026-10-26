@@ -193,47 +193,73 @@ medlemskap-saga har en database som heter `medlemskap` som inneholder tabellene 
 og `vurdering_analyse`. Databasen er tilgjengelig i både dev-gcp og prod-gcp, og det benyttes Flyway for migrering av databasen.
 
 
-## Steg 0: Få personlig tilgang (gjøres kun 1 gang ⚠️)
-Gir brukeren din tilgang til databasen. Dette steget trengs kun å gjøres en gang. Dersom brukeren din
-allerede har tilgang, kan du hoppe over dette steget og gå videre til steg 1.
+Oppskriften følger [NAIS sin veiledning for personlig tilgang til Cloud SQL](https://docs.nais.io/persistence/cloudsql/how-to/personal-access/).
+Eksemplene bruker `dev-gcp`. Bruk `prod-gcp` dersom du skal koble til produksjon.
+
+## Før du begynner
+
+Installer [Nais CLI](https://cli.nais.io) og `psql` dersom du vil bruke kommandolinjeklienten.
+Logg inn med `nais login`, og koble til naisdevice.
+
+Sjekk om Google-kontoen din er registrert på Cloud SQL-instansen som individuell IAM-bruker eller via en IAM-gruppe.
+Hvis teamets IAM-gruppe ikke er registrert, må noen med nødvendige rettigheter
+[legge gruppen til på instansen](https://docs.cloud.google.com/sql/docs/postgres/add-manage-iam-users).
+Gruppemedlemmer får en databasebruker ved første vellykkede innlogging.
+
+Databaserettigheter og innloggingstilgang er separate: `prepare` gir PostgreSQL-rettigheter,
+men oppretter ikke en IAM-databasebruker og gir ikke innloggingstilgang.
+
+## Steg 1: Gi databaserettigheter
+
 ```bash
-nais postgres grant --team medlemskap --environment dev-gcp medlemskap-saga
+nais cloudsql prepare --team medlemskap --environment dev-gcp medlemskap-saga
 ```
 
-## Steg 1: Velg riktig tilgangsnivå
+`prepare` bruker applikasjonens legitimasjon til å gi rettigheter på eksisterende tabeller og sekvenser,
+og setter standardrettigheter for fremtidige objekter opprettet av applikasjonsbrukeren.
+Det gir ikke tilgang til tabeller eid av andre brukere.
 
-Velg **én** av følgende basert på behov:
+### Skrivetilgang (kun ved behov ⚠️)
 
-### Steg 1a – Lesetilgang (standard)
-Brukes for feilsøking og innsikt i data:
+Legg til `--all-privileges` i `prepare`-kommando over bare dersom du må endre data eller databaseobjekter.
+Dette gir mer enn lesetilgang og løser ikke autentiseringsfeil.
+
+## Steg 2: Registrer individuell IAM-bruker ved behov
+
+Kjør følgende bare dersom du **ikke** bruker en IAM-gruppe, og den individuelle IAM-databasebrukeren din ikke finnes fra før:
 
 ```bash
-nais postgres prepare --team medlemskap --environment dev-gcp medlemskap-saga
+nais cloudsql grant --team medlemskap --environment dev-gcp medlemskap-saga
 ```
 
-### Steg 1b – Skrivetilgang (kun ved behov ⚠️)
+`grant` gir Google-kontoen din `roles/cloudsql.admin` i fem minutter for å opprette databasebrukeren.
+Det gir verken PostgreSQL-tabellrettigheter eller IAM-innloggingstilgangen som proxyen bruker.
+Ikke kjør kommandoen hvis kontoen din allerede er IAM-gruppebruker på instansen:
+Cloud SQL kan ikke registrere samme konto både som gruppebruker og individuell bruker.
 
-Brukes kun når det er nødvendig å endre data:
+## Steg 3: Koble til databasen
+
+For en lokal databaseklient, for eksempel IntelliJ eller DataGrip, start proxyen:
+
 ```bash
-nais postgres prepare --team medlemskap --environment dev-gcp medlemskap-saga --all-privileges
+nais cloudsql proxy --team medlemskap --environment dev-gcp --reason "feilsøking av sak" medlemskap-saga
 ```
 
-## Steg 2: Koble til databasen
-```bash
-nais postgres proxy --team medlemskap --environment dev-gcp --reason "debugging issues" medlemskap-saga
-```
+Oppgi en konkret begrunnelse i `--reason`. Bruk tilkoblingsdetaljene som skrives ut, og velg databasen `medlemskap`.
+Bruk e-postadressen til din personlige Google-konto som brukernavn, og la passordet være tomt.
+Proxyen bruker automatisk IAM-autentisering; tomt passord gjelder **bare ved tilkobling gjennom denne CLI-proxyen**.
+La proxyen kjøre så lenge databaseklienten er tilkoblet, og stopp den når du er ferdig.
 
-## Steg 3: Rydd opp etter deg ⚠️
-Når du er ferdig skal du fjerne tilgangsnivået du fikk tildelt i Steg 1.
-```bash
-nais postgres revoke --team medlemskap --environment dev-gcp medlemskap-saga
-```
+CLI-en gir midlertidig `roles/cloudsql.instanceUser`-tilgang i én time.
+En IAM-databasebruker eller IAM-gruppe må allerede være registrert på instansen,
+og proxyen trenger også Cloud SQL Client-rettigheten for å koble til.
+Den midlertidige IAM-tilgangen må ikke forveksles med PostgreSQL-rettighetene fra `prepare`.
 
 **Er du usikker på hvilken tilgang du har?**
 
 Du kan sjekke hvilke rettigheter som din bruker har ved å kjøre følgende SQL-spørring i databasen:
 
-```bash
+```sql
 SELECT
     has_table_privilege(current_user, 'vurdering', 'SELECT') AS can_select,
     has_table_privilege(current_user, 'vurdering', 'INSERT') AS can_insert,
@@ -245,4 +271,3 @@ SELECT
 
 I teamet skal du ikke ha behov for å gi deg selv skrivetilgang til _prod-gcp_. Hvis du har behov for det, skal
 teamet informeres og tilgangen skal loggføres i [adgangsoversikten](http://confluence.adeo.no/spaces/TLM/pages/800081767/Loggf%C3%B8ring+av+skrivetilgang+til+databaser+i+produksjon) med dato og tjenestelig formål.
-
