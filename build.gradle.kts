@@ -1,11 +1,11 @@
-val ktorVersion = "3.6.0"
+val ktorVersion = "3.6.1"
 val kafkaVersion = "3.9.2"
 val jacksonVersion = "2.22"
 val konfigVersion = "1.6.10.0"
 val kotlinLoggerVersion = "1.12.5"
 val resilience4jVersion = "1.7.1"
 val logstashVersion = "7.4"
-val logbackVersion = "1.6.5"
+val logbackVersion = "1.6.6"
 val flywayVersion = "10.22.0"
 val hikariVersion = "3.4.5"
 val kotliqueryVersion = "1.9.1"
@@ -83,7 +83,7 @@ dependencies {
     implementation("org.apache.poi:poi-ooxml:5.5.1")
 
     //google
-    implementation(platform("com.google.cloud:libraries-bom:26.90.0"))
+    implementation(platform("com.google.cloud:libraries-bom:26.91.0"))
     implementation("com.google.cloud:google-cloud-storage")
     implementation("com.google.auth:google-auth-library-oauth2-http")
 }
